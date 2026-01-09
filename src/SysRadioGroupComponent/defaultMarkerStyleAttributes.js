@@ -1,0 +1,23 @@
+export default {
+  "inputSize": "22px",
+  "inputToTextGapSize": "13px",
+  "selectedColor": "rgba(0, 0, 0, 1)",
+  "borderTopStyle": "solid",
+  "borderRightStyle": "solid",
+  "borderBottomStyle": "solid",
+  "borderLeftStyle": "solid",
+  "borderTopWidth": "1px",
+  "borderTopColor": "rgba(0, 0, 0, 1)",
+  "borderBottomWidth": "1px",
+  "borderBottomColor": "rgba(0, 0, 0, 1)",
+  "borderLeftWidth": "1px",
+  "borderLeftColor": "rgba(0, 0, 0, 1)",
+  "borderRightWidth": "1px",
+  "borderRightColor": "rgba(0, 0, 0, 1)",
+  "boxShadow": "none",
+  "textShadow": "none",
+  "outline": "none",
+  "border": "1px solid",
+  "background": "rgb(255, 255, 255)",
+  "backdropFilter": "none"
+};

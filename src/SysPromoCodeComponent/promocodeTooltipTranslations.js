@@ -1,0 +1,21 @@
+const promocodeTooltipTranslations = {
+  'en': 'Copied!',
+  'ru': 'Скопировано!',
+  'uk': 'Скопійовано!',
+  'es': 'Copiado!',
+  'de': 'Kopiert!',
+  'fr': 'Copié!',
+  'it': 'Copiato!',
+  'pt': 'Copiado!',
+  "ro": "Copiat!",
+  "bg": "Копирано!",
+  "cs": "Zkopírováno!",
+  "el": "Αντιγράφηκε!",
+  "nl": "Gekopieerd!",
+  "pl": "Skopiowane!",
+  "sv": "Kopierade!",
+  "tr": "Kopyalandı!",
+  "ar": "نسخ!",
+  "hu": "Másolva!",
+}
+export default promocodeTooltipTranslations;

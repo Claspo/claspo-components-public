@@ -1,0 +1,16 @@
+export default [
+  'background',
+  'border-style',
+  'border-top-width',
+  'border-top-color',
+  'border-bottom-width',
+  'border-bottom-color',
+  'border-left-width',
+  'border-left-color',
+  'border-right-width',
+  'border-right-color',
+  'border-top-left-radius',
+  'border-top-right-radius',
+  'border-bottom-left-radius',
+  'border-bottom-right-radius',
+];
