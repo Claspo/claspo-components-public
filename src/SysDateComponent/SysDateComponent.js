@@ -421,7 +421,7 @@ export default class SysDateComponent extends WcControlledElement {
 
   setPlaceholders = (props, env, force = false) => {
     if (
-      (this.services.config.getConfig('entryModuleType') === 'UPDATING')
+      (this.isUpdatingRenderMode())
       || force
     ) {
       this.setDayPlaceholder();

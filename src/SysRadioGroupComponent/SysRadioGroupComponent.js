@@ -288,7 +288,7 @@ export default class SysRadioGroupComponent extends WcControlledElement {
         radioGroupItemEl.setAttribute('name', option.id);
         this.setBorderTopWidth(radioGroupItemEl);
 
-        if (this.services.config.getConfig('entryModuleType') !== 'UPDATING') {
+        if (this.isStaticRenderMode()) {
           radioGroupItemEl.addEventListener('click', (event) => {
             event.stopPropagation();
             event.preventDefault();

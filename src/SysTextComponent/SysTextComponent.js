@@ -116,7 +116,7 @@ export default class SysTextComponent extends WcElement {
     if (!container) {
       return;
     }
-    const isStatic = this.services.config.getConfig('entryModuleType') === 'STATIC';
+    const isStatic = this.isStaticRenderMode();
 
     container.childNodes.forEach((node) => {
       if ((node.nodeType !== Node.TEXT_NODE) && node.getAttribute('cl-type') === 'TEXT_ROLLER') {

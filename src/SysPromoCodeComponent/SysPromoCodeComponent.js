@@ -60,7 +60,7 @@ export default class SysPromoCodeComponent extends WcElement {
       this.services.context.on(ContextEvents.RECORD_DELETED, this._handleContextRecord.bind(this))
     ];
 
-    if (this.services.config.getConfig('entryModuleType') !== 'UPDATING') {
+    if (this.isStaticRenderMode()) {
       textElement.addEventListener('click', (e) => {
         e.stopPropagation();
         copyToClipboard(inlineEditElement.textContent)
@@ -75,7 +75,7 @@ export default class SysPromoCodeComponent extends WcElement {
         // stopPropagation() prevents from bubbling to widget click handler
         this.services.trackingService.send(`FormClick_[Name]`);
 
-        this.services.trackingService.trackClick();
+        this.services.trackingService.trackClick({countAsTargetAction: this.getProps().content.countAsTargetAction});
         this.services.trackingService.trackTargetAction(this.getProps().content.countAsTargetAction);
       });
     }
@@ -206,7 +206,6 @@ export default class SysPromoCodeComponent extends WcElement {
     const textOuterElement = this.getElement('text');
     const textInnerElement = textOuterElement.querySelector(`.${this.inlineEditPromocodeClass}`);
 
-    textInnerElement.style.display = this.isByContentWidth || this.isByContainerWidth ? 'contents' : '';
     textInnerElement.style.whiteSpace = this.isByContentWidth ? 'nowrap' : '';
 
     if (!promocodeTextElement || !editableText) {

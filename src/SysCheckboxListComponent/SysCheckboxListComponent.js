@@ -246,7 +246,7 @@ export default class SysCheckboxListComponent extends WcControlledElement {
         const checkboxListItemEl = this.createCheckboxListItemComponent(option, selected, optionLabelStyles);
         checkboxListItemEl.classList.add('checkboxListItem');
 
-        if (this.services.config.getConfig('entryModuleType') !== 'UPDATING') {
+        if (this.isStaticRenderMode()) {
           checkboxListItemEl.addEventListener('click', (event) => {
             event.stopPropagation();
             event.preventDefault();

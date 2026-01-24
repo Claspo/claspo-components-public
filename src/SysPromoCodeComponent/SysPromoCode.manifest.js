@@ -398,6 +398,7 @@ export default {
           "boldLabel": true,
           "tooltip": "i18n_DOCUMENT_COUNT_AS_TARGET_ACTION_TOOLTIP",
         },
+        "displayCondition": "return sdk.widgetType === 'INFORMER'"
       },
     ]
   },

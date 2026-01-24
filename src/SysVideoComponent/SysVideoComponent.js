@@ -35,7 +35,7 @@ export default class SysVideoComponent extends WcElement {
   connectedCallback() {
     super.connectedCallback();
     const rootElement = this.getRootElement();
-    const isInEditor = this.services.config.getConfig('entryModuleType') === 'UPDATING';
+    const isInEditor = this.isUpdatingRenderMode();
     const isInSmallPreview = this.services.config.getConfig(PreviewMode.CABINET_PREVIEW);
 
     if (window.ResizeObserver) {
@@ -153,7 +153,7 @@ export default class SysVideoComponent extends WcElement {
       return;
     }
 
-    const isInDev = this.services.config.getConfig('entryModuleType') === 'UPDATING';
+    const isInDev = this.isUpdatingRenderMode();
     const player = rootElement.querySelector('#youtube-player');
 
     if (customCover) {

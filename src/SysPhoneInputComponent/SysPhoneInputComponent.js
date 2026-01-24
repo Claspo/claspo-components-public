@@ -100,7 +100,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     });
 
     rootElement.querySelector('.phone-input-select-button').addEventListener('click', () => {
-      if (!this.countryData || this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+      if (!this.countryData || this.isUpdatingRenderMode()) {
         return;
       }
 

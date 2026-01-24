@@ -94,19 +94,19 @@ ${getStyleElement()}
   }
 
   getStoredRelativeStartDate = () => {
-    if (this.services.config.getConfig('entryModuleType') !== 'UPDATING' && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
+    if (this.isStaticRenderMode() && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       return this.services.config.getConfig('getRelativeTimerViewDate')?.();
     }
   }
 
   storeRelativeStartDate = () => {
-    if (this.services.config.getConfig('entryModuleType') !== 'UPDATING' && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
+    if (this.isStaticRenderMode() && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       this.services.config.getConfig('storeRelativeTimerViewDate')?.();
     }
   }
 
   clearRelativeStartDate = () => {
-    if (this.services.config.getConfig('entryModuleType') !== 'UPDATING' && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
+    if (this.isStaticRenderMode() && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       this.services.config.getConfig('clearRelativeTimerViewDate')?.();
     }
   }

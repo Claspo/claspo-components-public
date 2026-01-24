@@ -86,7 +86,7 @@ export default class SysSliderComponent extends WcElement {
   };
 
   getAvailableSwipes = () => {
-    const isStatic = this.services.config.getConfig('entryModuleType') === 'STATIC';
+    const isStatic = this.isStaticRenderMode();
     const { sliderMode } = this.getProps().content || {};
 
     return isStatic && sliderMode !== 'ONE_RANDOM';
@@ -213,7 +213,7 @@ export default class SysSliderComponent extends WcElement {
 
     if (
       !this.sliderInitialised &&
-      this.services.config.getConfig('entryModuleType') !== 'UPDATING' &&
+      this.isStaticRenderMode() &&
       (sliderMode === 'RANDOM_ORDER' || sliderMode === 'ONE_RANDOM')
     ) {
       this.shuffleSlides();
@@ -236,7 +236,7 @@ export default class SysSliderComponent extends WcElement {
       slidingInterval &&
       sliderMode !== 'ONE_RANDOM'
     ) {
-      if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+      if (this.isUpdatingRenderMode()) {
         return;
       }
 
@@ -314,7 +314,7 @@ export default class SysSliderComponent extends WcElement {
   createPrevSlideControl = (arrowIcon) => {
     const prevControlElement = document.createElement('div');
     prevControlElement.classList.add(this.prevSlideControlClass);
-    if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+    if (this.isUpdatingRenderMode()) {
       prevControlElement.classList.add('highligh-on-hover-with-pseudo-element');
     }
     prevControlElement.setAttribute('cl-element', 'arrows');
@@ -325,7 +325,7 @@ export default class SysSliderComponent extends WcElement {
     prevControlElement.onclick = (event) => {
       event.stopPropagation();
 
-      if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+      if (this.isUpdatingRenderMode()) {
         return;
       }
 
@@ -348,7 +348,7 @@ export default class SysSliderComponent extends WcElement {
   createNextSlideControl = (arrowIcon) => {
     const nextControlElement = document.createElement('div');
     nextControlElement.classList.add(this.nextSlideControlClass);
-    if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+    if (this.isUpdatingRenderMode()) {
       nextControlElement.classList.add('highligh-on-hover-with-pseudo-element');
     }
     nextControlElement.setAttribute('cl-element', 'arrows');
@@ -359,7 +359,7 @@ export default class SysSliderComponent extends WcElement {
     nextControlElement.onclick = (event) => {
       event.stopPropagation();
 
-      if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+      if (this.isUpdatingRenderMode()) {
         return;
       }
 
@@ -382,7 +382,7 @@ export default class SysSliderComponent extends WcElement {
   createNavigationDotsSlideControl = (activeDotIndex) => {
     const navigationDotsContainer = document.createElement('div');
     navigationDotsContainer.classList.add(this.dotsContainerClass);
-    if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+    if (this.isUpdatingRenderMode()) {
       this.getRootElement().querySelector('.indicatorControl').classList.add('highligh-on-hover');
     }
 
@@ -397,7 +397,7 @@ export default class SysSliderComponent extends WcElement {
       sliderNavigationDot.onclick = (event) => {
         event.stopPropagation();
 
-        if (this.services.config.getConfig('entryModuleType') === 'UPDATING') {
+        if (this.isUpdatingRenderMode()) {
           return;
         }
 

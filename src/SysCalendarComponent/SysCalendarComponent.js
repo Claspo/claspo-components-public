@@ -64,7 +64,7 @@ export default class SysCalendarComponent extends WcControlledElement {
   }
 
   registerControl = (rootElement) => {
-    const isInEditor = this.services.config.getConfig('entryModuleType') === 'UPDATING';
+    const isInEditor = this.isUpdatingRenderMode();
 
     if (isInEditor) {
       rootElement.querySelector('#cl-date-input').style.pointerEvents = 'none';
@@ -139,7 +139,7 @@ export default class SysCalendarComponent extends WcControlledElement {
 
   addCalendarRelatedEventListeners = (rootElement) => {
     const dateInput = rootElement.querySelector('#cl-date-input');
-    const isInEditor = this.services.config.getConfig('entryModuleType') === 'UPDATING';
+    const isInEditor = this.isUpdatingRenderMode();
 
     if (isInEditor) {
       return;

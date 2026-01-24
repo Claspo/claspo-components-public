@@ -25,5 +25,10 @@ const promocodeStyles = `
 button.focus-outline-defined:focus {
   outline: var(--clFocusOutline);
 }
+
+.cl--inline--edit {
+   overflow-wrap: break-word;
+   max-width: 100%;
+}
 `;
 export default promocodeStyles;
