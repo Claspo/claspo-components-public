@@ -504,5 +504,7 @@ export default {
   "waitForResourcesLoad": true,
   "resourcesPropPaths": [
     ["control", "imageSource", "url"]
-  ]
+  ],
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

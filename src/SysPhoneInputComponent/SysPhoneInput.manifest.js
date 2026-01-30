@@ -733,5 +733,7 @@ export default {
       "sl": "Telefon",
       "sr": "Telefon"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

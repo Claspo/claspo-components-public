@@ -8,7 +8,6 @@ export default {
   "preventDraggable": false,
   "focusParentOnClick": false,
   "recursiveRemove": true,
-  "canStack": false,
   "version": "1.0.0",
   "props": {
     ...SysContainerManifest.props,
@@ -344,4 +343,6 @@ export default {
       "sr": "Column",
     },
   },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

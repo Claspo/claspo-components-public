@@ -1122,5 +1122,7 @@ export default {
       "sl": "Odštevalnik časa",
       "sr": "Tajmer za odbrojavanje"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

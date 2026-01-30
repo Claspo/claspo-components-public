@@ -205,5 +205,7 @@ export default {
       "sl": "Social",
       "sr": "Social",
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

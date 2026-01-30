@@ -458,5 +458,7 @@ export default {
       "sl": "Besedilo",
       "sr": "Tekst"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

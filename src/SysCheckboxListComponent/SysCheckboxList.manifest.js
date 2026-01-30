@@ -807,6 +807,8 @@ export default {
       "sl": "Potrditveno polje",
       "sr": "Polje za potvrdu"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }
 

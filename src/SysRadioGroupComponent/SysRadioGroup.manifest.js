@@ -775,5 +775,7 @@ export default {
       "sl": "Radio",
       "sr": "Radio"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

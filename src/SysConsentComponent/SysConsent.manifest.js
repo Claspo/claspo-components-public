@@ -651,5 +651,7 @@ export default {
       "da": "Databehandling og brugsbetingelser",
       "he": "עיבוד נתונים ותנאי השימוש"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

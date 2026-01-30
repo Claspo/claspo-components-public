@@ -588,5 +588,7 @@ export default {
       "sl": "Promocijska koda",
       "sr": "Promo kod"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

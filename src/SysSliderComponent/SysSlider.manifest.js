@@ -323,5 +323,7 @@ export default {
       "sl": "Slider",
       "sr": "Slider",
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

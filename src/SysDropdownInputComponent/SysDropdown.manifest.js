@@ -812,5 +812,7 @@ export default {
       "sl": "Spustni meni",
       "sr": "Padajući meni"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

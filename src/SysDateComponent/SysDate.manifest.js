@@ -830,5 +830,7 @@ export default {
       "sl": "Datum",
       "sr": "Datum"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

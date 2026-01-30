@@ -431,5 +431,7 @@ export default {
       "sl": "Video",
       "sr": "Video zapis"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

@@ -746,5 +746,7 @@ export default {
       "sl": "Gumb",
       "sr": "Dugme",
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

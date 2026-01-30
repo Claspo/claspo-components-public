@@ -839,6 +839,8 @@ export default {
       "sl": "Območje besedila",
       "sr": "Oblast teksta"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }
 

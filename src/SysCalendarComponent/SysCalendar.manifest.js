@@ -723,5 +723,7 @@ export default {
       "sl": "Koledar",
       "sr": "Kalendar",
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

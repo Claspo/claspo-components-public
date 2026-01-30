@@ -1349,5 +1349,7 @@ export default {
       "sl": "Vnos besedila",
       "sr": "Unos teksta"
     }
-  }
+  },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

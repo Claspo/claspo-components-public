@@ -260,4 +260,6 @@ export default {
       "sr": "Slide",
     },
   },
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }

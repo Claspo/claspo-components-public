@@ -534,5 +534,7 @@ export default {
   "waitForResourcesLoad": true,
   "resourcesPropPaths": [
     ["adaptiveStyles", ":ENV", "styleAttributes", "background"],
-  ]
+  ],
+  "syncEnabled": true,
+  "stylesImitationEnabled": true,
 }
