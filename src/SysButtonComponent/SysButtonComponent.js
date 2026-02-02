@@ -1,7 +1,7 @@
 import SysButtonManifest from "./SysButton.manifest";
 import sysButtonStyles from "./SysButton.styles";
 import WcElement from "@claspo/renderer/sdk/WcElement";
-import HandlerTypes from "@claspo/common/handler/HandlerTypes";
+import { HandlerTypes } from "@claspo/common/handler/HandlerTypes";
 import SysActionTypes from "@claspo/renderer/action/SysActionTypes";
 import getComponentCountOnView from "@claspo/renderer/sdk/getComponentCountOnView";
 import { setFocusOutline } from '@claspo/renderer/sdk/HtmlStyleUtils';
