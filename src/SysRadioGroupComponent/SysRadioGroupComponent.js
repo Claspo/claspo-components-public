@@ -273,7 +273,7 @@ export default class SysRadioGroupComponent extends WcControlledElement {
   createContent() {
     const inputButton = this.getElement('input');
     const optionLabelStyles = getStylesFromElement(inputButton, SysRadioGroupComponent.radioGroupButtonMenuStyles);
-    const value = JSON.parse(this.registeredControl?.getValue() || null);
+    const value = this.registeredControl?.getValue() || null;
     const options = this.getOptions();
     const radioButtonsList = document.createElement('div');
     radioButtonsList.classList.add('radio-buttons-list');
@@ -295,7 +295,7 @@ export default class SysRadioGroupComponent extends WcControlledElement {
             const radioMark = radioGroupItemEl.querySelector('.radio-mark');
             radioMark.classList.add('radio-mark-checked');
             this.setSelectedBorderColor(radioMark);
-            this.registeredControl.setValue(JSON.stringify({ id, exportId: options[id].exportId }));
+            this.registeredControl.setValue({ id, exportId: options[id].exportId });
             this.unselectButtons(radioButtonsList, id);
           });
         }

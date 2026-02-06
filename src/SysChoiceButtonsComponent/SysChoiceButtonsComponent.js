@@ -72,8 +72,8 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
               this.removeSelectedOptionStyles(buttonElement, currentProps);
               delete currentOptionsValue[id];
 
-              const updatedValue = JSON.stringify(currentOptionsValue);
-              this.registeredControl.setValue(updatedValue === '{}' ? null : updatedValue);
+              const updatedValue = Object.keys(currentOptionsValue).length ? currentOptionsValue : null;
+              this.registeredControl.setValue(updatedValue);
             } else {
               if (!currentProps.control.multipleChoice) {
                 this.removeSelectionFromAllButtons(buttonsContainerElement, currentProps);
@@ -83,7 +83,7 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
               const updatedValue = currentProps.control.multipleChoice
                 ? {...currentOptionsValue, [id]: optionsMap[id].exportId}
                 : {[id]: optionsMap[id].exportId};
-              this.registeredControl.setValue(JSON.stringify(updatedValue));
+              this.registeredControl.setValue(updatedValue);
             }
           });
         }
@@ -111,7 +111,7 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
   }
 
   getCurrentValue() {
-    return JSON.parse(this.registeredControl?.getValue() || null);
+    return this.registeredControl?.getValue() || null;
   }
 
   setSelectedOptionStyles(buttonElement, props) {

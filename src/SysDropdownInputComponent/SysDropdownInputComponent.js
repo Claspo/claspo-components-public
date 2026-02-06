@@ -156,7 +156,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
   setDropdownInputText(options) {
     const inputElement = this.getElement('input');
-    const value = JSON.parse(this.registeredControl?.getValue() || null);
+    const value = this.registeredControl?.getValue() || null;
     let selectedOption;
     if (options.hasOwnProperty(value?.id)) {
       selectedOption = options[value.id];
@@ -180,7 +180,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
       'border-bottom-right-radius': `${overlayBorderRadius}px`,
     });
 
-    const value = JSON.parse(this.registeredControl?.getValue() || null);
+    const value = this.registeredControl?.getValue() || null;
 
     const buttonsList = document.createElement('div');
 
@@ -190,7 +190,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
         const selected = value?.id === id;
         const menuButtonEl = this.createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayStyles.background);
         menuButtonEl.addEventListener('click', () => {
-          const value = JSON.stringify({ id, exportId: filteredOptions[id].exportId });
+          const value = { id, exportId: filteredOptions[id].exportId };
 
           this.registeredControl.setValue(value);
           inputElement.value = option.label;

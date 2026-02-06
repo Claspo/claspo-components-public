@@ -201,7 +201,7 @@ export default class SysCheckboxListComponent extends WcControlledElement {
   }
 
   getCurrentValue() {
-    return JSON.parse(this.registeredControl?.getValue() || null);
+    return this.registeredControl?.getValue() || null;
   }
 
   applyStylesToMarkersShadows() {
@@ -270,7 +270,7 @@ export default class SysCheckboxListComponent extends WcControlledElement {
               this.getHostElement().style.setProperty('--selectedColor', `${borderColor}`);
               this.getHostElement().style.setProperty('--borderColor', `${borderColor}`);
             }
-            const value = JSON.stringify(currentValue);
+            const value = Object.keys(currentValue).length ? currentValue : null;
             this.registeredControl.setValue(value === '{}' ? null : value);
           });
         }
