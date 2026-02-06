@@ -554,7 +554,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysPromoCodeComponent/assets/img/promo-code-component-icon.svg",
+    "icon": "/SysPromoCodeComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Promo code",
       "ru": "Промокод",

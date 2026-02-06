@@ -1,5 +1,5 @@
 import createSlideManifest from "./createSlideManifest";
-import { cloneToAllPlatforms } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
 
 export default {
   "name": "SysSliderComponent",
@@ -252,7 +252,7 @@ export default {
       }
     ],
     "adaptiveStyles": {
-      ...cloneToAllPlatforms([
+      ...cloneStylesToAllEnvs([
         {
           "element": "host",
           "styleAttributes": {

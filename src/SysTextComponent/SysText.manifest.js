@@ -424,7 +424,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysTextComponent/assets/img/text-component-icon.svg",
+    "icon": "/SysTextComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Text",
       "ru": "Текст",

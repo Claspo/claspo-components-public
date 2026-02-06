@@ -796,7 +796,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysDateComponent/assets/img/date-component-icon.svg",
+    "icon": "/SysDateComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Date",
       "ru": "Дата",
@@ -833,4 +833,5 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }

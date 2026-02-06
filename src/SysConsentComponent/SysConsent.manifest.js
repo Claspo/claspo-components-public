@@ -628,7 +628,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysConsentComponent/assets/img/consent-component-icon.svg",
+    "icon": "/SysConsentComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Data processing and terms of use",
       "ru": "Обработка данных и условия использования",

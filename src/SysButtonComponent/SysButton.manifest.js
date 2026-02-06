@@ -712,7 +712,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysButtonComponent/assets/img/button-component-icon.svg",
+    "icon": "/SysButtonComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Button",
       "ru": "Кнопка",

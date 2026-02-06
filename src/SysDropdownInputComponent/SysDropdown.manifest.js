@@ -778,7 +778,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysDropdownInputComponent/assets/img/dropdown-component-icon.svg",
+    "icon": "/SysDropdownInputComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Dropdown",
       "ru": "Выпадающий список",
@@ -815,4 +815,6 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "openComponentOptionsPropertyPaneOnInsert": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }

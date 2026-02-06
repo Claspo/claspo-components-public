@@ -689,7 +689,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysCalendarComponent/assets/img/calendar-component-icon.svg",
+    "icon": "/SysCalendarComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Calendar",
       "ru": "Календарь",
@@ -726,4 +726,5 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }

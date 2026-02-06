@@ -1352,4 +1352,5 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }

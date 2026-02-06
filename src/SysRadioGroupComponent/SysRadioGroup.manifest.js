@@ -1,4 +1,4 @@
-import { cloneToAllPlatforms } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
 
 export default {
   "name": "SysRadioGroupComponent",
@@ -670,7 +670,7 @@ export default {
         },
       },
     ],
-    "adaptiveStyles": cloneToAllPlatforms([
+    "adaptiveStyles": cloneStylesToAllEnvs([
       {
         "element": "host",
         "styleAttributes": {
@@ -741,7 +741,7 @@ export default {
     ])
   },
   "metaDescription": {
-    "icon": "/SysRadioGroupComponent/assets/img/radio-btn-component-icon.svg",
+    "icon": "/SysRadioGroupComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Radio",
       "ru": "Радио",
@@ -778,4 +778,6 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "openComponentOptionsPropertyPaneOnInsert": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }

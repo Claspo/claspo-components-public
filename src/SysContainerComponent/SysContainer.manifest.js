@@ -496,7 +496,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysContainerComponent/assets/img/container-component-icon.svg",
+    "icon": "/SysContainerComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Container",
       "ru": "Контейнер",

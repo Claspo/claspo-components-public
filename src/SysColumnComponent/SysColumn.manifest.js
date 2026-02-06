@@ -1,5 +1,5 @@
 import SysContainerManifest from '../SysContainerComponent/SysContainer.manifest.js';
-import { cloneToAllPlatforms } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
 
 export default {
   ...SysContainerManifest,
@@ -38,7 +38,7 @@ export default {
         "classes": ""
       }
     ],
-    "adaptiveStyles": cloneToAllPlatforms([
+    "adaptiveStyles": cloneStylesToAllEnvs([
       {
         "element": "host",
         "styleAttributes": {

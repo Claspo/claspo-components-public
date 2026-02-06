@@ -805,7 +805,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysTextAreaComponent/assets/img/text-area-component-icon.svg",
+    "icon": "/SysTextAreaComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Text area",
       "ru": "Текстовое область",
@@ -842,5 +842,6 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }
 

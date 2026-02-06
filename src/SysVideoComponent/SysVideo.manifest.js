@@ -397,7 +397,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysVideoComponent/assets/img/video-component-icon.svg",
+    "icon": "/SysVideoComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Video",
       "ru": "Видео",

@@ -699,7 +699,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysPhoneInputComponent/assets/img/phone-input-component-icon.svg",
+    "icon": "/SysPhoneInputComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Phone",
       "ru": "Телефон",

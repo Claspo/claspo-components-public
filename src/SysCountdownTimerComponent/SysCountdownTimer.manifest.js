@@ -1088,7 +1088,7 @@ export default {
     }
   },
   "metaDescription": {
-    "icon": "/SysCountdownTimerComponent/assets/img/countdown-timer-component-icon.svg",
+    "icon": "/SysCountdownTimerComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Countdown timer",
       "ru": "Таймер обратного отсчета",

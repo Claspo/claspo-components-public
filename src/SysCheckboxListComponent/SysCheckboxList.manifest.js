@@ -1,4 +1,4 @@
-import { cloneToAllPlatforms } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
 
 export default {
   "name": "SysCheckboxListComponent",
@@ -702,7 +702,7 @@ export default {
         },
       },
     ],
-    "adaptiveStyles": cloneToAllPlatforms([
+    "adaptiveStyles": cloneStylesToAllEnvs([
       {
         "element": "host",
         "styleAttributes": {
@@ -773,7 +773,7 @@ export default {
     ]),
   },
   "metaDescription": {
-    "icon": "/SysCheckboxListComponent/assets/img/checkbox-component-icon.svg",
+    "icon": "/SysCheckboxListComponent/assets/img/component-icon.svg",
     "label": {
       "en": "Checkbox",
       "ru": "Чекбокс",
@@ -810,5 +810,7 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
+  "openComponentOptionsPropertyPaneOnInsert": true,
+  "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }
 

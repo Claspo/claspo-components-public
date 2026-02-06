@@ -1,4 +1,4 @@
-import { cloneToAllPlatforms } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
 
 export default {
   "name": "SysColumnsComponent",
@@ -406,7 +406,7 @@ export default {
         "styleAttributes": {}
       }
     ],
-    "adaptiveStyles": cloneToAllPlatforms([
+    "adaptiveStyles": cloneStylesToAllEnvs([
       {
         "element": "host",
         "styleAttributes": {
