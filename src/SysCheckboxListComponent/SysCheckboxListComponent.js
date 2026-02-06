@@ -270,8 +270,8 @@ export default class SysCheckboxListComponent extends WcControlledElement {
               this.getHostElement().style.setProperty('--selectedColor', `${borderColor}`);
               this.getHostElement().style.setProperty('--borderColor', `${borderColor}`);
             }
-            const value = Object.keys(currentValue).length ? currentValue : null;
-            this.registeredControl.setValue(value === '{}' ? null : value);
+            const updatedValue = Object.keys(currentValue).length ? currentValue : null;
+            this.registeredControl.setValue(updatedValue);
           });
         }
         buttonsList.appendChild(checkboxListItemEl);
