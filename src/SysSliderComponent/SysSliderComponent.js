@@ -85,14 +85,14 @@ export default class SysSliderComponent extends WcElement {
     }
   };
 
-  getAvailableSwipes = () => {
+  getAvailableSwipes() {
     const isStatic = this.isStaticRenderMode();
     const { sliderMode } = this.getProps().content || {};
 
     return isStatic && sliderMode !== 'ONE_RANDOM';
   }
 
-  canSwipe = (direction) => {
+  canSwipe(direction) {
     if (this.isFirstSlideActive() && direction === DIRECTIONS.RIGHT) {
       return false;
     }
@@ -121,13 +121,13 @@ export default class SysSliderComponent extends WcElement {
     this.swiper?.destroy();
   }
 
-  getSlideElements = () => {
+  getSlideElements() {
     return Array
       .from(this.getRootElement().querySelector('.slides-container').children)
       .filter(element => element.getAttribute('cl-type') === 'CONTAINER' || element.getAttribute('cl-type') === 'SLIDE');
   }
 
-  shuffleArray = (array) => {
+  shuffleArray(array) {
     let currentIndex = array.length, randomIndex;
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
@@ -137,11 +137,11 @@ export default class SysSliderComponent extends WcElement {
     return array;
   }
 
-  isRTL = () => {
+  isRTL() {
     return getComputedStyle(this.getHostElement()).direction === 'rtl';
   }
 
-  shuffleSlides = () => {
+  shuffleSlides() {
     const rootElement = this.getRootElement();
     const slidesContainer = rootElement.querySelector('.slides-container');
     const reshuffledChildren = this.shuffleArray([...slidesContainer.children]);
@@ -151,7 +151,7 @@ export default class SysSliderComponent extends WcElement {
     });
   }
 
-  turnOnSwiping = () => {
+  turnOnSwiping() {
     this.swiper = new Swiper(this.getRootElement().querySelector('.slider-container'));
     this.swiper.on(EVENTS.SWIPE_ENDED, ({ direction }) => {
       if (direction === DIRECTIONS.LEFT || direction === DIRECTIONS.RIGHT) {
@@ -185,24 +185,24 @@ export default class SysSliderComponent extends WcElement {
     });
   }
 
-  getSlideWidth = () => {
+  getSlideWidth() {
     const hostElement = this.getHostElement();
     const hostElementStyles = getComputedStyle(hostElement);
     return (parseFloat(hostElementStyles.width) - parseFloat(hostElementStyles.borderWidth) * 2);
-  };
+  }
 
-  getSlideShiftValue = (index) => {
+  getSlideShiftValue(index) {
     const shiftDirection = this.isRTL() ? 1 : -1;
     return index === 0 ? 0 : shiftDirection * (this.getSlideWidth() * index);
   }
 
-  applyShiftValue = (shiftValue = 0, animationDuration = 0) => {
+  applyShiftValue(shiftValue = 0, animationDuration = 0) {
     const element = this.getRootElement().querySelector('.slides-container');
     element.style.transition = `transform ${animationDuration}ms`;
     element.style.transform = `translate3d(${shiftValue}px, 0px, 0px)`;
   }
 
-  slideTo = (index, speed, shouldNotSlideFurtherIfMouseover) => {
+  slideTo(index, speed, shouldNotSlideFurtherIfMouseover) {
     const {
       sliderMode,
       isSlidingIntervalEnabled,
@@ -266,14 +266,14 @@ export default class SysSliderComponent extends WcElement {
         +slidingInterval * 1000
       );
     }
-  };
+  }
 
-  resetSlidePosition = () => {
+  resetSlidePosition() {
     const slideValue = this.getSlideShiftValue(this.currentSlideIndex);
     this.applyShiftValue(slideValue, 300);
   }
 
-  updateArrowsAvailabilities = () => {
+  updateArrowsAvailabilities() {
     const { loopSlides } = this.getProps().content || {};
 
     const prevControlElement = this.getRootElement().querySelector(`.${this.prevSlideControlClass}`);
@@ -299,7 +299,7 @@ export default class SysSliderComponent extends WcElement {
     }
   }
 
-  highlightActiveSlideOnDotsControl = (index) => {
+  highlightActiveSlideOnDotsControl(index) {
     const dotsCoinainer = this.getRootElement().querySelector('.navigationDotsContainer');
 
     if (!dotsCoinainer) {
@@ -309,9 +309,9 @@ export default class SysSliderComponent extends WcElement {
     [...dotsCoinainer.children].forEach(dot => dot.classList.remove('active'));
 
     dotsCoinainer.querySelector(`.navigationDot:nth-child(${index + 1})`)?.classList.add('active');
-  };
+  }
 
-  createPrevSlideControl = (arrowIcon) => {
+  createPrevSlideControl(arrowIcon) {
     const prevControlElement = document.createElement('div');
     prevControlElement.classList.add(this.prevSlideControlClass);
     if (this.isUpdatingRenderMode()) {
@@ -343,9 +343,9 @@ export default class SysSliderComponent extends WcElement {
     };
 
     return prevControlElement;
-  };
+  }
 
-  createNextSlideControl = (arrowIcon) => {
+  createNextSlideControl(arrowIcon) {
     const nextControlElement = document.createElement('div');
     nextControlElement.classList.add(this.nextSlideControlClass);
     if (this.isUpdatingRenderMode()) {
@@ -377,9 +377,9 @@ export default class SysSliderComponent extends WcElement {
     };
 
     return nextControlElement;
-  };
+  }
 
-  createNavigationDotsSlideControl = (activeDotIndex) => {
+  createNavigationDotsSlideControl(activeDotIndex) {
     const navigationDotsContainer = document.createElement('div');
     navigationDotsContainer.classList.add(this.dotsContainerClass);
     if (this.isUpdatingRenderMode()) {
@@ -408,18 +408,18 @@ export default class SysSliderComponent extends WcElement {
     }
 
     return navigationDotsContainer;
-  };
+  }
 
-  removeDotsControl = () => {
+  removeDotsControl() {
     const rootElement = this.getRootElement();
     const dotsContainer = rootElement.querySelector(`.${this.dotsContainerClass}`);
 
     if (dotsContainer) {
       dotsContainer.remove();
     }
-  };
+  }
 
-  applyStylesToElementOverride = (htmlElement, elementModel, commonStyleElement) => {
+  applyStylesToElementOverride(htmlElement, elementModel, commonStyleElement) {
     if (elementModel.element === 'arrows') {
       if (!('marginLeft' in elementModel.styleAttributes)) {
         elementModel.styleAttributes.marginLeft = '15px';
@@ -430,7 +430,7 @@ export default class SysSliderComponent extends WcElement {
     this.originalApplyStylesToElement(htmlElement, elementModel, commonStyleElement);
   }
 
-  updateDotsControl = () => {
+  updateDotsControl() {
     const props = this.getProps();
 
     if (props.content.sliderMode === 'ONE_RANDOM'
@@ -449,9 +449,9 @@ export default class SysSliderComponent extends WcElement {
         this.getRootElement().querySelector('.indicatorControl').append(navigationDotsSlideControl);
       }
     });
-  };
+  }
 
-  removeArrowControls = () => {
+  removeArrowControls() {
     const rootElement = this.getRootElement();
 
     const prevCtrl = rootElement.querySelector(`.${this.prevSlideControlClass}`);
@@ -461,9 +461,9 @@ export default class SysSliderComponent extends WcElement {
       prevCtrl?.remove();
       nextCtrl?.remove();
     }
-  };
+  }
 
-  createArrowControls = () => {
+  createArrowControls() {
     const props = this.getProps();
 
     if (
@@ -489,17 +489,17 @@ export default class SysSliderComponent extends WcElement {
     const nextSlideControl = this.createNextSlideControl(arrowIcon);
 
     this.getRootElement().append(prevSlideControl, nextSlideControl);
-  };
+  }
 
-  stopSlideshow = () => {
+  stopSlideshow() {
     clearTimeout(this.slideSwitchTimeout);
-  };
+  }
 
-  resetSlideshow = () => {
+  resetSlideshow() {
     this.slideTo(this.currentSlideIndex);
-  };
+  }
 
-  listenForSlideshowStopOnHover = () => {
+  listenForSlideshowStopOnHover() {
     if (!this.getProps().content.stopSlideshowOnMouseover) {
       return;
     }
@@ -507,13 +507,13 @@ export default class SysSliderComponent extends WcElement {
     const hostElement = this.getHostElement();
     hostElement.addEventListener('mouseenter', this.stopSlideshow);
     hostElement.addEventListener('mouseleave', this.resetSlideshow);
-  };
+  }
 
-  isLastSlideActive = () => {
+  isLastSlideActive() {
     return this.currentSlideIndex === this.getSlideElements().length - 1;
   }
 
-  isFirstSlideActive = () => {
+  isFirstSlideActive() {
     return this.currentSlideIndex === 0;
   }
 }

@@ -116,13 +116,13 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     this.services.context.deleteRecord(this.getModel().id);
   }
 
-  getValidators = () => {
+  getValidators() {
     return [
       phone(),
     ];
   }
 
-  addContextRecord = (phonePrefix) => {
+  addContextRecord(phonePrefix) {
     const componentModel = this.getModel();
     this.services.context.addRecord(componentModel.id, {
       recordKey: componentModel.id,
@@ -138,19 +138,19 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     });
   }
 
-  updateContext = () => {
+  updateContext() {
     const componentModel = this.getModel();
     this.services.context.updateRecord(componentModel.id, {
       viewIndex: componentModel.path?.[0],
     });
   }
 
-  requestCountryData = () => {
+  requestCountryData() {
     return fetch(`${this.assets('json/country-code-options.json')}`)
       .then(response => response.json());
   }
 
-  applyParams = (props, env) => {
+  applyParams(props, env) {
     const rootElement = this.getRootElement();
     const inputSelectButtonElement = rootElement.querySelector('.phone-input-select-button');
     const inputElement = this.getInputElement();
@@ -162,12 +162,12 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     });
   }
 
-  getInputElement = () => {
+  getInputElement() {
     const rootElement = this.getRootElement();
     return rootElement.querySelector('.phone-input');
   }
 
-  setValue = (props, phone = null) => {
+  setValue(props, phone = null) {
     const defaultCountryCode = this.services.state.getState().currentCountryCode
       || props.control.countryCode
       || 'UA';
@@ -201,7 +201,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     }
   }
 
-  getAvailableOptions = (allOptions, countriesPriority) => {
+  getAvailableOptions(allOptions, countriesPriority) {
     if (countriesPriority.allowToAddOnlyFromIncludedList) {
       allOptions = countriesPriority.includedList.map(countryCode => {
         const option = allOptions.find(data => data.countryCode === countryCode);
@@ -217,7 +217,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     return this.sortOptionsByPriority(allOptions, countriesPriority);
   }
 
-  sortOptionsByPriority = (allOptions, countriesPriority) => {
+  sortOptionsByPriority(allOptions, countriesPriority) {
     countriesPriority.includedList.reverse().forEach(countryCode => {
       const optionIndex = allOptions.findIndex(option => option.countryCode === countryCode);
 
@@ -234,12 +234,12 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     return allOptions;
   }
 
-  setArrowIconStyles = () => {
+  setArrowIconStyles() {
     const inputTextColor = this.getElement('input').style.color;
     this.getRootElement().querySelector('.dropdown-icon').style.color = inputTextColor;
   }
 
-  valueChangedCallback = (value) => {
+  valueChangedCallback(value) {
     if (this.countryCodeSelectedAtLeastOnce || !this.countryData) {
       return;
     }
@@ -262,12 +262,12 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     }
   }
 
-  getCountryOptionByValue = (value) => {
+  getCountryOptionByValue(value) {
     const valueWithCountryPrefix = value.startsWith('+') ? value : `+${value}`;
     return this.availableOptions.find(country => valueWithCountryPrefix.startsWith(country.prefix));
   }
 
-  createPhoneInputFormControl = () => {
+  createPhoneInputFormControl() {
     const rootElement = this.getRootElement();
     const inputElement = this.getInputElement();
     const asyncLoaderElement = rootElement.querySelector('.phone-input-asyncLoader');
@@ -285,7 +285,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     inputElement.removeEventListener('input', this.createPhoneInputFormControl);
   }
 
-  menuOptionSelected = (country) => {
+  menuOptionSelected(country) {
     if (!this.phoneInputFormControl) {
       this.createPhoneInputFormControl();
     }

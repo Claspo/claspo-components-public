@@ -89,7 +89,7 @@ export default class SysConsentComponent extends WcControlledElement {
     });
   };
 
-  updateCheckmark = (value) => {
+  updateCheckmark(value) {
     const rootElement = this.getRootElement();
     const checkMark = rootElement.querySelector('.checkmark');
     let background;
@@ -105,13 +105,13 @@ export default class SysConsentComponent extends WcControlledElement {
     checkMark.style['backdrop-filter'] = this.getCheckmarkStyleAttributes('backdropFilter');
   }
 
-  getInputAdaptiveStyles = () => {
+  getInputAdaptiveStyles() {
     const props = this.getProps();
     const env = this.getEnvironment();
     return props.adaptiveStyles[env].filter(item => item.element === 'input');
-  };
+  }
 
-  getCheckmarkStyleAttributes = (key) => {
+  getCheckmarkStyleAttributes(key) {
     const inputAdaptiveStyles = this.getInputAdaptiveStyles();
 
     if (inputAdaptiveStyles.length && inputAdaptiveStyles[0].markerStyleAttributes) {
@@ -138,9 +138,9 @@ export default class SysConsentComponent extends WcControlledElement {
     }
 
     return key ? this.defaultCheckmarkStyleAttributes[key] : this.defaultCheckmarkStyleAttributes;
-  };
+  }
 
-  registerLabelControl = (value) => {
+  registerLabelControl(value) {
     const props = this.getProps();
     const controlName = `${props.control.name}_label`;
 
@@ -148,14 +148,14 @@ export default class SysConsentComponent extends WcControlledElement {
       const config = { name: controlName, defaultValue: value };
       this.services.form.registerControl({ ...config, componentId: this.getModel().id, viewIdx: this.getModel().path[0] }, null);
     }
-  };
+  }
 
-  setStylesVariables = (element) => {
+  setStylesVariables(element) {
     const markerStyleAttributes = this.getCheckmarkStyleAttributes();
     Object.keys(markerStyleAttributes)
       .forEach(key => {
         const upToDateKey = deprecatedCheckboxVariablesMap.get(key) || key;
         element.style.setProperty(`--${upToDateKey}`, markerStyleAttributes[key]);
       });
-  };
+  }
 }

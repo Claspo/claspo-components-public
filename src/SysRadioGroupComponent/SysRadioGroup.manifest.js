@@ -1,391 +1,178 @@
 import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
 
 export default {
   "name": "SysRadioGroupComponent",
   "componentType": "MULTIPLE_INPUT",
   "version": "1.0.0",
   "mappingTypes": ["SELECT"],
-  "contextMenuModel": [
+  "contextMenuModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "COMPONENT_OPERATIONS"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
-    }
-  ],
-  "floatingControlsModel": [
-    {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "input",
-          "params": {
-            "height": {
-              "hide": true
-            }
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "BRING_BACK_FORWARD",
+      "element": "host",
+      "elementProp": "styleAttributes",
+      "elementSubProp": "zIndex"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "input",
-          "params": {
-            "height": {
-              "hide": true
-            }
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "FOCUS_PARENT_COMPONENT"
     }
-  ],
+  ]),
+  "floatingControlsModel": cloneControlsToAllEnvs([
+    {
+      "type": "CONTROL",
+      "name": "SIZE",
+      "elementProp": "styleAttributes",
+      "element": "input",
+      "params": {
+        "height": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    }
+  ]),
   "propertyPaneModel": {
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "input",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "hug",
-                  "fill"
-                ]
-              },
-              "height": {
-                "options": [
-                  "hug",
-                  "fill"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "input",
-                "showPlaceholderControl": false,
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              },
-              {
-                "element": "label",
-                "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              }
+        "type": "CONTROL",
+        "name": "SIZE",
+        "element": "input",
+        "elementProp": "styleAttributes",
+        "params": {
+          "width": {
+            "options": [
+              "fixed",
+              "hug",
+              "fill"
             ]
           },
+          "height": {
+            "options": [
+              "hug",
+              "fill"
+            ]
+          }
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_PARAMS",
+        "params": [
           {
-            "type": "CONTROL",
-            "name": "LIST_POSITION",
-            "elementProp": "styleAttributes",
-            "element": "listContainer"
-          },
-          {
-            "type": "CONTROL",
-            "name": "MULTIPLE_INPUT_SIZE",
             "element": "input",
-            "params": {
-              "inputType": "RADIO"
-            }
+            "showPlaceholderControl": false,
+            "isLineSpaceAvailable": true,
+            "isTextTransformAvailable": true
           },
           {
-            "type": "CONTROL",
-            "name": "BACKGROUND_MARKER_SELECTED",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-            "params": {
-              "label": "DOCUMENT_CHOSEN_ITEM_COLOR_TITLE",
-              "property": "selectedColor",
-              "onlyColorSelection": true,
-              "disableGradientSelection": true,
-              "hideSwitch": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-            "params": {
-              "onlyColorSelection": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-            "params": {
-              "minValue": 1,
-              "maxValue": 5,
-              "hideAdditionalParams": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INPUT_LABEL",
-            "propPath": [
-              "styles",
-              "[element=label]",
-              "params"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
+            "element": "label",
+            "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
+            "isLineSpaceAvailable": true,
+            "isTextTransformAvailable": true
           }
         ]
       },
       {
-        "type": "GROUP",
+        "type": "CONTROL",
+        "name": "LIST_POSITION",
+        "elementProp": "styleAttributes",
+        "element": "listContainer"
+      },
+      {
+        "type": "CONTROL",
+        "name": "MULTIPLE_INPUT_SIZE",
+        "element": "input",
+        "params": {
+          "inputType": "RADIO"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BACKGROUND_MARKER_SELECTED",
         "propPath": [
-          "adaptiveStyles",
-          "mobile"
+          "styles",
+          "[element=input]",
+          "markerStyleAttributes"
         ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "input",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "hug",
-                  "fill"
-                ]
-              },
-              "height": {
-                "options": [
-                  "hug",
-                  "fill"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "input",
-                "showPlaceholderControl": false,
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              },
-              {
-                "element": "label",
-                "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              }
-            ]
-          },
-          {
-            "type": "CONTROL",
-            "name": "LIST_POSITION",
-            "elementProp": "styleAttributes",
-            "element": "listContainer"
-          },
-          {
-            "type": "CONTROL",
-            "name": "MULTIPLE_INPUT_SIZE",
-            "element": "input",
-            "params": {
-              "inputType": "RADIO"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND_MARKER_SELECTED",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-            "params": {
-              "label": "DOCUMENT_CHOSEN_ITEM_COLOR_TITLE",
-              "property": "selectedColor",
-              "onlyColorSelection": true,
-              "disableGradientSelection": true,
-              "hideSwitch": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-            "params": {
-              "onlyColorSelection": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-            "params": {
-              "minValue": 1,
-              "maxValue": 5,
-              "hideAdditionalParams": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "markerStyleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INPUT_LABEL",
-            "propPath": [
-              "styles",
-              "[element=label]",
-              "params"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
-          }
-        ]
+        "params": {
+          "label": "DOCUMENT_CHOSEN_ITEM_COLOR_TITLE",
+          "property": "selectedColor",
+          "onlyColorSelection": true,
+          "disableGradientSelection": true,
+          "hideSwitch": true
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BACKGROUND",
+        "propPath": [
+          "styles",
+          "[element=input]",
+          "markerStyleAttributes"
+        ],
+        "params": {
+          "onlyColorSelection": true
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDERS",
+        "propPath": [
+          "styles",
+          "[element=input]",
+          "markerStyleAttributes"
+        ],
+        "params": {
+          "minValue": 1,
+          "maxValue": 5,
+          "hideAdditionalParams": true
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BOX_SHADOW",
+        "propPath": [
+          "styles",
+          "[element=input]",
+          "markerStyleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "INPUT_LABEL",
+        "propPath": [
+          "styles",
+          "[element=label]",
+          "params"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "params": {
+          "indentationType": "MARGIN"
+        }
       }
-    ],
+    ]),
     "general": [
       {
         "type": "CONTROL",

@@ -1,3 +1,5 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysPromoCodeComponent",
   "componentType": "PROMO_CODE",
@@ -6,365 +8,162 @@ export default {
     "dispatch": [],
     "listen": []
   },
-  "contextMenuModel": [
+  "contextMenuModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "COMPONENT_OPERATIONS"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
-    }
-  ],
-  "floatingControlsModel": [
-    {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "BRING_BACK_FORWARD",
+      "element": "host",
+      "elementProp": "styleAttributes",
+      "elementSubProp": "zIndex"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "FOCUS_PARENT_COMPONENT"
     }
-  ],
+  ]),
+  "floatingControlsModel": cloneControlsToAllEnvs([
+    {
+      "type": "CONTROL",
+      "name": "SIZE",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    }
+  ]),
   "propertyPaneModel": {
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "host",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "text",
-                "isTextTransformAvailable": true
-              }
+        "type": "CONTROL",
+        "name": "SIZE",
+        "element": "host",
+        "elementProp": "styleAttributes",
+        "params": {
+          "width": {
+            "options": [
+              "fixed",
+              "fill",
+              "hug"
             ]
           },
+          "height": {
+            "options": [
+              "fixed",
+              "fill",
+              "hug"
+            ]
+          }
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_PARAMS",
+        "params": [
           {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "PROMOCODE_ICON",
-            "propPath": [
-              "styles",
-              "[element=icon]",
-              "styleAttributes"
-            ],
-            "params": {
-              "visibleDisplayValue": "flex"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "HOVER_ANIMATION",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "hoverStyleAttributes"
-            ],
-            "params": {
-              "animationTypeProp": {
-                "propPath": [
-                  "styles",
-                  "[element=text]",
-                  "hoverAnimationType"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
             "element": "text",
-            "params": {
-              "indentationType": "PADDING"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
+            "isTextTransformAvailable": true
           }
         ]
       },
       {
-        "type": "GROUP",
+        "type": "CONTROL",
+        "name": "BACKGROUND",
         "propPath": [
-          "adaptiveStyles",
-          "mobile"
+          "styles",
+          "[element=text]",
+          "styleAttributes"
         ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "host",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "text",
-                "isTextTransformAvailable": true
-              }
+      },
+      {
+        "type": "CONTROL",
+        "name": "PROMOCODE_ICON",
+        "propPath": [
+          "styles",
+          "[element=icon]",
+          "styleAttributes"
+        ],
+        "params": {
+          "visibleDisplayValue": "flex"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDERS",
+        "propPath": [
+          "styles",
+          "[element=text]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "BOX_SHADOW",
+        "propPath": [
+          "styles",
+          "[element=text]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDER_RADIUS",
+        "propPath": [
+          "styles",
+          "[element=text]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "HOVER_ANIMATION",
+        "propPath": [
+          "styles",
+          "[element=text]",
+          "hoverStyleAttributes"
+        ],
+        "params": {
+          "animationTypeProp": {
+            "propPath": [
+              "styles",
+              "[element=text]",
+              "hoverAnimationType"
             ]
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "PROMOCODE_ICON",
-            "propPath": [
-              "styles",
-              "[element=icon]",
-              "styleAttributes"
-            ],
-            "params": {
-              "visibleDisplayValue": "flex"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "HOVER_ANIMATION",
-            "propPath": [
-              "styles",
-              "[element=text]",
-              "hoverStyleAttributes"
-            ],
-            "params": {
-              "animationTypeProp": {
-                "propPath": [
-                  "styles",
-                  "[element=text]",
-                  "hoverAnimationType"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "text",
-            "params": {
-              "indentationType": "PADDING"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
           }
-        ]
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "text",
+        "params": {
+          "indentationType": "PADDING"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "params": {
+          "indentationType": "MARGIN"
+        }
       }
-    ],
+    ]),
     "general": [
       {
         "type": "TEXT",

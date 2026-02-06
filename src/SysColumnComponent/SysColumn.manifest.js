@@ -1,5 +1,6 @@
 import SysContainerManifest from '../SysContainerComponent/SysContainer.manifest.js';
 import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneControlsToAllEnvs } from '@claspo/renderer/sdk/ManifestUtils';
 
 export default {
   ...SysContainerManifest,
@@ -229,72 +230,31 @@ export default {
       }
     ]
   },
-  "floatingControlsModel": [
+  "floatingControlsModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
+      "type": "CONTROL",
+      "name": "COLUMNS_PROPORTIONS",
       "propPath": [
-        "adaptiveStyles",
-        "desktop"
+        "content",
+        "size"
       ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COLUMNS_PROPORTIONS",
-          "propPath": [
-            "content",
-            "size"
-          ],
-        },
-        {
-          "type": "CONTROL",
-          "name": "PARENT_ALIGNMENT",
-          "elementProp": "styleAttributes",
-          "element": "host",
-          "params": {
-            "mode": "horizontal"
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-      ]
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COLUMNS_PROPORTIONS",
-          "propPath": [
-            "content",
-            "size"
-          ],
-        },
-        {
-          "type": "CONTROL",
-          "name": "PARENT_ALIGNMENT",
-          "elementProp": "styleAttributes",
-          "element": "host",
-          "params": {
-            "mode": "horizontal"
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-      ]
-    }
-  ],
+      "type": "CONTROL",
+      "name": "PARENT_ALIGNMENT",
+      "elementProp": "styleAttributes",
+      "element": "host",
+      "params": {
+        "mode": "horizontal"
+      }
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+  ]),
   "contextMenuModel": [
     {
       "type": "CONTROL",

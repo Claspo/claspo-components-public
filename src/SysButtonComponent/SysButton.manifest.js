@@ -1,412 +1,188 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysButtonComponent",
   "componentType": "BUTTON",
   "version": "1.0.0",
-  "contextMenuModel": [
+  "contextMenuModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "COMPONENT_OPERATIONS"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
-    }
-  ],
-  "floatingControlsModel": [
-    {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "BRING_BACK_FORWARD",
+      "element": "host",
+      "elementProp": "styleAttributes",
+      "elementSubProp": "zIndex"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "FOCUS_PARENT_COMPONENT"
     }
-  ],
+  ]),
+  "floatingControlsModel": cloneControlsToAllEnvs([
+    {
+      "type": "CONTROL",
+      "name": "SIZE",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    }
+  ]),
   "propertyPaneModel": {
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "host",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "button",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              }
+        "type": "CONTROL",
+        "name": "SIZE",
+        "element": "host",
+        "elementProp": "styleAttributes",
+        "params": {
+          "width": {
+            "options": [
+              "fixed",
+              "fill",
+              "hug"
             ]
           },
+          "height": {
+            "options": [
+              "fixed",
+              "fill",
+              "hug"
+            ]
+          }
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_PARAMS",
+        "params": [
           {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "ICON",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-            "params": {
-              "visibleDisplayValue": "block"
-            },
-            "hideSyncSelect": true,
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_VISIBILITY",
-            "elementSubProp": "--textDisplay",
-            "elementProp": "styleAttributes",
             "element": "button",
-            "params": {
-              "visibleDisplayValue": "inline"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "HOVER_ANIMATION",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "hoverStyleAttributes"
-            ],
-            "params": {
-              "animationTypeProp": {
-                "propPath": [
-                  "styles",
-                  "[element=button]",
-                  "hoverAnimationType"
-                ]
-              }
-            },
-          },
-          {
-            "type": "CONTROL",
-            "name": "LOOP_ANIMATION",
-            "propPath": [
-              "styles",
-              "[element=button]"
-            ],
-            "params": {
-              "label": "LOOP_ANIMATION_LABEL",
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "button",
-            "params": {
-              "indentationType": "PADDING"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
+            "isLineSpaceAvailable": true,
+            "isTextTransformAvailable": true
           }
         ]
       },
       {
-        "type": "GROUP",
+        "type": "CONTROL",
+        "name": "BACKGROUND",
         "propPath": [
-          "adaptiveStyles",
-          "mobile"
+          "styles",
+          "[element=button]",
+          "styleAttributes"
         ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "host",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "button",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              }
+      },
+      {
+        "type": "CONTROL",
+        "name": "ICON",
+        "propPath": [
+          "styles",
+          "[element=button]",
+          "styleAttributes"
+        ],
+        "params": {
+          "visibleDisplayValue": "block"
+        },
+        "hideSyncSelect": true,
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_VISIBILITY",
+        "elementSubProp": "--textDisplay",
+        "elementProp": "styleAttributes",
+        "element": "button",
+        "params": {
+          "visibleDisplayValue": "inline"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDERS",
+        "propPath": [
+          "styles",
+          "[element=button]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "BOX_SHADOW",
+        "propPath": [
+          "styles",
+          "[element=button]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDER_RADIUS",
+        "propPath": [
+          "styles",
+          "[element=button]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "HOVER_ANIMATION",
+        "propPath": [
+          "styles",
+          "[element=button]",
+          "hoverStyleAttributes"
+        ],
+        "params": {
+          "animationTypeProp": {
+            "propPath": [
+              "styles",
+              "[element=button]",
+              "hoverAnimationType"
             ]
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "ICON",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-            "params": {
-              "visibleDisplayValue": "block"
-            },
-            "hideSyncSelect": true,
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_VISIBILITY",
-            "elementSubProp": "--textDisplay",
-            "elementProp": "styleAttributes",
-            "element": "button",
-            "params": {
-              "visibleDisplayValue": "inline"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "HOVER_ANIMATION",
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "hoverStyleAttributes"
-            ],
-            "params": {
-              "animationTypeProp": {
-                "propPath": [
-                  "styles",
-                  "[element=button]",
-                  "hoverAnimationType"
-                ]
-              }
-            },
-          },
-          {
-            "type": "CONTROL",
-            "name": "LOOP_ANIMATION",
-            "propPath": [
-              "styles",
-              "[element=button]"
-            ],
-            "params": {
-              "label": "LOOP_ANIMATION_LABEL",
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "button",
-            "params": {
-              "indentationType": "PADDING"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
           }
-        ]
+        },
+      },
+      {
+        "type": "CONTROL",
+        "name": "LOOP_ANIMATION",
+        "propPath": [
+          "styles",
+          "[element=button]"
+        ],
+        "params": {
+          "label": "LOOP_ANIMATION_LABEL",
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "button",
+        "params": {
+          "indentationType": "PADDING"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "params": {
+          "indentationType": "MARGIN"
+        }
       }
-    ],
+    ]),
     "general": [
       {
         "type": "CONTROL",

@@ -130,7 +130,7 @@ export default class SysPromoCodeComponent extends WcElement {
     this.contextSubscriptions.forEach(subscription => subscription.off());
   };
 
-  renderTooltip = (textElement) => {
+  renderTooltip(textElement) {
     const translation = this.getTranslationsMap(promocodeTooltipTranslations).translations;
 
     this.tooltipContainerElement = document.createElement('div');
@@ -170,36 +170,36 @@ export default class SysPromoCodeComponent extends WcElement {
         }, 150);
       }, 1500);
     });
-  };
+  }
 
-  getTooltipTopPosition = (textElement, containerElementCoords, tooltipIconHeight) => {
+  getTooltipTopPosition(textElement, containerElementCoords, tooltipIconHeight) {
     const textElementCoords = textElement.getBoundingClientRect();
     return `${textElementCoords.top - containerElementCoords.height - tooltipIconHeight + window.pageYOffset}px`;
-  };
+  }
 
-  getTooltipLeftPosition = (textElement, containerElementCoords) => {
+  getTooltipLeftPosition(textElement, containerElementCoords) {
     const textElementCoords = textElement.getBoundingClientRect();
     return `${textElementCoords.left + (textElementCoords.width / 2) - (containerElementCoords.width / 2) + window.pageXOffset}px`;
-  };
+  }
 
-  destroyTooltip = () => {
+  destroyTooltip() {
     if (this.tooltipContainerElement) {
       this.tooltipContainerElement.remove();
       this.tooltipContainerElement = null;
     }
-  };
+  }
 
-  clearTooltipTimers = () => {
+  clearTooltipTimers() {
     clearTimeout(this.firstTooltipTimer);
     clearTimeout(this.secondTooltipTimer);
     clearTimeout(this.thirdTooltipTimer);
-  };
+  }
 
-  removeScrollListener = () => {
+  removeScrollListener() {
     document.removeEventListener('scroll', this.boundOnScrollHandler, true);
-  };
+  }
 
-  mapStyleControlValuesToInnerContent = () => {
+  mapStyleControlValuesToInnerContent() {
     const promocodeTextElement = this.getElement('text');
     const editableText = this.getRootElement().querySelector('[cl-inline-edit="content, text"]');
 
@@ -223,9 +223,9 @@ export default class SysPromoCodeComponent extends WcElement {
     editableText.style.textShadow = promocodeTextElement.style.textShadow;
     editableText.style.letterSpacing = promocodeTextElement.style.letterSpacing;
     editableText.style.fontFamily = promocodeTextElement.style.fontFamily;
-  };
+  }
 
-  mapAlignValueToTextElementContent = (textElement) => {
+  mapAlignValueToTextElementContent(textElement) {
     if (textElement.style.textAlign === 'center') {
       textElement.style.justifyContent = 'center';
     }
@@ -237,31 +237,31 @@ export default class SysPromoCodeComponent extends WcElement {
     if (textElement.style.textAlign === 'end') {
       textElement.style.justifyContent = 'flex-end';
     }
-  };
+  }
 
-  handleSafariHeightIssue = () => {
+  handleSafariHeightIssue() {
     const host = this.getHostElement();
 
     if (host.style.height === 'auto') {
       host.style.height = 'fit-content';
     }
-  };
+  }
 
-  storeStrokeTopWidthAsCssVar = () => {
+  storeStrokeTopWidthAsCssVar() {
     const hostNode = this.getElement('host');
     const textNode = this.getElement('text');
 
     hostNode.style.setProperty('--clStrokeForIconWidth', textNode.style.borderTopWidth || 0);
-  };
+  }
 
-  destroyExistingIcon = () => {
+  destroyExistingIcon() {
     const iconNode = this.getRootElement().querySelector('[cl-element="icon"]');
     if (iconNode) {
       iconNode.remove();
     }
-  };
+  }
 
-  showIconIfAny = (textElement, props) => {
+  showIconIfAny(textElement, props) {
     const iconContent = props.content.iconContent;
     const inlineIndex = parseFloat(iconContent);
     const isInlineSvgIcon = !isNaN(inlineIndex);
@@ -294,9 +294,9 @@ export default class SysPromoCodeComponent extends WcElement {
     }
 
     this.applyAutoAdaptiveStyles(props.adaptiveStyles, props.styles);
-  };
+  }
 
-  addTooltipStyles = () => {
+  addTooltipStyles() {
     if (this.htmlDocumentObject.head.querySelector(`#${this.tooltipStylesId}`)) {
       return;
     }
@@ -310,14 +310,14 @@ export default class SysPromoCodeComponent extends WcElement {
     this.htmlDocumentObject.head.appendChild(styles);
   }
 
-  removeTooltipStyles = () => {
+  removeTooltipStyles() {
     const styles = this.htmlDocumentObject.head.querySelector(`#${this.tooltipStylesId}`);
     if (styles) {
       styles.remove();
     }
   }
 
-  _handleContextRecord = (record) => {
+  _handleContextRecord(record) {
     const promoCodeValue = this.services.context.getKVMap().promoCode;
     if (promoCodeValue) {
       return;
@@ -345,7 +345,7 @@ export default class SysPromoCodeComponent extends WcElement {
     }
   }
 
-  checkWidthMode = (props) => {
+  checkWidthMode(props) {
     const env = this.getEnvironment();
     const hostWidth = props.adaptiveStyles[env]?.find(item => item.element === 'host')?.styleAttributes.width;
 

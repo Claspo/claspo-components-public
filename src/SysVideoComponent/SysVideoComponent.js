@@ -109,7 +109,7 @@ export default class SysVideoComponent extends WcElement {
     }
   };
 
-  adjustVideoHeight = (aspectRatio, width) => {
+  adjustVideoHeight(aspectRatio, width) {
     if (!aspectRatio) {
       return;
     }
@@ -120,9 +120,9 @@ export default class SysVideoComponent extends WcElement {
 
     hostElement.style.height = calculatedHeightValue;
     hostElement.style.minHeight = calculatedHeightValue;
-  };
+  }
 
-  updatePlayButtonVisibility = (props, customCover, isInSmallPreview) => {
+  updatePlayButtonVisibility(props, customCover, isInSmallPreview) {
     const previewEl = this.getRootElement().querySelector('.video-overlay');
     const playBtnVisibilityFlag = '--cl-video-component-play-btn-visibility';
 
@@ -139,16 +139,16 @@ export default class SysVideoComponent extends WcElement {
     } else {
       previewEl.style.setProperty(playBtnVisibilityFlag, 'hidden');
     }
-  };
+  }
 
-  preloadImage = (src, cb) => {
+  preloadImage(src, cb) {
     const img = new Image();
     img.src = src;
     img.onload = () => cb();
     img.onerror = () => cb();
-  };
+  }
 
-  displayPreviewImageAfterImageLoaded = (rootElement, imgUrl, customCover) => {
+  displayPreviewImageAfterImageLoaded(rootElement, imgUrl, customCover) {
     if (!imgUrl && !customCover) {
       return;
     }
@@ -173,9 +173,9 @@ export default class SysVideoComponent extends WcElement {
     } else {
       this.displayPreviewImage(rootElement, imgUrl, customCover);
     }
-  };
+  }
 
-  displayPreviewImage = (rootElement, imgUrl, customCover) => {
+  displayPreviewImage(rootElement, imgUrl, customCover) {
     const previewEl = rootElement.querySelector('.video-overlay');
     const player = rootElement.querySelector('#youtube-player');
     previewEl.style.setProperty('--cl-video-component-overlay-visibility', 'visible');
@@ -192,16 +192,16 @@ export default class SysVideoComponent extends WcElement {
       player.src = player.src + '&autoplay=1';
       player.onload = () => this.hidePreviewImage(rootElement);
     };
-  };
+  }
 
-  hidePreviewImage = (rootElement) => {
+  hidePreviewImage(rootElement) {
     const previewEl = rootElement.querySelector('.video-overlay');
     previewEl.style.setProperty('--cl-video-component-overlay-visibility', 'hidden');
     previewEl.style.setProperty('--cl-video-component-play-btn-visibility', 'hidden');
     previewEl.style.backgroundImage = `none`;
-  };
+  }
 
-  createUpdatedIFrame = (updatedSrc) => {
+  createUpdatedIFrame(updatedSrc) {
     const iframeElement = document.createElement('iframe');
     iframeElement.src = updatedSrc;
     iframeElement.id = 'youtube-player';
@@ -209,5 +209,5 @@ export default class SysVideoComponent extends WcElement {
     iframeElement.setAttribute('frameborder', '0');
 
     return iframeElement;
-  };
+  }
 }

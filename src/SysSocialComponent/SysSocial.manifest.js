@@ -1,3 +1,5 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysSocialComponent",
   "componentType": "SOCIAL",
@@ -6,56 +8,23 @@ export default {
     "dispatch": [],
     "listen": []
   },
-  "contextMenuModel": [
+  "contextMenuModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "COMPONENT_OPERATIONS"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "BRING_BACK_FORWARD",
+      "element": "host",
+      "elementProp": "styleAttributes",
+      "elementSubProp": "zIndex"
+    },
+    {
+      "type": "CONTROL",
+      "name": "FOCUS_PARENT_COMPONENT"
     }
-  ],
+  ]),
   "propertyPaneModel": {
     "content": [
       {

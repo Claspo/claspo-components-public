@@ -111,7 +111,7 @@ export default class SysTextComponent extends WcElement {
     })
   }
 
-  processTextRoller = (textrollersProps = {}) => {
+  processTextRoller(textrollersProps = {}) {
     const container = this.getElement('text');
     if (!container) {
       return;
@@ -136,7 +136,7 @@ export default class SysTextComponent extends WcElement {
     });
   }
 
-  stylesAppliedToElement = (htmlElement, elementModel) => {
+  stylesAppliedToElement(htmlElement, elementModel) {
     if (elementModel.element === 'text') {
       if (elementModel.styleAttributes.textAlign && getComputedStyle(htmlElement).display === 'flex') {
         htmlElement.style.justifyContent = elementModel.styleAttributes.textAlign === 'center'

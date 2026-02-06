@@ -34,7 +34,7 @@ export default class SysContainerComponent extends SysBaseContainerComponent {
     this.resizeObserver?.disconnect();
   }
 
-  connectResizeObserver = () => {
+  connectResizeObserver() {
     this.resizeObserver = new ResizeObserver((entries) => {
 
       for (const entry of entries) {
@@ -49,7 +49,7 @@ export default class SysContainerComponent extends SysBaseContainerComponent {
     this.resizeObserver.observe(this.getWidgetContainerNode());
   }
 
-  updateResponsiveRules = (styleElement) => {
+  updateResponsiveRules(styleElement) {
     if (!this.getProps().isResponsive) {
       insertHtmlIntoElement({
         element: styleElement,
@@ -71,13 +71,13 @@ export default class SysContainerComponent extends SysBaseContainerComponent {
   }
 
 
-  getResponsiveStyleElement = () => {
+  getResponsiveStyleElement() {
     return [...this.children]
       .find(child => child.getAttribute('name') === 'responsive-styles');
   }
 
 
-  appendResponsiveStyles = () => {
+  appendResponsiveStyles() {
     this.innerHTML += `<style name="responsive-styles">
       [cl-component="${this.getComponentName()}"] {}
     </style>`;

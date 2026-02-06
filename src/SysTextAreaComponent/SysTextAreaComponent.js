@@ -71,7 +71,7 @@ export default class SysTextAreaComponent extends WcControlledElement {
     inputElement.value = this.registeredControl.value || '';
   }
 
-  applyParams = (props, env) => {
+  applyParams(props, env) {
     const rootElement = this.getRootElement();
     const textAreaElement = rootElement.querySelector('textarea');
     textAreaElement.setAttribute('placeholder', props.content.placeholder);

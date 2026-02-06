@@ -1,342 +1,153 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysConsentComponent",
   "componentType": "CONSENT",
   "version": "1.0.0",
-  "contextMenuModel": [
+  "contextMenuModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "COMPONENT_OPERATIONS"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
-    }
-  ],
-  "floatingControlsModel": [
-    {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host",
-          "params": {
-            "height": {
-              "hide": true
-            }
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "BRING_BACK_FORWARD",
+      "element": "host",
+      "elementProp": "styleAttributes",
+      "elementSubProp": "zIndex"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host",
-          "params": {
-            "height": {
-              "hide": true
-            }
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "FOCUS_PARENT_COMPONENT"
     }
-  ],
+  ]),
+  "floatingControlsModel": cloneControlsToAllEnvs([
+    {
+      "type": "CONTROL",
+      "name": "SIZE",
+      "elementProp": "styleAttributes",
+      "element": "host",
+      "params": {
+        "height": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    }
+  ]),
   "propertyPaneModel": {
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "host",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fill",
-                  "hug"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "label",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              }
+        "type": "CONTROL",
+        "name": "SIZE",
+        "element": "host",
+        "elementProp": "styleAttributes",
+        "params": {
+          "width": {
+            "options": [
+              "fixed",
+              "fill",
+              "hug"
             ]
           },
-          {
-            "type": "CONTROL",
-            "name": "INSERT_BLOCK",
-            "params": [
-              {
-                "element": "label",
-                "label": "DOCUMENT_TEXT",
-                "isLinkAvailable": true,
-                "origin": true
-              }
+          "height": {
+            "options": [
+              "fill",
+              "hug"
             ]
-          },
+          }
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_PARAMS",
+        "params": [
           {
-            "type": "CONTROL",
-            "name": "MULTIPLE_INPUT_SIZE",
-            "element": "input",
-            "params": {
-              "inputType": "CHECKBOX"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "element": "input",
-            "elementProp": "markerStyleAttributes",
-            "params": {
-              "label": "DOCUMENT_CHECKBOX_BACKGROUND_DEFAULT_TITLE",
-              "property": "defaultBackground"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "element": "input",
-            "elementProp": "markerStyleAttributes",
-            "params": {
-              "label": "DOCUMENT_CHECKBOX_BACKGROUND_SELECTED_TITLE",
-              "property": "selectedBackground"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "elementProp": "styleAttributes",
-            "element": "input"
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "elementProp": "styleAttributes",
-            "element": "input"
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "elementProp": "styleAttributes",
-            "element": "input"
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
+            "element": "label",
+            "isLineSpaceAvailable": true,
+            "isTextTransformAvailable": true
           }
         ]
       },
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "mobile"
-        ],
-        "children": [
+        "type": "CONTROL",
+        "name": "INSERT_BLOCK",
+        "params": [
           {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "host",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill",
-                  "hug"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fill",
-                  "hug"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "label",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
-              }
-            ]
-          },
-          {
-            "type": "CONTROL",
-            "name": "INSERT_BLOCK",
-            "params": [
-              {
-                "element": "label",
-                "label": "DOCUMENT_TEXT",
-                "isLinkAvailable": true,
-                "origin": true
-              }
-            ]
-          },
-          {
-            "type": "CONTROL",
-            "name": "MULTIPLE_INPUT_SIZE",
-            "element": "input",
-            "params": {
-              "inputType": "CHECKBOX"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "element": "input",
-            "elementProp": "markerStyleAttributes",
-            "params": {
-              "label": "DOCUMENT_CHECKBOX_BACKGROUND_DEFAULT_TITLE",
-              "property": "defaultBackground"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "element": "input",
-            "elementProp": "markerStyleAttributes",
-            "params": {
-              "label": "DOCUMENT_CHECKBOX_BACKGROUND_SELECTED_TITLE",
-              "property": "selectedBackground"
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "elementProp": "styleAttributes",
-            "element": "input"
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "elementProp": "styleAttributes",
-            "element": "input"
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "elementProp": "styleAttributes",
-            "element": "input"
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
+            "element": "label",
+            "label": "DOCUMENT_TEXT",
+            "isLinkAvailable": true,
+            "origin": true
           }
         ]
+      },
+      {
+        "type": "CONTROL",
+        "name": "MULTIPLE_INPUT_SIZE",
+        "element": "input",
+        "params": {
+          "inputType": "CHECKBOX"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BACKGROUND",
+        "element": "input",
+        "elementProp": "markerStyleAttributes",
+        "params": {
+          "label": "DOCUMENT_CHECKBOX_BACKGROUND_DEFAULT_TITLE",
+          "property": "defaultBackground"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BACKGROUND",
+        "element": "input",
+        "elementProp": "markerStyleAttributes",
+        "params": {
+          "label": "DOCUMENT_CHECKBOX_BACKGROUND_SELECTED_TITLE",
+          "property": "selectedBackground"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDERS",
+        "elementProp": "styleAttributes",
+        "element": "input"
+      },
+      {
+        "type": "CONTROL",
+        "name": "BOX_SHADOW",
+        "elementProp": "styleAttributes",
+        "element": "input"
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDER_RADIUS",
+        "elementProp": "styleAttributes",
+        "element": "input"
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "params": {
+          "indentationType": "MARGIN"
+        }
       }
-    ]
+    ])
   },
   "events": {
     "dispatch": [],

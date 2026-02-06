@@ -1,3 +1,5 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysSlideComponent",
   "componentType": "SLIDE",
@@ -5,80 +7,35 @@ export default {
   "focusParentOnClick": true,
   "preventDraggable": true,
   "propertyPaneModel": {
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "ALIGNMENT",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "hideSyncSelect": true
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=host]",
-              "styleAttributes"
-            ],
-            "hideSyncSelect": true
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "hideSyncSelect": true,
-            "params": {
-              "indentationType": "PADDING"
-            }
-          }
-        ]
+        "type": "CONTROL",
+        "name": "ALIGNMENT",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "hideSyncSelect": true
       },
       {
-        "type": "GROUP",
+        "type": "CONTROL",
+        "name": "BACKGROUND",
         "propPath": [
-          "adaptiveStyles",
-          "mobile"
+          "styles",
+          "[element=host]",
+          "styleAttributes"
         ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "ALIGNMENT",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "hideSyncSelect": true
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=host]",
-              "styleAttributes"
-            ],
-            "hideSyncSelect": true
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "hideSyncSelect": true,
-            "params": {
-              "indentationType": "PADDING"
-            }
-          }
-        ]
+        "hideSyncSelect": true
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "hideSyncSelect": true,
+        "params": {
+          "indentationType": "PADDING"
+        }
       }
-    ],
+    ]),
     "general": [
       {
         "type": "CONTROL",

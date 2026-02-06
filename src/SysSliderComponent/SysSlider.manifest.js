@@ -1,5 +1,6 @@
 import createSlideManifest from "./createSlideManifest";
 import { cloneStylesToAllEnvs } from '@claspo/renderer/sdk/ModelStyleUtils';
+import { cloneControlsToAllEnvs } from '@claspo/renderer/sdk/ManifestUtils';
 
 export default {
   "name": "SysSliderComponent",
@@ -15,165 +16,72 @@ export default {
       "name": "FOCUS_PARENT_COMPONENT"
     }
   ],
-  "floatingControlsModel": [
+  "floatingControlsModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "params": {
-            "width": {
-              "element": "host",
-              "elementProp": "styleAttributes",
-            },
-            "height": {
-              "propPath": [
-                "styles",
-                "[element=host]",
-                "styleAttributes",
-              ],
-            }
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
+      "type": "CONTROL",
+      "name": "SIZE",
+      "params": {
+        "width": {
+          "element": "host",
           "elementProp": "styleAttributes",
-          "element": "host"
         },
-        {
-          "type": "CONTROL",
-          "name": "SLIDES_MANAGEMENT",
+        "height": {
           "propPath": [
-            "content",
-            "slideIndex"
-          ]
+            "styles",
+            "[element=host]",
+            "styleAttributes",
+          ],
         }
-      ]
+      }
     },
     {
-      "type": "GROUP",
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "SLIDES_MANAGEMENT",
       "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "params": {
-            "width": {
-              "element": "host",
-              "elementProp": "styleAttributes",
-            },
-            "height": {
-              "propPath": [
-                "styles",
-                "[element=host]",
-                "styleAttributes",
-              ],
-            }
-          }
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "SLIDES_MANAGEMENT",
-          "propPath": [
-            "content",
-            "slideIndex"
-          ]
-        }
+        "content",
+        "slideIndex"
       ]
     }
-  ],
+  ]),
   "propertyPaneModel": {
     "header": [{
       "type": "CONTROL",
       "name": "SLIDER_SETTINGS"
     }],
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "hideSyncSelect": true,
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ],
-                "element": "host",
-                "elementProp": "styleAttributes",
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ],
-                "propPath": [
-                  "styles",
-                  "[element=host]",
-                  "styleAttributes",
-                ],
-              }
-            }
+        "type": "CONTROL",
+        "name": "SIZE",
+        "hideSyncSelect": true,
+        "params": {
+          "width": {
+            "options": [
+              "fixed",
+              "fill"
+            ],
+            "element": "host",
+            "elementProp": "styleAttributes",
+          },
+          "height": {
+            "options": [
+              "fixed",
+              "fill"
+            ],
+            "propPath": [
+              "styles",
+              "[element=host]",
+              "styleAttributes",
+            ],
           }
-        ]
-      },
-      {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "mobile"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "hideSyncSelect": true,
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ],
-                "element": "host",
-                "elementProp": "styleAttributes",
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ],
-                "propPath": [
-                  "styles",
-                  "[element=host]",
-                  "styleAttributes",
-                ],
-              }
-            }
-          }
-        ]
+        }
       }
-    ]
+    ])
   },
   "events": {
     "dispatch": [],

@@ -102,13 +102,13 @@ export default class SysButtonComponent extends WcElement {
     this.stylesUpdateObserver?.disconnect();
   }
 
-  hideErrorTooltip = () => {
+  hideErrorTooltip() {
     this.getRootElement()
       .querySelector('.input-tooltip')
       .style.visibility = 'hidden';
   }
 
-  updateButtonTextNode = (props) => {
+  updateButtonTextNode(props) {
     const existingEditableTextNode = this.getRootElement().querySelector('.editable-text');
     insertHtmlIntoElement({
       element: existingEditableTextNode,
@@ -116,7 +116,7 @@ export default class SysButtonComponent extends WcElement {
     });
   }
 
-  mapStyleControlValuesToInnerButtonContent = () => {
+  mapStyleControlValuesToInnerButtonContent() {
     const button = this.getRootElement().querySelector('button');
     const editableText = this.getRootElement().querySelector('.editable-text');
 
@@ -141,7 +141,7 @@ export default class SysButtonComponent extends WcElement {
     editableText.style.fontFamily = button.style.fontFamily;
   }
 
-  mapAlignValueToButtonContent = (button) => {
+  mapAlignValueToButtonContent(button) {
     if (button.style.textAlign === 'center') {
       button.style.alignItems = 'center';
       button.style.justifyContent = 'center';
@@ -158,14 +158,14 @@ export default class SysButtonComponent extends WcElement {
     }
   }
 
-  createIconNode = (button) => {
+  createIconNode(button) {
     if (!button.querySelector('.icon')) {
       const iconElement = document.createElement('p');
       iconElement.classList.add('icon');
       button.appendChild(iconElement);
     }
   }
-  showErrorTooltip = (errorKey) => {
+  showErrorTooltip(errorKey) {
     const mainContainerElement = this.getRootElement().querySelector('.main-container');
     const tooltipElement = mainContainerElement.querySelector('.input-tooltip');
 
@@ -176,7 +176,7 @@ export default class SysButtonComponent extends WcElement {
     setInvalidStyle(mainContainerElement, tooltipElement, translatedValue, this.htmlDocumentObject);
   }
 
-  getHandlers = () => {
+  getHandlers() {
     let handlers = (this.getProps().handlers && this.getProps().handlers.length)
       ? [...this.getProps().handlers]
       : [];

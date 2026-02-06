@@ -64,7 +64,7 @@ ${getStyleElement()}
     clearInterval(this.intervalId);
   }
 
-  getEndDateData = (next) => {
+  getEndDateData(next) {
     if (next.content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       const storedRelativeStartDate = this.getStoredRelativeStartDate();
       const lengthInMs = this.getLengthMs(next.content.lengthFromTheStart);
@@ -88,30 +88,30 @@ ${getStyleElement()}
     }
   }
 
-  getLengthMs = (lengthFromTheStart) => {
+  getLengthMs(lengthFromTheStart) {
     const [days, hours, minutes, seconds] = lengthFromTheStart.split('.').map(Number);
     return days * 86400000 + hours * 3600000 + minutes * 60000 + seconds * 1000;
   }
 
-  getStoredRelativeStartDate = () => {
+  getStoredRelativeStartDate() {
     if (this.isStaticRenderMode() && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       return this.services.config.getConfig('getRelativeTimerViewDate')?.();
     }
   }
 
-  storeRelativeStartDate = () => {
+  storeRelativeStartDate() {
     if (this.isStaticRenderMode() && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       this.services.config.getConfig('storeRelativeTimerViewDate')?.();
     }
   }
 
-  clearRelativeStartDate = () => {
+  clearRelativeStartDate() {
     if (this.isStaticRenderMode() && this.getProps().content.mode === 'FROM_THE_START_OF_DISPLAYING') {
       this.services.config.getConfig('clearRelativeTimerViewDate')?.();
     }
   }
 
-  getDateWithTimeZone = (timeZone, dateString) => {
+  getDateWithTimeZone(timeZone, dateString) {
     const dateObject = dateString ? new Date(dateString) : new Date();
 
     if (!timeZone) {
@@ -125,7 +125,7 @@ ${getStyleElement()}
     );
   }
 
-  splitMilliseconds = (milliseconds, config = {}) => {
+  splitMilliseconds(milliseconds, config = {}) {
     if (typeof milliseconds !== 'number' || milliseconds < 0) {
       return {
         days: 0,
@@ -162,7 +162,7 @@ ${getStyleElement()}
     return result;
   }
 
-  drawTimer = (props, diffInMilliseconds) => {
+  drawTimer(props, diffInMilliseconds) {
     const mainContainer = this.getRootElement().querySelector('.countdownContainer');
     const containers = this.createElementContainers(mainContainer);
 
@@ -201,7 +201,7 @@ ${getStyleElement()}
     this.applyAutoAdaptiveStyles(props.adaptiveStyles, props.styles);
   }
 
-  createElementContainers = (mainContainer) => {
+  createElementContainers(mainContainer) {
     insertHtmlIntoElement({
       element: mainContainer,
       html: '',
@@ -217,7 +217,7 @@ ${getStyleElement()}
     return { countersContainerElement, labelsContainerElement };
   }
 
-  parseFormat = (format = '') => {
+  parseFormat(format = '') {
     const upperFormat = format.toUpperCase();
     return {
       days: upperFormat.includes('D'),
@@ -227,7 +227,7 @@ ${getStyleElement()}
     }
   }
 
-  createCounterElement = (containers, counterValue, labelKey, componentLanguageMap, language) => {
+  createCounterElement(containers, counterValue, labelKey, componentLanguageMap, language) {
     const counterContainerElement = document.createElement('div');
     counterContainerElement.setAttribute('cl-element', 'counterContainer');
     counterContainerElement.className = 'counterContainer';
@@ -260,7 +260,7 @@ ${getStyleElement()}
     containers.labelsContainerElement.appendChild(labelContainerElement);
   }
 
-  getLabelKeys = (componentLanguageMap, key) => {
+  getLabelKeys(componentLanguageMap, key) {
     return [
       componentLanguageMap[`content,counterLabel,${key},single`],
       componentLanguageMap[`content,counterLabel,${key},upToFour`],
@@ -268,7 +268,7 @@ ${getStyleElement()}
     ];
   }
 
-  addSeparatorElements = (containers) => {
+  addSeparatorElements(containers) {
     const counterSeparator = document.createElement('div');
     counterSeparator.setAttribute('cl-element', 'separator');
     counterSeparator.className = 'counter-separator';

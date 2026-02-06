@@ -34,7 +34,7 @@ export default class SysColumnComponent extends SysBaseContainerComponent {
     this.mutationObserver?.disconnect();
   }
 
-  updateResponsiveStyles = () => {
+  updateResponsiveStyles() {
     const areColumnsResponsive = this.getParentComponent()?.getProps()?.isResponsive;
     const columnComponents = [...this.shadowRoot.children].filter(el => el.hasAttribute('cl-element'));
 
@@ -69,7 +69,7 @@ export default class SysColumnComponent extends SysBaseContainerComponent {
 
   }
 
-  updateEmptyState = () => {
+  updateEmptyState() {
     const elements = Array
       .from(this.getRootElement().children)
       .filter(el => el.tagName !== 'STYLE' && el.tagName !== 'SCRIPT') || [];
@@ -78,7 +78,7 @@ export default class SysColumnComponent extends SysBaseContainerComponent {
     this.setAttribute(applySysAttrPrefix('empty'), isEmpty);
   }
 
-  watchChildren = () => {
+  watchChildren() {
     const self = this;
     this.mutationObserver = new MutationObserver(function () {
       self.updateEmptyState();
@@ -87,13 +87,13 @@ export default class SysColumnComponent extends SysBaseContainerComponent {
     this.mutationObserver.observe(this.getRootElement(), { childList: true });
   }
 
-  processSize = (size) => {
+  processSize(size) {
     const sizeProperty = 'flexGrow';
     const sizeValue = size ?? this.style[sizeProperty] ?? '1';
     this.style[sizeProperty] = sizeValue;
   }
 
-  processStyles = () => {
+  processStyles() {
     this.innerHTML += `
       <style>
       [cl-component="${this.getComponentName()}"] {

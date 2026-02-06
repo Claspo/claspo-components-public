@@ -128,7 +128,7 @@ export default class SysDateComponent extends WcControlledElement {
     });
   }
 
-  setControlsOrder = (rootElement) => {
+  setControlsOrder(rootElement) {
     const widgetLanguage = this.getPreferredWidgetLanguage();
     const datePartsOrder = DateUtils.getDatePartsOrder(widgetLanguage);
     const {
@@ -150,7 +150,7 @@ export default class SysDateComponent extends WcControlledElement {
     inputsInRightOrder.forEach((element) => inputsContainerElement.appendChild(element));
   }
 
-  setControlValueProxy = (value, params) => {
+  setControlValueProxy(value, params) {
     let currentValue = this.getDateValueAsString();
     if (!currentValue && !value) {
       return;
@@ -163,7 +163,7 @@ export default class SysDateComponent extends WcControlledElement {
     return this.registeredControl.setValue(value ? value : currentValue, params);
   }
 
-  dateValidation = () => {
+  dateValidation() {
     const rootElement = this.getRootElement();
     const currentValueAsDate = DateUtils.convertDashedStringDateIntoDate(this.getDateValueAsString());
     const currentValueAsString = this.getDateValueAsString();
@@ -223,7 +223,7 @@ export default class SysDateComponent extends WcControlledElement {
     };
   }
 
-  isCurrentDateExist = () => {
+  isCurrentDateExist() {
     const currentValueAsString = this.getDateValueAsString();
 
     const currentDayValue = +currentValueAsString.split('-')[2];
@@ -237,7 +237,7 @@ export default class SysDateComponent extends WcControlledElement {
       constructedDateFromInput.getFullYear() === currentYearValue;
   }
 
-  getDateValueAsString = () => {
+  getDateValueAsString() {
     const root = this.getRootElement();
 
     let day = root.querySelector('#cl-day-input').value;
@@ -262,7 +262,7 @@ export default class SysDateComponent extends WcControlledElement {
     return `${DateUtils.normalizeYearInput(year)}-${formattedMonth}-${DateUtils.convertToDoubleDigit(`${+day}`)}`;
   }
 
-  setStringDateValue = (dateValue) => {
+  setStringDateValue(dateValue) {
     const [year, month, day] = dateValue.split('-');
     const widgetLanguage = this.getPreferredWidgetLanguage();
     const root = this.getRootElement();
@@ -274,7 +274,7 @@ export default class SysDateComponent extends WcControlledElement {
     this.registeredControl.setValue(dateValue);
   }
 
-  getOptions = () => {
+  getOptions() {
     const options = {};
 
     DateUtils
@@ -289,7 +289,7 @@ export default class SysDateComponent extends WcControlledElement {
     return options;
   }
 
-  createDropdownButtonMenuComponent = (option, selected, optionLabelStyles, overlayBackgroundColor) => {
+  createDropdownButtonMenuComponent(option, selected, optionLabelStyles, overlayBackgroundColor) {
     const containerElement = document.createElement('div');
     containerElement.classList.add('option-wrapper');
 
@@ -307,7 +307,7 @@ export default class SysDateComponent extends WcControlledElement {
     return containerElement;
   }
 
-  getCurrentSelectedMonthValue = () => {
+  getCurrentSelectedMonthValue() {
     let month = this.getRootElement().querySelector('#cl-month-dropdown').innerText;
 
     if (this.isMonthUnselected(month)) {
@@ -317,11 +317,11 @@ export default class SysDateComponent extends WcControlledElement {
     return DateUtils.convertMonthToNumeric(month, this.getPreferredWidgetLanguage());
   }
 
-  isMonthUnselected = (monthValue) => {
+  isMonthUnselected(monthValue) {
     return monthValue === this.getTranslationsMap(this.MONTH_DROPDOWN_PLACEHOLDER).translations;
   }
 
-  createOverlayContent = (backdrop, overlayContentContainer) => {
+  createOverlayContent(backdrop, overlayContentContainer) {
     const control = this.services.form.getControl(this.getProps().control.name);
     const inputButton = this.getRootElement().querySelector('#cl-month-dropdown');
     const optionLabelStyles = getStylesFromElement(inputButton, this.dropdownMenuOptionLabelStyles);
@@ -360,7 +360,7 @@ export default class SysDateComponent extends WcControlledElement {
     overlayContentContainer.appendChild(buttonsList);
   }
 
-  createOverlay = () => {
+  createOverlay() {
     if (this.overlayBackdrop) {
       this.overlayBackdrop.click();
     }
@@ -383,7 +383,7 @@ export default class SysDateComponent extends WcControlledElement {
     this.overlayBackdrop = result.backdrop;
   }
 
-  applyControlsDisplayRules = (props) => {
+  applyControlsDisplayRules(props) {
     const rootElement = this.getRootElement();
 
     if (props.content.askYear) {
@@ -393,7 +393,7 @@ export default class SysDateComponent extends WcControlledElement {
     }
   }
 
-  getControlElementNodes = (rootElement) => {
+  getControlElementNodes(rootElement) {
     const dayInputElement = rootElement.querySelector('#cl-day-input');
     const dayTooltipElement = rootElement.querySelector('.day-input-with-tooltip .input-tooltip');
     const dayInputContainerElement = rootElement.querySelector('.day-input-with-tooltip');
@@ -419,7 +419,7 @@ export default class SysDateComponent extends WcControlledElement {
     };
   }
 
-  setPlaceholders = (props, env, force = false) => {
+  setPlaceholders(props, env, force = false) {
     if (
       (this.isUpdatingRenderMode())
       || force
@@ -431,13 +431,13 @@ export default class SysDateComponent extends WcControlledElement {
     }
   }
 
-  applyPlaceholdersColor = (props, env) => {
+  applyPlaceholdersColor(props, env) {
     const placeholderColor = getPlaceholderColor(props, env, this.getShared());
 
     this.getHostElement().style.setProperty('--cl-date-input-placeholder-color', placeholderColor);
   }
 
-  setDayPlaceholder = () => {
+  setDayPlaceholder() {
     const inputNode = this.getRootElement().querySelector('#cl-day-input');
 
     if (!inputNode) {
@@ -447,7 +447,7 @@ export default class SysDateComponent extends WcControlledElement {
     inputNode.placeholder = this.getTranslationsMap(this.DAY_PLACEHOLDER).translations;
   }
 
-  setMonthPlaceholder = () => {
+  setMonthPlaceholder() {
     const inputNode = this.getRootElement().querySelector('#cl-month-dropdown');
 
     if (!inputNode) {
@@ -466,7 +466,7 @@ export default class SysDateComponent extends WcControlledElement {
     inputNode.appendChild(placeholderDiv);
   }
 
-  setYearPlaceholder = () => {
+  setYearPlaceholder() {
     const inputNode = this.getRootElement().querySelector('#cl-year-input');
 
     if (!inputNode) {
@@ -476,11 +476,11 @@ export default class SysDateComponent extends WcControlledElement {
     inputNode.placeholder = this.getTranslationsMap(this.YEAR_PLACEHOLDER).translations;
   }
 
-  getTranslatedKey = (keyName) => {
+  getTranslatedKey(keyName) {
     return getTranslation(this.services.config, this.manifest.i18n, keyName);
   }
 
-  setInvalidStyleToElement = (error, element, elementTooltip, elementToMatch) => {
+  setInvalidStyleToElement(error, element, elementTooltip, elementToMatch) {
     if (elementToMatch && element !== elementToMatch) {
       return;
     }
@@ -488,7 +488,7 @@ export default class SysDateComponent extends WcControlledElement {
     setInvalidStyle(element, elementTooltip, error, this.htmlDocumentObject);
   }
 
-  registerControl = (rootElement) => {
+  registerControl(rootElement) {
     const hostElement = this.getHostElement();
     const {
       dayInputElement,
@@ -659,7 +659,7 @@ export default class SysDateComponent extends WcControlledElement {
     });
   }
 
-  setArrowIconStyles = () => {
+  setArrowIconStyles() {
     const rootElement = this.getRootElement();
 
     rootElement
@@ -669,7 +669,7 @@ export default class SysDateComponent extends WcControlledElement {
 
   // other inputs have only one "input" element, but this component has 3.
   // When sync is on, each input has same size as singular input so host's size is inputSize * 3. Here is workaround
-  setInputHostSize = (props, env) => {
+  setInputHostSize(props, env) {
     const styleAttributes = props.adaptiveStyles[env].find(element => element.element === 'input').styleAttributes;
     const hostElement = this.getHostElement();
     const inputElements = this.getRootElement().querySelectorAll('[cl-element="input"]');

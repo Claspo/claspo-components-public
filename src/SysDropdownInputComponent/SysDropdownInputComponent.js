@@ -92,20 +92,20 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     this.configInputEventListeners();
   };
 
-  registerControl = (rootElement) => {
+  registerControl(rootElement) {
     this.registeredControl = this.createControlWithValidation();
     this.registeredControl.setValue(null, { silent: true, skipValidation: true });
-  };
+  }
 
-  getOptions = (search = '') => {
+  getOptions(search = '') {
     const orderProperty = this.getProps().control.optionsAlphabeticSort?.enabled ? 'label' : 'sort';
     return sort(
       this.filterOptionsBySearchValue(this.getProps().control.options, search),
       orderProperty
     );
-  };
+  }
 
-  filterOptionsBySearchValue = (options, search) => {
+  filterOptionsBySearchValue(options, search) {
     if (!search.trim()) {
       return options;
     }
@@ -136,7 +136,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     return Object.fromEntries(filteredOptions);
   }
 
-  createDropdownButtonMenuButtonComponent = (option, selected, optionLabelStyles, overlayBackgroundColor) => {
+  createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayBackgroundColor) {
     const containerElement = document.createElement('div');
     containerElement.classList.add('option-wrapper');
 
@@ -152,9 +152,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     containerElement.appendChild(labelElement);
 
     return containerElement;
-  };
+  }
 
-  setDropdownInputText = (options) => {
+  setDropdownInputText(options) {
     const inputElement = this.getElement('input');
     const value = JSON.parse(this.registeredControl?.getValue() || null);
     let selectedOption;
@@ -163,9 +163,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     }
 
     inputElement.value = selectedOption ? selectedOption.label : '';
-  };
+  }
 
-  createOverlayContent = (backdrop, overlayContentContainer, filteredOptions, allOptions) => {
+  createOverlayContent(backdrop, overlayContentContainer, filteredOptions, allOptions) {
     const inputElement = this.getElement('input');
     const optionLabelStyles = getStylesFromElement(inputElement, SysDropdownInputComponent.dropdownMenuOptionLabelStyles);
     const overlayStyles = getStylesFromElement(inputElement, SysDropdownInputComponent.overlayContentStyles);
@@ -236,9 +236,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
         'margin-bottom': `${missingOptionsHeight}px`,
       });
     }
-  };
+  }
 
-  getOverlayStyles = () => {
+  getOverlayStyles() {
     const overlayContentClassName = getMenuOverlayContentClassName();
     const inputElement = this.getElement('input');
     const backgroundColor = getOverlayBackgroundColor(
@@ -283,9 +283,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
               background-color: ${getMenuItemHoverColor(backgroundColor)};
             }
         `;
-  };
+  }
 
-  createOverlay = (options) => {
+  createOverlay(options) {
     if (this.overlayBackdrop) {
       this.overlayBackdrop.click();
     }
@@ -308,9 +308,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
         this.setDropdownInputText(options);
       }
     });
-  };
+  }
 
-  setPlaceholder = (props, env) => {
+  setPlaceholder(props, env) {
     const dropdownInputElement = this.getElement('input');
     const placeholderColor = getPlaceholderColor(props, env, this.getShared());
 
@@ -320,9 +320,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     const placeholderValue = props.content.placeholder
       || this.getTranslationsMap(SysDropdownInputComponent.DEFAULT_PLACEHOLDER_VALUE).translations;
     dropdownInputElement.setAttribute('placeholder', placeholderValue);
-  };
+  }
 
-  setArrowIconStyles = (props, env) => {
+  setArrowIconStyles(props, env) {
     const rootElement = this.getRootElement();
 
     const placeholderColor = getPlaceholderColor(props, env, this.getShared());
@@ -331,9 +331,9 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     if (dropdownInputSelectButtonElement) {
       dropdownInputSelectButtonElement.style.color = placeholderColor;
     }
-  };
+  }
 
-  configInputEventListeners = () => {
+  configInputEventListeners() {
     const inputElement = this.getElement('input');
     if (Object.values(this.getOptions()).length < this.enableSearchOptionsCount) {
       inputElement.setAttribute('readonly', 'readonly');

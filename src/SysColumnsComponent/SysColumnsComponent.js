@@ -40,7 +40,7 @@ export default class SysColumnsComponent extends WcElement {
     );
   };
 
-  updateResponsiveStyles = () => {
+  updateResponsiveStyles() {
     if (this.getProps().isResponsive && this.getEnvironment() === 'mobile' && this.mobileDeviceOrientationListener.isPortrait()) {
       this.getRootElement().querySelector('.columns-container').style.flexDirection = 'column';
     } else {

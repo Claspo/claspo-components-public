@@ -1,3 +1,5 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysImageComponent",
   "componentType": "IMAGE",
@@ -19,86 +21,38 @@ export default {
       "name": "FOCUS_PARENT_COMPONENT"
     }
   ],
-  "floatingControlsModel": [
+  "floatingControlsModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
+      "type": "CONTROL",
+      "name": "SIZE",
+      "elementProp": "styleAttributes",
+      "element": "host",
+      "params": {
+        "rotation": {
           "elementProp": "styleAttributes",
           "element": "host",
-          "params": {
-            "rotation": {
-              "elementProp": "styleAttributes",
-              "element": "host",
-            },
-          },
         },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "ROTATION",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      },
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "host",
-          "params": {
-            "rotation": {
-              "elementProp": "styleAttributes",
-              "element": "host",
-            },
-          },
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "ROTATION",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "ROTATION",
+      "elementProp": "styleAttributes",
+      "element": "host"
     }
-  ],
+  ]),
   "propertyPaneModel": {
     "content": [
       {

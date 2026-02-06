@@ -74,7 +74,7 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     });
   }
 
-  updateElementSizeStyles = () => {
+  updateElementSizeStyles() {
 
     const container = this.getElement('listContainer');
 
@@ -90,13 +90,13 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     });
   }
 
-  getInputAdaptiveStyles = () => {
+  getInputAdaptiveStyles() {
     const props = this.getProps();
     const env = this.getEnvironment();
     return props.adaptiveStyles[env].filter(item => item.element === 'input');
-  };
+  }
 
-  setMarkerStyleAttributes = () => {
+  setMarkerStyleAttributes() {
     const inputAdaptiveStyles = this.getInputAdaptiveStyles();
     if (inputAdaptiveStyles.length && inputAdaptiveStyles[0].markerStyleAttributes) {
       this.markerStyleAttributes = {
@@ -117,22 +117,22 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     }
 
     this.markerStyleAttributes = SysCheckboxListComponent.defaultMarkerStyleAttributes;
-  };
+  }
 
-  setStylesVariables = (element) => {
+  setStylesVariables(element) {
     Object.keys(this.markerStyleAttributes)
       .forEach(key => {
         const upToDateKey = deprecatedCheckboxVariablesMap.get(key) || key;
         element.style.setProperty(`--${upToDateKey}`, this.markerStyleAttributes[key]);
       })
-  };
+  }
 
-  getOptions = () => {
+  getOptions() {
     const orderProperty = this.getProps().control.optionsAlphabeticSort?.enabled ? 'label' : 'sort';
     return sort(this.getProps().control.options, orderProperty);
-  };
+  }
 
-  applyStylesToOptionWrapper = () => {
+  applyStylesToOptionWrapper() {
     const container = this.getElement('listContainer');
     const styles = getAdaptiveStylesForPlatform(this.getProps().adaptiveStyles, this.getEnvironment(), 'optionWrapper');
     const optionWrappers = container.querySelectorAll('.option-wrapper');
@@ -150,9 +150,9 @@ export default class SysCheckboxListComponent extends WcControlledElement {
       });
       container.style.gap = '0px';
     }
-  };
+  }
 
-  createCheckboxListItemComponent = (option, selected, styles) => {
+  createCheckboxListItemComponent(option, selected, styles) {
     const hostElement = this.getHostElement();
     const button = document.createElement('div');
     button.classList.add('option-wrapper');
@@ -198,13 +198,13 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     button.appendChild(checkMarkContainer);
 
     return button;
-  };
+  }
 
-  getCurrentValue = () => {
+  getCurrentValue() {
     return JSON.parse(this.registeredControl?.getValue() || null);
-  };
+  }
 
-  applyStylesToMarkersShadows = () => {
+  applyStylesToMarkersShadows() {
     const inputButton = this.getElement('input');
     const checkMarksShadows = inputButton.querySelectorAll('.checkmark-shadow');
     checkMarksShadows.forEach(checkMarkShadow => {
@@ -212,25 +212,25 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     });
   }
 
-  applyStyleToOptionLabels = () => {
+  applyStyleToOptionLabels() {
     const inputButton = this.getElement('input');
     const styles = getStylesFromElement(inputButton, SysCheckboxListComponent.checkboxListButtonMenuStyles);
     const labels = inputButton.querySelectorAll('.checkbox-label');
     labels.forEach(label => {
       setStylesToElement(label, styles);
     });
-  };
+  }
 
-  applyStylesToMarkers = () => {
+  applyStylesToMarkers() {
     const inputButton = this.getElement('input');
     const checkMarks = inputButton.querySelectorAll('.checkmark');
     checkMarks.forEach(checkMark => {
       this.setStylesVariables(checkMark);
       setFocusOutline(checkMark);
     });
-  };
+  }
 
-  createContent = () => {
+  createContent() {
     const inputButton = this.getElement('input');
     const optionLabelStyles = getStylesFromElement(inputButton, SysCheckboxListComponent.checkboxListButtonMenuStyles);
     const optionsValue = this.getCurrentValue();
@@ -282,21 +282,21 @@ export default class SysCheckboxListComponent extends WcControlledElement {
       html: '',
     });
     inputButton.append(buttonsList);
-  };
+  }
 
-  registerControl = (rootElement) => {
+  registerControl(rootElement) {
     const tooltipElement = rootElement.querySelector('.list-tooltip');
     this.registeredControl = this.createControlWithValidation([], {
       tooltipElement
     });
     this.registeredControl.setValue(null, { silent: true, skipValidation: true });
-  };
+  }
 
-  handleSafariHeightIssue = () => {
+  handleSafariHeightIssue() {
     const host = this.getHostElement();
 
     if (host.style.height === 'auto') {
       host.style.height = 'fit-content';
     }
-  };
+  }
 }

@@ -48,13 +48,13 @@ export default class SysImageComponent extends WcElement {
     this.resourcesLoadedListener?.off();
   }
 
-  applyStylesRespectingRelativePositioning = () => {
+  applyStylesRespectingRelativePositioning() {
     const adaptiveStyles = this.processPositioningStyles(this.getProps());
     this.originalApplyAutoAdaptiveStyles(adaptiveStyles);
     this.fixFloatingImageSize(adaptiveStyles);
   }
 
-  recalculateStylesAfterImageLoad = () => {
+  recalculateStylesAfterImageLoad() {
     this.resourcesLoadedListener = this.services.eventEmitter.on('VIEW_COMPONENT_RESOURCES_LOADED', () => {
       requestAnimationFrame(() => {
         this.applyAdaptiveStyles(this.getProps());
@@ -62,7 +62,7 @@ export default class SysImageComponent extends WcElement {
     });
   }
 
-  _getHostNewDimensionsWithStyles = (styleAttributes = {}) => {
+  _getHostNewDimensionsWithStyles(styleAttributes = {}) {
     const host = this.getHostElement();
     const dimensionalStyleNames = ['height', 'width', 'minHeight', 'minWidth', 'maxHeight', 'maxWidth', 'display'];
     dimensionalStyleNames.forEach((style) => {
@@ -74,9 +74,9 @@ export default class SysImageComponent extends WcElement {
     });
     const { offsetWidth: width, offsetHeight: height } = host;
     return { width, height };
-  };
+  }
 
-  processPositioningStyles = (props) => {
+  processPositioningStyles(props) {
     const adaptiveStyles = props.adaptiveStyles;
     const mode = props.control?.positioningMode || PositioningModes.FIXED;
 
@@ -126,7 +126,7 @@ export default class SysImageComponent extends WcElement {
     }
 
     return replaceStyleAttributes(adaptiveStyles, environment, 'host', newStyleAttributes);
-  };
+  }
 
   connectedCallback() {
     super.connectedCallback();
@@ -197,14 +197,14 @@ export default class SysImageComponent extends WcElement {
 
   }
 
-  deleteElementIfPresent = (rootElement, cssSelector) => {
+  deleteElementIfPresent(rootElement, cssSelector) {
     const element = rootElement.querySelector(cssSelector);
     if (element) {
       element.remove();
     }
   }
 
-  upsertSvg = (rootElement, inlineSVGUrl) => {
+  upsertSvg(rootElement, inlineSVGUrl) {
     const alreadyPresent = rootElement.querySelector('svg');
 
     // if we have the same SVG then we do not have to redraw
@@ -242,7 +242,7 @@ export default class SysImageComponent extends WcElement {
 
   }
 
-  upsertImage = (rootElement, imgUrl) => {
+  upsertImage(rootElement, imgUrl) {
     const alreadyPresentImgElement = rootElement.querySelector('img');
     if (alreadyPresentImgElement) {
       alreadyPresentImgElement.src = imgUrl;
@@ -269,7 +269,7 @@ export default class SysImageComponent extends WcElement {
     return Promise.resolve();
   }
 
-  applyAdaptiveStyles = (next) => {
+  applyAdaptiveStyles(next) {
     this.applyAutoAdaptiveStyles(next.adaptiveStyles);
 
     const environment = this.getEnvironment();
@@ -326,7 +326,7 @@ export default class SysImageComponent extends WcElement {
     }
   }
 
-  fixFloatingImageSize = (adaptiveStyles) => {
+  fixFloatingImageSize(adaptiveStyles) {
     const imageElement = this.getElement('image');
 
     // svg image

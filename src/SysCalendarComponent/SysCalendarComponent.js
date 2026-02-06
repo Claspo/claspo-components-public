@@ -37,18 +37,18 @@ export default class SysCalendarComponent extends WcControlledElement {
     `;
   }
 
-  setPlaceholder = (props, env) => {
+  setPlaceholder(props, env) {
     this.setCalendarPlaceholder();
     this.applyPlaceholderColor(props, env);
   }
 
-  applyPlaceholderColor = (props, env) => {
+  applyPlaceholderColor(props, env) {
     const placeholderColor = getPlaceholderColor(props, env, this.getShared());
 
     this.getHostElement().style.setProperty('--cl-calendar-input-placeholder-color', placeholderColor);
   }
 
-  setCalendarPlaceholder = () => {
+  setCalendarPlaceholder() {
     const placeholderNode = this.getRootElement().querySelector('.selected-date-value');
     const calendarValue = this.registeredControl.getValue();
 
@@ -63,7 +63,7 @@ export default class SysCalendarComponent extends WcControlledElement {
     });
   }
 
-  registerControl = (rootElement) => {
+  registerControl(rootElement) {
     const isInEditor = this.isUpdatingRenderMode();
 
     if (isInEditor) {
@@ -79,7 +79,7 @@ export default class SysCalendarComponent extends WcControlledElement {
     });
   }
 
-  formatCurrentLocaleDate = (localeLang, date) => {
+  formatCurrentLocaleDate(localeLang, date) {
     const normalizedLanguage = normalizeLanguage(localeLang);
     const dateObj = date ? new Date(date + 'T00:00:00Z') : new Date();
 
@@ -91,7 +91,7 @@ export default class SysCalendarComponent extends WcControlledElement {
     }).format(dateObj);
   }
 
-  setTime = (rootElement, timeValue) => {
+  setTime(rootElement, timeValue) {
     const originalDateInput = rootElement.querySelector('#cl-date-input');
 
     originalDateInput.value = timeValue;
@@ -100,15 +100,15 @@ export default class SysCalendarComponent extends WcControlledElement {
     this.registeredControl.setValue(timeValue);
   }
 
-  setMinTimeRange = (rootElement) => {
+  setMinTimeRange(rootElement) {
     rootElement.querySelector('#cl-date-input').min = getISODate();
   }
 
-  clearMinTimeRange = (rootElement) => {
+  clearMinTimeRange(rootElement) {
     rootElement.querySelector('#cl-date-input').removeAttribute('min');
   }
 
-  setUpdatedValueOnChange = (rootElement) => {
+  setUpdatedValueOnChange(rootElement) {
     const originalDateInput = rootElement.querySelector('#cl-date-input');
 
     originalDateInput.addEventListener('change', () => {
@@ -123,7 +123,7 @@ export default class SysCalendarComponent extends WcControlledElement {
     });
   }
 
-  handleDateFocusOut = () => {
+  handleDateFocusOut() {
     const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
     if (isFirefox) {
@@ -133,11 +133,11 @@ export default class SysCalendarComponent extends WcControlledElement {
     this.markCalendarDisplayFalse();
   }
 
-  markCalendarDisplayFalse = () => {
+  markCalendarDisplayFalse() {
     this.isCalendarDisplayed = false;
   }
 
-  addCalendarRelatedEventListeners = (rootElement) => {
+  addCalendarRelatedEventListeners(rootElement) {
     const dateInput = rootElement.querySelector('#cl-date-input');
     const isInEditor = this.isUpdatingRenderMode();
 
@@ -160,12 +160,12 @@ export default class SysCalendarComponent extends WcControlledElement {
     window.addEventListener('keyup', this.closeCalendarOnEscapeIfItPresentListenerCb, true);
   }
 
-  markCalendarDisplayFalseIfClickedOutside = (event) => {
+  markCalendarDisplayFalseIfClickedOutside(event) {
     const isClickOnCalendarInput = event.composedPath()[0] && event.composedPath()[0].id === 'cl-date-input';
     this.isCalendarDisplayed = isClickOnCalendarInput;
   }
 
-  showCalendarProgrammatically = (event) => {
+  showCalendarProgrammatically(event) {
     if (event.target?.showPicker) {
       try {
         event.target.showPicker(); // Firefox hack (does not open native calendar without this call)
@@ -176,7 +176,7 @@ export default class SysCalendarComponent extends WcControlledElement {
     }
   }
 
-  closeCalendarOnEscapeIfItPresent = (event) => {
+  closeCalendarOnEscapeIfItPresent(event) {
     if (event.key === 'Escape' && this.isCalendarDisplayed) {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -184,7 +184,7 @@ export default class SysCalendarComponent extends WcControlledElement {
     }
   }
 
-  closeNativeCalendarProgrammatically = () => {
+  closeNativeCalendarProgrammatically() {
     const rootElement = this.getRootElement();
     const dateInput = rootElement.querySelector('#cl-date-input');
 
@@ -195,13 +195,13 @@ export default class SysCalendarComponent extends WcControlledElement {
     this.isCalendarDisplayed = false;
   }
 
-  removeListeners = () => {
+  removeListeners() {
     window.removeEventListener('click', this.markCalendarDisplayFalseIfClickedOutsideListenerCb);
     window.removeEventListener('mousewheel', this.markCalendarDisplayFalseListenerCb);
     window.removeEventListener('keyup', this.closeCalendarOnEscapeIfItPresentListenerCb, true);
   }
 
-  setCalendarIconStyles = () => {
+  setCalendarIconStyles() {
     const inputTextColor = this.getElement('input').style.color;
     this.getRootElement().querySelector('.calendar-icon').style.color = inputTextColor;
   }

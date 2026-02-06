@@ -78,13 +78,13 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     });
   }
 
-  getInputAdaptiveStyles = () => {
+  getInputAdaptiveStyles() {
     const props = this.getProps();
     const env = this.getEnvironment();
     return props.adaptiveStyles[env].filter(item => item.element === 'input');
-  };
+  }
 
-  setMarkerStyleAttributes = () => {
+  setMarkerStyleAttributes() {
     const inputAdaptiveStyles = this.getInputAdaptiveStyles();
     if (inputAdaptiveStyles.length && inputAdaptiveStyles[0].markerStyleAttributes) {
       this.markerStyleAttributes = {
@@ -105,14 +105,14 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     }
 
     this.markerStyleAttributes = SysRadioGroupComponent.defaultMarkerStyleAttributes;
-  };
+  }
 
-  setStylesVariables = (element) => {
+  setStylesVariables(element) {
     Object.keys(this.markerStyleAttributes)
       .forEach(key => element.style.setProperty(`--${key}`, this.markerStyleAttributes[key]))
-  };
+  }
 
-  getOptions = () => {
+  getOptions() {
     const options = this.getProps().control.options;
     const optionsWithIds = {};
     Object.keys(options).forEach(id => {
@@ -127,9 +127,9 @@ export default class SysRadioGroupComponent extends WcControlledElement {
 
     const orderProperty = this.getProps().control.optionsAlphabeticSort?.enabled ? 'label' : 'sort';
     return sort(this.getProps().control.options, orderProperty);
-  };
+  }
 
-  applyStylesToOptionWrapper = () => {
+  applyStylesToOptionWrapper() {
     const container = this.getElement('listContainer');
     const styles = getAdaptiveStylesForPlatform(this.getProps().adaptiveStyles, this.getEnvironment(), 'optionWrapper');
     const optionWrappers = container.querySelectorAll('.option-wrapper');
@@ -147,9 +147,9 @@ export default class SysRadioGroupComponent extends WcControlledElement {
       });
       container.style.gap = '0px';
     }
-  };
+  }
 
-  createRadioGroupItemComponent = (option, selected, styles) => {
+  createRadioGroupItemComponent(option, selected, styles) {
     const hostElement = this.getHostElement();
     const button = document.createElement('div');
     button.classList.add('option-wrapper');
@@ -195,9 +195,9 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     button.appendChild(radioMarkContainer);
 
     return button;
-  };
+  }
 
-  updateGap = () => {
+  updateGap() {
     const container = this.getElement('listContainer');
 
     if (!container) {
@@ -213,30 +213,30 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     });
   }
 
-  updateElementSizeStyles = (element, attrs) => {
+  updateElementSizeStyles(element, attrs) {
     element.style.setProperty(`--inputSize`, attrs['inputSize']);
     element.style.setProperty(`--inputToTextGapSize`, attrs['inputToTextGapSize']);
   }
 
-  applyStyleToOptionLabels = () => {
+  applyStyleToOptionLabels() {
     const inputButton = this.getElement('input');
     const styles = getStylesFromElement(inputButton, SysRadioGroupComponent.radioGroupButtonMenuStyles);
     const labels = inputButton.querySelectorAll('.radio-box-label');
     labels.forEach(label => {
       setStylesToElement(label, styles);
     });
-  };
+  }
 
-  applyStylesToMarkers = () => {
+  applyStylesToMarkers() {
     const inputButton = this.getElement('input');
     const radioMarks = inputButton.querySelectorAll('.radio-mark');
     radioMarks.forEach(radioMark => {
       this.setStylesVariables(radioMark);
       setFocusOutline(radioMark);
     });
-  };
+  }
 
-  applyStylesToMarkersShadows = () => {
+  applyStylesToMarkersShadows() {
     const inputButton = this.getElement('input');
     const radioMarksShadows = inputButton.querySelectorAll('.radio-mark-shadow');
     radioMarksShadows.forEach(radioMarksShadow => {
@@ -244,7 +244,7 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     });
   }
 
-  unselectButtons = (container, skipId) => {
+  unselectButtons(container, skipId) {
     const radioGroupItems = container.querySelectorAll('.radioGroupItem');
     radioGroupItems.forEach(radioGroupItem => {
       const id = radioGroupItem.getAttribute('name');
@@ -256,21 +256,21 @@ export default class SysRadioGroupComponent extends WcControlledElement {
       radioMark.style.borderColor = null;
       radioMark.style.outlineColor = null;
     })
-  };
+  }
 
-  setSelectedBorderColor = (element) => {
+  setSelectedBorderColor(element) {
     const borderColor = this.markerStyleAttributes['selectedColor'];
     element.style.borderColor = `${borderColor}`;
     element.style.outlineColor = `${borderColor}`;
     element.style.setProperty('--borderColor', `${borderColor}`);
   }
 
-  setBorderTopWidth = (element) => {
+  setBorderTopWidth(element) {
     const borderTopWidth = this.markerStyleAttributes['borderTopWidth'];
     element.style.setProperty('--borderTopWidth', `${borderTopWidth}`);
   }
 
-  createContent = () => {
+  createContent() {
     const inputButton = this.getElement('input');
     const optionLabelStyles = getStylesFromElement(inputButton, SysRadioGroupComponent.radioGroupButtonMenuStyles);
     const value = JSON.parse(this.registeredControl?.getValue() || null);
@@ -307,21 +307,21 @@ export default class SysRadioGroupComponent extends WcControlledElement {
       html: '',
     });
     inputButton.append(radioButtonsList);
-  };
+  }
 
-  registerControl = (rootElement) => {
+  registerControl(rootElement) {
     const tooltipElement = rootElement.querySelector('.radio-group-tooltip');
     this.registeredControl = this.createControlWithValidation([], {
       tooltipElement
     });
     this.registeredControl.setValue(null, {silent: true, skipValidation: true});
-  };
+  }
 
-  handleSafariHeightIssue = () => {
+  handleSafariHeightIssue() {
     const host = this.getHostElement();
 
     if (!host.style.height || host.style.height === 'auto') {
       host.style.height = 'fit-content';
     }
-  };
+  }
 }

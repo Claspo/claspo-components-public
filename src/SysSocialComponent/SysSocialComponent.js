@@ -42,7 +42,7 @@ export default class SysSocialComponent extends WcElement {
     });
   }
 
-  createContent = (props) => {
+  createContent(props) {
     const root = this.getElement('social');
     const mappedProps = mapProps(props);
     const itemsContainer = root.querySelector('.items-wrapper');
@@ -54,7 +54,7 @@ export default class SysSocialComponent extends WcElement {
     }
   }
 
-  _renderItemsForEmptyComponent = (container, props) => {
+  _renderItemsForEmptyComponent(container, props) {
     const wrapper = document.createElement('div');
     wrapper.classList.add('items-wrapper');
 
@@ -67,7 +67,7 @@ export default class SysSocialComponent extends WcElement {
     container.append(wrapper);
   }
 
-  _renderItemsForExistingComponent = (container, props) => {
+  _renderItemsForExistingComponent(container, props) {
     const updatedNodes = {};
 
     props.options.forEach((platform) => {
@@ -88,7 +88,7 @@ export default class SysSocialComponent extends WcElement {
     }
   }
 
-  _updatePlatformComponent = (container, platform, props) => {
+  _updatePlatformComponent(container, platform, props) {
     const image = container.querySelector('img');
     const imageSrc = this.urlManager.getPlatformImageUrl(platform);
     if (image.src !== imageSrc) {
@@ -105,13 +105,13 @@ export default class SysSocialComponent extends WcElement {
     return container;
   }
 
-  _createNewPlatformComponent = (container, platform, props) => {
+  _createNewPlatformComponent(container, platform, props) {
     const newPlatformNode = this.createPlatformComponent(platform, props);
     container.append(newPlatformNode);
     return newPlatformNode;
   }
 
-  addItemsContent = (container, props) => {
+  addItemsContent(container, props) {
     container.classList.add('social-list');
     props.options.forEach(platform => {
       container.append(this.createPlatformComponent(platform, props));
@@ -119,7 +119,7 @@ export default class SysSocialComponent extends WcElement {
     return container;
   }
 
-  createPlatformComponent = (platform, props) => {
+  createPlatformComponent(platform, props) {
     const { size } = props;
     const { url } = platform;
 
@@ -152,11 +152,11 @@ export default class SysSocialComponent extends WcElement {
     return el;
   }
 
-  getPlatformKey = (platform) => {
+  getPlatformKey(platform) {
     return `${platform.type}-${platform.order}`;
   }
 
-  _setPlatformStyles = (container, platform) => {
+  _setPlatformStyles(container, platform) {
     container.setAttribute('style', `order:${platform.order}`);
   }
 }

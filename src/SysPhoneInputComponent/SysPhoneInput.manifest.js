@@ -1,330 +1,147 @@
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+
 export default {
   "name": "SysPhoneInputComponent",
   "componentType": "INPUT",
   "version": "1.0.0",
-  "contextMenuModel": [
+  "contextMenuModel": cloneControlsToAllEnvs([
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "COMPONENT_OPERATIONS"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "COMPONENT_OPERATIONS"
-        },
-        {
-          "type": "CONTROL",
-          "name": "BRING_BACK_FORWARD",
-          "element": "host",
-          "elementProp": "styleAttributes",
-          "elementSubProp": "zIndex"
-        },
-        {
-          "type": "CONTROL",
-          "name": "FOCUS_PARENT_COMPONENT"
-        }
-      ]
-    }
-  ],
-  "floatingControlsModel": [
-    {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "desktop"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "input"
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "BRING_BACK_FORWARD",
+      "element": "host",
+      "elementProp": "styleAttributes",
+      "elementSubProp": "zIndex"
     },
     {
-      "type": "GROUP",
-      "propPath": [
-        "adaptiveStyles",
-        "mobile"
-      ],
-      "children": [
-        {
-          "type": "CONTROL",
-          "name": "SIZE",
-          "elementProp": "styleAttributes",
-          "element": "input"
-        },
-        {
-          "type": "CONTROL",
-          "name": "MARGIN",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        },
-        {
-          "type": "CONTROL",
-          "name": "CONTAINER_PADDING",
-          "elementProp": "styleAttributes",
-          "element": "host"
-        }
-      ]
+      "type": "CONTROL",
+      "name": "FOCUS_PARENT_COMPONENT"
     }
-  ],
+  ]),
+  "floatingControlsModel": cloneControlsToAllEnvs([
+    {
+      "type": "CONTROL",
+      "name": "SIZE",
+      "elementProp": "styleAttributes",
+      "element": "input"
+    },
+    {
+      "type": "CONTROL",
+      "name": "MARGIN",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    },
+    {
+      "type": "CONTROL",
+      "name": "CONTAINER_PADDING",
+      "elementProp": "styleAttributes",
+      "element": "host"
+    }
+  ]),
   "propertyPaneModel": {
-    "content": [
+    "content": cloneControlsToAllEnvs([
       {
-        "type": "GROUP",
-        "propPath": [
-          "adaptiveStyles",
-          "desktop"
-        ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "input",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "input",
-                "hideTextAlign": true,
-              },
-              {
-                "element": "label",
-                "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-              }
+        "type": "CONTROL",
+        "name": "SIZE",
+        "element": "input",
+        "elementProp": "styleAttributes",
+        "params": {
+          "width": {
+            "options": [
+              "fixed",
+              "fill"
             ]
           },
+          "height": {
+            "options": [
+              "fixed",
+              "fill"
+            ]
+          }
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_PARAMS",
+        "params": [
           {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INPUT_LABEL",
-            "propPath": [
-              "styles",
-              "[element=label]",
-              "params"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
             "element": "input",
-            "params": {
-              "indentationType": "PADDING",
-              "horizontalOnly": true
-            }
+            "hideTextAlign": true,
           },
           {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
+            "element": "label",
+            "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
           }
         ]
       },
       {
-        "type": "GROUP",
+        "type": "CONTROL",
+        "name": "BACKGROUND",
         "propPath": [
-          "adaptiveStyles",
-          "mobile"
+          "styles",
+          "[element=input]",
+          "styleAttributes"
         ],
-        "children": [
-          {
-            "type": "CONTROL",
-            "name": "SIZE",
-            "element": "input",
-            "elementProp": "styleAttributes",
-            "params": {
-              "width": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ]
-              },
-              "height": {
-                "options": [
-                  "fixed",
-                  "fill"
-                ]
-              }
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "TEXT_PARAMS",
-            "params": [
-              {
-                "element": "input",
-                "hideTextAlign": true,
-              },
-              {
-                "element": "label",
-                "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-              }
-            ]
-          },
-          {
-            "type": "CONTROL",
-            "name": "BACKGROUND",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDERS",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BOX_SHADOW",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "BORDER_RADIUS",
-            "propPath": [
-              "styles",
-              "[element=input]",
-              "styleAttributes"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INPUT_LABEL",
-            "propPath": [
-              "styles",
-              "[element=label]",
-              "params"
-            ],
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "input",
-            "params": {
-              "indentationType": "PADDING",
-              "horizontalOnly": true
-            }
-          },
-          {
-            "type": "CONTROL",
-            "name": "INDENTATION",
-            "elementProp": "styleAttributes",
-            "element": "host",
-            "params": {
-              "indentationType": "MARGIN"
-            }
-          }
-        ]
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDERS",
+        "propPath": [
+          "styles",
+          "[element=input]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "BOX_SHADOW",
+        "propPath": [
+          "styles",
+          "[element=input]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "BORDER_RADIUS",
+        "propPath": [
+          "styles",
+          "[element=input]",
+          "styleAttributes"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "INPUT_LABEL",
+        "propPath": [
+          "styles",
+          "[element=label]",
+          "params"
+        ],
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "input",
+        "params": {
+          "indentationType": "PADDING",
+          "horizontalOnly": true
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "INDENTATION",
+        "elementProp": "styleAttributes",
+        "element": "host",
+        "params": {
+          "indentationType": "MARGIN"
+        }
       }
-    ],
+    ]),
     "general": [
       {
         "type": "CONTROL",
