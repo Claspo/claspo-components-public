@@ -607,7 +607,7 @@ export default {
       "sr": "Choice",
     }
   },
-  "openComponentOptionsPropertyPaneOnInsert": true,
+  "showComponentOptionsPropertyPaneOnInsert": true,
   "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }
 

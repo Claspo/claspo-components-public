@@ -565,6 +565,6 @@ export default {
   },
   "syncEnabled": true,
   "stylesImitationEnabled": true,
-  "openComponentOptionsPropertyPaneOnInsert": true,
+  "showComponentOptionsPropertyPaneOnInsert": true,
   "showIntegrationFieldMappingPropertyPaneOnInsert": true,
 }
