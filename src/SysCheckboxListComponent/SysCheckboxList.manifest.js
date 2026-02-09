@@ -83,16 +83,10 @@ export default {
             "name": "TEXT_PARAMS",
             "params": [
               {
-                "element": "input",
-                "showPlaceholderControl": false,
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "input"
               },
               {
-                "element": "label",
-                "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "label"
               }
             ]
           },
@@ -223,16 +217,10 @@ export default {
             "name": "TEXT_PARAMS",
             "params": [
               {
-                "element": "input",
-                "showPlaceholderControl": false,
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "input"
               },
               {
-                "element": "label",
-                "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "label"
               }
             ]
           },

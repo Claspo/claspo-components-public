@@ -74,9 +74,7 @@ export default {
         "name": "TEXT_PARAMS",
         "params": [
           {
-            "element": "label",
-            "isLineSpaceAvailable": true,
-            "isTextTransformAvailable": true
+            "element": "label"
           }
         ]
       },

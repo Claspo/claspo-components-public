@@ -70,15 +70,10 @@ export default {
         "params": [
           {
             "element": "input",
-            "showPlaceholderControl": true,
-            "isLineSpaceAvailable": true,
-            "isTextTransformAvailable": true
+            "showPlaceholderControl": true
           },
           {
-            "element": "label",
-            "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
-            "isLineSpaceAvailable": true,
-            "isTextTransformAvailable": true
+            "element": "label"
           }
         ]
       },

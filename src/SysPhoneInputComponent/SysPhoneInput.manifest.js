@@ -73,7 +73,6 @@ export default {
           },
           {
             "element": "label",
-            "displayCondition": "return !!sdk.component.getProps().styles.find(element => element.element === 'label').params.enabled",
           }
         ]
       },

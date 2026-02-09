@@ -85,16 +85,10 @@ export default {
         "name": "TEXT_PARAMS",
         "params": [
           {
-            "element": "button",
-            "showPlaceholderControl": false,
-            "isLineSpaceAvailable": true,
-            "isTextTransformAvailable": true
+            "element": "button"
           },
           {
-            "element": "label",
-            "displayCondition": "return !!sdk.component.getProps().content.labelEnabled",
-            "isLineSpaceAvailable": true,
-            "isTextTransformAvailable": true
+            "element": "label"
           }
         ]
       },

@@ -76,14 +76,10 @@ export default {
             "name": "TEXT_PARAMS",
             "params": [
               {
-                "element": "counter",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "counter"
               },
               {
-                "element": "label",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "label"
               }
             ]
           },
@@ -181,14 +177,10 @@ export default {
             "name": "TEXT_PARAMS",
             "params": [
               {
-                "element": "counter",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "counter"
               },
               {
-                "element": "label",
-                "isLineSpaceAvailable": true,
-                "isTextTransformAvailable": true
+                "element": "label"
               }
             ]
           },

@@ -70,9 +70,7 @@ export default {
         "name": "TEXT_PARAMS",
         "params": [
           {
-            "element": "button",
-            "isLineSpaceAvailable": true,
-            "isTextTransformAvailable": true
+            "element": "button"
           }
         ]
       },
