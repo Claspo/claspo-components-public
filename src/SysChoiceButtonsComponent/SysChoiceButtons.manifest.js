@@ -239,7 +239,7 @@ export default {
           "multipleChoice",
         ],
         params: {
-          label: 'MULTIPLE_CHOICE'
+          label: 'i18n_DOCUMENT_MULTIPLE_CHOICE'
         }
       },
       {
