@@ -1,4 +1,3 @@
-import {cloneStylesToAllEnvs} from '@claspo/renderer/sdk/ModelStyleUtils';
 import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
 
 export default {
@@ -211,7 +210,8 @@ export default {
           "labelEnabled",
         ],
         params: {
-          label: 'DOCUMENT_SHOW_INPUT_LABELS'
+          label: 'DOCUMENT_SHOW_INPUT_LABELS',
+          boldLabel: true,
         }
       },
       {
@@ -225,7 +225,7 @@ export default {
       }
     ]),
     "general": [
-      {
+      /*{
         "type": "CONTROL",
         "name": "SWITCH",
         "propPath": [
@@ -235,6 +235,16 @@ export default {
         params: {
           label: 'i18n_DOCUMENT_MULTIPLE_CHOICE'
         }
+      },*/
+      {
+        "type": "CONTROL",
+        "name": "ACTIONS",
+        "propPath": [
+          "handlers"
+        ],
+        "params": {
+          "origin": true,
+        },
       },
       {
         "type": "CONTROL",
@@ -277,6 +287,16 @@ export default {
   },
   "i18nPropertyPaneModel": {
     "content": [
+      {
+        "type": "CONTROL",
+        "name": "ACTIONS",
+        "propPath": [
+          "handlers"
+        ],
+        "params": {
+          "origin": false,
+        },
+      },
       {
         "type": "CONTROL",
         "name": "COMPONENT_OPTIONS",
@@ -435,13 +455,13 @@ export default {
   "props": {
     "content": {
       "label": "Title",
-      "labelEnabled": true,
+      "labelEnabled": false,
     },
     "control": {
       "name": "choiceButtons",
       "integrationName": "choiceButtons",
       "defaultValue": null,
-      multipleChoice: true,
+      "multipleChoice": false,
       "options": {
         "option_1": {
           "exportId": "option_1",
@@ -454,12 +474,6 @@ export default {
           "label": "Option 2",
           "id": "option_2",
           "sort": 1
-        },
-        "option_3": {
-          "exportId": "other",
-          "label": "Other",
-          "id": "option_3",
-          "sort": 2
         }
       },
       "optionsAlphabeticSort": {
@@ -486,84 +500,151 @@ export default {
           "borderLeftColor": "rgb(0, 0, 0)",
           "borderRightWidth": "0px",
           "borderRightColor": "rgb(0, 0, 0)",
-          "borderTopLeftRadius": "200px",
-          "borderTopRightRadius": "200px",
-          "borderBottomLeftRadius": "200px",
-          "borderBottomRightRadius": "200px",
-          "boxShadow": "none",
+          "borderTopLeftRadius": "8px",
+          "borderTopRightRadius": "8px",
+          "borderBottomLeftRadius": "8px",
+          "borderBottomRightRadius": "8px",
+          "boxShadow": "none"
         },
         "hoverStyleAttributes": {
-          "background": "rgba(0, 0, 0, 0.2)",
+          "background": "rgba(35, 35, 35, 1)",
+          "externalBackgroundUrlSource": false,
+          "borderTopColor": "rgb(0, 0, 0)",
+          "borderBottomColor": "rgb(0, 0, 0)",
+          "borderLeftColor": "rgb(0, 0, 0)",
+          "borderRightColor": "rgb(0, 0, 0)",
+          "boxShadow": null
         },
         "selectedStyleAttributes": {
-          "background": "rgb(73,196,21)",
+          "background": "rgba(35, 35, 35, 1)",
           "borderTopStyle": "solid",
           "borderRightStyle": "solid",
           "borderBottomStyle": "solid",
           "borderLeftStyle": "solid",
-          "borderTopWidth": "1px",
-          "borderTopColor": "rgb(21,92,205)",
-          "borderBottomWidth": "1px",
-          "borderBottomColor": "rgb(21,92,205)",
-          "borderLeftWidth": "1px",
-          "borderLeftColor": "rgb(21,92,205)",
-          "borderRightWidth": "1px",
-          "borderRightColor": "rgb(21,92,205)",
+          "borderTopWidth": "2px",
+          "borderTopColor": "rgba(108, 108, 108, 1)",
+          "borderBottomWidth": "2px",
+          "borderBottomColor": "rgba(108, 108, 108, 1)",
+          "borderLeftWidth": "2px",
+          "borderLeftColor": "rgba(108, 108, 108, 1)",
+          "borderRightWidth": "2px",
+          "borderRightColor": "rgba(108, 108, 108, 1)",
           "boxShadow": "none",
-        }
+          "externalBackgroundUrlSource": false
+        },
+        "hoverAnimationType": null
       }
     ],
-    "adaptiveStyles": cloneStylesToAllEnvs([
-      {
-        "element": "host",
-        "styleAttributes": {
-          "width": "auto",
-          "minHeight": "35px",
-          "marginTop": "0px",
-          "marginBottom": "0px",
-          "marginLeft": "0px",
-          "marginRight": "0px",
-          "_marginEnabled": false,
+    "adaptiveStyles": {
+      "desktop": [
+        {
+          "element": "host",
+          "styleAttributes": {
+            "width": "230px",
+            "minHeight": "35px",
+            "marginTop": "0px",
+            "marginBottom": "0px",
+            "marginLeft": "0px",
+            "marginRight": "0px",
+            "_marginEnabled": false,
+            "zIndex": "0",
+            "minWidth": "230px"
+          },
+          "classes": ""
         },
-        "classes": ""
-      },
-      {
-        "element": "label",
-        "styleAttributes": {
-          "color": "rgba(68, 68, 68, 1)",
-          "textAlign": "start",
-          "lineHeight": "120%",
-          "fontWeight": "400",
-          "fontSize": "14px",
-          "textShadow": "none"
+        {
+          "element": "label",
+          "styleAttributes": {
+            "color": "rgba(68, 68, 68, 1)",
+            "textAlign": "start",
+            "lineHeight": "120%",
+            "fontWeight": "400",
+            "fontSize": "14px",
+            "textShadow": "none"
+          },
+          "classes": ""
         },
-        "classes": ""
-      },
-      {
-        "element": "buttonsContainer",
-        "styleAttributes": {
-          "gap": "10px"
+        {
+          "element": "buttonsContainer",
+          "styleAttributes": {
+            "gap": "10px"
+          }
         },
-      },
-      {
-        "element": "button",
-        "styleAttributes": {
-          "paddingTop": "10px",
-          "paddingBottom": "10px",
-          "paddingLeft": "20px",
-          "paddingRight": "20px",
-          "_paddingEnabled": true,
-          "color": "rgba(255, 255, 255, 1)",
-          "textAlign": "center",
-          "lineHeight": "120%",
-          "fontWeight": "700",
-          "fontSize": "16px",
-          "textShadow": "none",
-          "--textDisplay": "inline"
+        {
+          "element": "button",
+          "styleAttributes": {
+            "paddingTop": "12px",
+            "paddingBottom": "12px",
+            "paddingLeft": "20px",
+            "paddingRight": "20px",
+            "_paddingEnabled": true,
+            "color": "rgba(255, 255, 255, 1)",
+            "textAlign": "center",
+            "lineHeight": "120%",
+            "fontWeight": "500",
+            "fontSize": "16px",
+            "textShadow": "none",
+            "--textDisplay": "inline",
+            "fontFamily": "Montserrat",
+            "letterSpacing": "0px",
+            "textTransform": "none"
+          },
+          "classes": "cl-text-class-button",
+        }
+      ],
+      "mobile": [
+        {
+          "element": "host",
+          "styleAttributes": {
+            "width": "auto",
+            "minHeight": "35px",
+            "marginTop": "0px",
+            "marginBottom": "0px",
+            "marginLeft": "0px",
+            "marginRight": "0px",
+            "_marginEnabled": false,
+            "zIndex": "0"
+          },
+          "classes": ""
         },
-        "classes": "cl-text-class-button"
-      }
-    ]),
+        {
+          "element": "label",
+          "styleAttributes": {
+            "color": "rgba(68, 68, 68, 1)",
+            "textAlign": "start",
+            "lineHeight": "120%",
+            "fontWeight": "400",
+            "fontSize": "14px",
+            "textShadow": "none"
+          },
+          "classes": ""
+        },
+        {
+          "element": "buttonsContainer",
+          "styleAttributes": {
+            "gap": "10px"
+          }
+        },
+        {
+          "element": "button",
+          "styleAttributes": {
+            "paddingTop": "10px",
+            "paddingBottom": "10px",
+            "paddingLeft": "20px",
+            "paddingRight": "20px",
+            "_paddingEnabled": true,
+            "color": "rgba(255, 255, 255, 1)",
+            "textAlign": "center",
+            "lineHeight": "120%",
+            "fontWeight": "700",
+            "fontSize": "16px",
+            "textShadow": "none",
+            "--textDisplay": "inline"
+          },
+          "classes": "cl-text-class-button"
+        }
+      ]
+    }
   },
   "metaDescription": {
     "icon": "/SysChoiceButtonsComponent/assets/img/component-icon.svg",
