@@ -152,15 +152,6 @@ export default {
           "[element=button]",
           "hoverStyleAttributes"
         ],
-        "params": {
-          "animationTypeProp": {
-            "propPath": [
-              "styles",
-              "[element=button]",
-              "hoverAnimationType"
-            ]
-          }
-        },
       },
       {
         "type": "CONTROL",
