@@ -640,7 +640,7 @@ export default {
   "metaDescription": {
     "icon": "/SysChoiceButtonsComponent/assets/img/component-icon.svg",
     "label": {
-      "en": "Single choice",
+      "en": "Choice",
       "ru": "Один вариант",
       "uk": "Один варіант",
       "es": "Opción única",
