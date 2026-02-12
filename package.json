@@ -1,6 +1,6 @@
 {
   "name": "@claspo/components",
-  "version": "1.1.27",
+  "version": "1.1.32",
   "description": "",
   "scripts": {
     "prebuild": "rm -rf out",

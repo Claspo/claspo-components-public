@@ -67,6 +67,18 @@ export default {
       },
       {
         "type": "CONTROL",
+        "name": "TEXT_PARAMS",
+        "params": [
+          {
+            "element": "button"
+          },
+          {
+            "element": "label"
+          }
+        ]
+      },
+      {
+        "type": "CONTROL",
         "name": "NUMBER_INPUT",
         "element": "buttonsContainer",
         "elementProp": "styleAttributes",
@@ -78,18 +90,6 @@ export default {
           },
         },
         valueTransformers: [{name: 'px'}],
-      },
-      {
-        "type": "CONTROL",
-        "name": "TEXT_PARAMS",
-        "params": [
-          {
-            "element": "button"
-          },
-          {
-            "element": "label"
-          }
-        ]
       },
       {
         "type": "CONTROL",
@@ -640,37 +640,37 @@ export default {
   "metaDescription": {
     "icon": "/SysChoiceButtonsComponent/assets/img/component-icon.svg",
     "label": {
-      "en": "Choice",
-      "ru": "Choice",
-      "uk": "Choice",
-      "es": "Choice",
-      "fr": "Choice",
-      "de": "Choice",
-      "it": "Choice",
-      "pt": "Choice",
-      "ro": "Choice",
-      "bg": "Choice",
-      "cs": "Choice",
-      "el": "Choice",
-      "nl": "Choice",
-      "pl": "Choice",
-      "sv": "Choice",
-      "tr": "Choice",
-      "ar": "Choice",
-      "zh": "Choice",
-      "da": "Choice",
-      "he": "Choice",
-      "fi": "Choice",
-      "hi": "Choice",
-      "hr": "Choice",
-      "hu": "Choice",
-      "id": "Choice",
-      "ja": "Choice",
-      "ko": "Choice",
-      "no": "Choice",
-      "sk": "Choice",
-      "sl": "Choice",
-      "sr": "Choice",
+      "en": "Single choice",
+      "ru": "Один вариант",
+      "uk": "Один варіант",
+      "es": "Opción única",
+      "fr": "Choix unique",
+      "de": "Einzelauswahl",
+      "it": "Scelta singola",
+      "pt": "Escolha única",
+      "ro": "Alegere unică",
+      "bg": "Единичен избор",
+      "cs": "Jeden výběr",
+      "el": "Μία επιλογή",
+      "nl": "Enkele keuze",
+      "pl": "Pojedynczy wybór",
+      "sv": "Enskilt val",
+      "tr": "Tek seçim",
+      "ar": "اختيار واحد",
+      "zh": "单选",
+      "da": "Enkelt valg",
+      "he": "בחירה יחידה",
+      "fi": "Yksittäinen valinta",
+      "hi": "एकल विकल्प",
+      "hr": "Jedan izbor",
+      "hu": "Egyetlen választás",
+      "id": "Pilihan tunggal",
+      "ja": "単一選択",
+      "ko": "단일 선택",
+      "no": "Enkelt valg",
+      "sk": "Jednoduchá voľba",
+      "sl": "Ena izbira",
+      "sr": "Један избор",
     }
   },
   "showComponentOptionsPropertyPaneOnInsert": true,
