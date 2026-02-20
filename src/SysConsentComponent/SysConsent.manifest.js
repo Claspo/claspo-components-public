@@ -1,4 +1,5 @@
 import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneStylesToAllEnvs} from "@claspo/renderer/sdk/ModelStyleUtils";
 
 export default {
   "name": "SysConsentComponent",
@@ -310,131 +311,68 @@ export default {
         }
       }
     },
-    "adaptiveStyles": {
-      "desktop": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "paddingTop": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px",
-            "paddingRight": "0px",
-            "_paddingEnabled": false,
-            "width": "100%",
-            "minWidth": null,
-            "height": "auto",
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          },
-          "classes": ""
+    "adaptiveStyles": cloneStylesToAllEnvs([
+      {
+        "element": "host",
+        "styleAttributes": {
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "_paddingEnabled": false,
+          "width": "100%",
+          "minWidth": null,
+          "height": "auto",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "_marginEnabled": false,
         },
-        {
-          "element": "input",
-          "styleAttributes": {
-            "borderTopStyle": "solid",
-            "borderRightStyle": "solid",
-            "borderBottomStyle": "solid",
-            "borderLeftStyle": "solid",
-            "borderTopWidth": "1px",
-            "borderTopColor": "rgba(68, 68, 68, 1)",
-            "borderBottomWidth": "1px",
-            "borderBottomColor": "rgba(68, 68, 68, 1)",
-            "borderLeftWidth": "1px",
-            "borderLeftColor": "rgba(68, 68, 68, 1)",
-            "borderRightWidth": "1px",
-            "borderRightColor": "rgba(68, 68, 68, 1)",
-            "borderTopLeftRadius": "0px",
-            "borderTopRightRadius": "0px",
-            "borderBottomLeftRadius": "0px",
-            "borderBottomRightRadius": "0px"
-          },
-          "markerStyleAttributes": {
-            "inputSize": "22px",
-            "inputToTextGapSize": "13px",
-            "defaultBackground": "rgb(255, 255, 255)",
-            "selectedBackground": "rgb(255, 255, 255)"
-          },
-          "classes": ""
+        "classes": ""
+      },
+      {
+        "element": "input",
+        "styleAttributes": {
+          "borderTopStyle": "solid",
+          "borderRightStyle": "solid",
+          "borderBottomStyle": "solid",
+          "borderLeftStyle": "solid",
+          "borderTopWidth": "1px",
+          "borderTopColor": "rgb(68, 68, 68)",
+          "borderBottomWidth": "1px",
+          "borderBottomColor": "rgb(68, 68, 68)",
+          "borderLeftWidth": "1px",
+          "borderLeftColor": "rgb(68, 68, 68)",
+          "borderRightWidth": "1px",
+          "borderRightColor": "rgb(68, 68, 68)",
+          "borderTopLeftRadius": "0px",
+          "borderTopRightRadius": "0px",
+          "borderBottomLeftRadius": "0px",
+          "borderBottomRightRadius": "0px",
+          "boxShadow": "none"
         },
-        {
-          "element": "label",
-          "styleAttributes": {
-            "color": "rgba(68, 68, 68, 1)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "14px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        }
-      ],
-      "mobile": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "paddingTop": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px",
-            "paddingRight": "0px",
-            "_paddingEnabled": false,
-            "width": "100%",
-            "minWidth": null,
-            "height": "auto",
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          },
-          "classes": ""
+        "markerStyleAttributes": {
+          "inputSize": "22px",
+          "inputToTextGapSize": "13px",
+          "defaultBackground": "rgb(255, 255, 255)",
+          "selectedBackground": "var(--cl-schema-accent, rgb(255, 255, 255))"
         },
-        {
-          "element": "input",
-          "styleAttributes": {
-            "borderTopStyle": "solid",
-            "borderRightStyle": "solid",
-            "borderBottomStyle": "solid",
-            "borderLeftStyle": "solid",
-            "borderTopWidth": "1px",
-            "borderTopColor": "rgba(68, 68, 68, 1)",
-            "borderBottomWidth": "1px",
-            "borderBottomColor": "rgba(68, 68, 68, 1)",
-            "borderLeftWidth": "1px",
-            "borderLeftColor": "rgba(68, 68, 68, 1)",
-            "borderRightWidth": "1px",
-            "borderRightColor": "rgba(68, 68, 68, 1)",
-            "borderTopLeftRadius": "0px",
-            "borderTopRightRadius": "0px",
-            "borderBottomLeftRadius": "0px",
-            "borderBottomRightRadius": "0px",
-            "boxShadow": "none"
-          },
-          "markerStyleAttributes": {
-            "inputSize": "22px",
-            "inputToTextGapSize": "13px",
-            "defaultBackground": "rgb(255, 255, 255)",
-            "selectedBackground": "rgb(255, 255, 255)"
-          },
-          "classes": ""
+        "classes": ""
+      },
+      {
+        "element": "label",
+        "styleAttributes": {
+          "color": "var(--cl-schema-text, rgb(68, 68, 68))",
+          "textAlign": "start",
+          "lineHeight": "120%",
+          "fontWeight": "400",
+          "fontSize": "14px",
+          "textShadow": "none"
         },
-        {
-          "element": "label",
-          "styleAttributes": {
-            "color": "rgba(68, 68, 68, 1)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "14px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        }
-      ]
-    }
+        "classes": ""
+      }
+    ])
   },
   "metaDescription": {
     "icon": "/SysConsentComponent/assets/img/component-icon.svg",

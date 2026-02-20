@@ -1,4 +1,5 @@
 import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneStylesToAllEnvs} from "@claspo/renderer/sdk/ModelStyleUtils";
 
 export default {
   "name": "SysPromoCodeComponent",
@@ -247,13 +248,13 @@ export default {
           "borderBottomStyle": "dashed",
           "borderLeftStyle": "dashed",
           "borderTopWidth": "2px",
-          "borderTopColor": "rgba(68, 68, 68, 1)",
+          "borderTopColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderBottomWidth": "2px",
-          "borderBottomColor": "rgba(68, 68, 68, 1)",
+          "borderBottomColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderLeftWidth": "2px",
-          "borderLeftColor": "rgba(68, 68, 68, 1)",
+          "borderLeftColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderRightWidth": "2px",
-          "borderRightColor": "rgba(68, 68, 68, 1)",
+          "borderRightColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderTopLeftRadius": "0px",
           "borderTopRightRadius": "0px",
           "borderBottomLeftRadius": "0px",
@@ -270,80 +271,45 @@ export default {
           "position": "static",
           "marginLeft": "10px",
           "right": "5px",
-          "color": "rgba(68, 68, 68, 1)",
+          "color": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "--clPromocodeIconWidth": "18px",
           "--clPromocodeIconHeight": "18px"
         }
       }
     ],
-    "adaptiveStyles": {
-      "desktop": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "auto",
-            "minWidth": null,
-            "height": "auto",
-            "minHeight": null,
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          }
+    "adaptiveStyles": cloneStylesToAllEnvs([
+      {
+        "element": "host",
+        "styleAttributes": {
+          "width": "auto",
+          "minWidth": null,
+          "height": "auto",
+          "minHeight": null,
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "_marginEnabled": false
+        }
+      },
+      {
+        "element": "text",
+        "styleAttributes": {
+          "paddingTop": "10px",
+          "paddingBottom": "10px",
+          "paddingLeft": "20px",
+          "paddingRight": "20px",
+          "_paddingEnabled": true,
+          "color": "var(--cl-schema-accent, rgb(68, 68, 68))",
+          "textAlign": "center",
+          "lineHeight": "120%",
+          "fontWeight": "500",
+          "fontSize": "18px",
+          "textShadow": "none"
         },
-        {
-          "element": "text",
-          "styleAttributes": {
-            "paddingTop": "10px",
-            "paddingBottom": "10px",
-            "paddingLeft": "20px",
-            "paddingRight": "20px",
-            "_paddingEnabled": true,
-            "color": "rgba(68, 68, 68, 1)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "500",
-            "fontSize": "18px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        },
-      ],
-      "mobile": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "auto",
-            "minWidth": null,
-            "height": "auto",
-            "minHeight": null,
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false
-          }
-        },
-        {
-          "element": "text",
-          "styleAttributes": {
-            "paddingTop": "10px",
-            "paddingBottom": "10px",
-            "paddingLeft": "20px",
-            "paddingRight": "20px",
-            "_paddingEnabled": true,
-            "color": "rgba(68, 68, 68, 1)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "500",
-            "fontSize": "18px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        },
-      ]
-    },
+        "classes": ""
+      }
+    ]),
     "content": {
       "text": "SALE_15",
       "iconContent": 0,

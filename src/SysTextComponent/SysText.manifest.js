@@ -1,4 +1,5 @@
 import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneStylesToAllEnvs} from "@claspo/renderer/sdk/ModelStyleUtils";
 
 export default {
   "name": "SysTextComponent",
@@ -181,74 +182,39 @@ export default {
         }
       },
     ],
-    "adaptiveStyles": {
-      "desktop": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "100%",
-            "minWidth": null,
-            "height": "auto",
-            "minHeight": null,
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false
-          }
-        },
-        {
-          "element": "text",
-          "styleAttributes": {
-            "paddingTop": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px",
-            "paddingRight": "0px",
-            "_paddingEnabled": false,
-            "color": "rgb(50, 66, 67)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "500",
-            "fontSize": "16px",
-            "textShadow": "none"
-          },
-          "classes": ""
+    "adaptiveStyles": cloneStylesToAllEnvs([
+      {
+        "element": "host",
+        "styleAttributes": {
+          "width": "100%",
+          "minWidth": null,
+          "height": "auto",
+          "minHeight": null,
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "_marginEnabled": false
         }
-      ],
-      "mobile": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "100%",
-            "minWidth": null,
-            "height": "auto",
-            "minHeight": null,
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false
-          }
+      },
+      {
+        "element": "text",
+        "styleAttributes": {
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "_paddingEnabled": false,
+          "color": "var(--cl-schema-text, rgb(50, 66, 67))",
+          "textAlign": "start",
+          "lineHeight": "120%",
+          "fontWeight": "500",
+          "fontSize": "16px",
+          "textShadow": "none"
         },
-        {
-          "element": "text",
-          "styleAttributes": {
-            "paddingTop": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px",
-            "paddingRight": "0px",
-            "_paddingEnabled": false,
-            "color": "rgb(50, 66, 67)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "500",
-            "fontSize": "16px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        }
-      ]
-    },
+        "classes": ""
+      }
+    ]),
     "content": {
       "text": "Text",
       "textContrastEnabled": true

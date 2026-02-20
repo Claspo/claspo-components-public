@@ -1,4 +1,5 @@
-import { cloneControlsToAllEnvs } from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneStylesToAllEnvs} from "@claspo/renderer/sdk/ModelStyleUtils";
 
 export default {
   "name": "SysCountdownTimerComponent",
@@ -922,95 +923,52 @@ export default {
       {
         "element": "separator",
         "styleAttributes": {
-          "color": "rgb(68, 68, 68)"
+          "color": "var(--cl-schema-text, rgb(68, 68, 68))"
         },
         "classes": ""
       }
     ],
-    "adaptiveStyles": {
-      "desktop": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "220px",
-            "minWidth": "220px",
-            "height": "auto",
-            "minHeight": null,
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          },
-          "classes": ""
+    "adaptiveStyles": cloneStylesToAllEnvs([
+      {
+        "element": "host",
+        "styleAttributes": {
+          "width": "220px",
+          "minWidth": "220px",
+          "height": "auto",
+          "minHeight": null,
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "_marginEnabled": false,
         },
-        {
-          "element": "counter",
-          "styleAttributes": {
-            "color": "rgb(0, 0, 0)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "700",
-            "fontSize": "20px",
-            "textShadow": "none"
-          },
-          "classes": ""
+        "classes": ""
+      },
+      {
+        "element": "counter",
+        "styleAttributes": {
+          "color": "var(--cl-schema-text, rgb(0, 0, 0))",
+          "textAlign": "center",
+          "lineHeight": "120%",
+          "fontWeight": "700",
+          "fontSize": "20px",
+          "textShadow": "none"
         },
-        {
-          "element": "label",
-          "styleAttributes": {
-            "color": "rgb(68, 68, 68)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "12px",
-            "textShadow": "none"
-          },
-          "classes": ""
+        "classes": ""
+      },
+      {
+        "element": "label",
+        "styleAttributes": {
+          "color": "var(--cl-schema-text, rgb(68, 68, 68))",
+          "textAlign": "center",
+          "lineHeight": "120%",
+          "fontWeight": "400",
+          "fontSize": "12px",
+          "textShadow": "none"
         },
-      ],
-      "mobile": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "220px",
-            "minWidth": "220px",
-            "height": "auto",
-            "minHeight": null,
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          },
-          "classes": ""
-        },
-        {
-          "element": "counter",
-          "styleAttributes": {
-            "color": "rgb(0, 0, 0)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "700",
-            "fontSize": "20px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        },
-        {
-          "element": "label",
-          "styleAttributes": {
-            "color": "rgb(68, 68, 68)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "12px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        },
-      ]
-    }
+        "classes": ""
+      }
+    ])
   },
   "metaDescription": {
     "icon": "/SysCountdownTimerComponent/assets/img/component-icon.svg",

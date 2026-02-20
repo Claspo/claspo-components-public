@@ -1,4 +1,5 @@
 import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneStylesToAllEnvs} from "@claspo/renderer/sdk/ModelStyleUtils";
 
 export default {
   "name": "SysButtonComponent",
@@ -368,7 +369,7 @@ export default {
       {
         "element": "button",
         "styleAttributes": {
-          "background": "rgb(0, 0, 0)",
+          "background": "var(--cl-schema-accent, rgb(0, 0, 0))",
           "--iconDisplay": "none",
           "--iconSize": "20px",
           "--iconOrder": "-1",
@@ -398,88 +399,46 @@ export default {
         "classes": "cl-loop-animation-PULSE"
       }
     ],
-    "adaptiveStyles": {
-      "desktop": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "auto",
-            "minWidth": null,
-            "height": "35px",
-            "minHeight": "35px",
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          }
-        },
-        {
-          "element": "button",
-          "styleAttributes": {
-            "width": "100%",
-            "height": "100%",
-            "display": "flex",
-            "align-items": "center",
-            "justify-content": "center",
-            "flexDirection": "row",
-            "paddingTop": "10px",
-            "paddingBottom": "10px",
-            "paddingLeft": "20px",
-            "paddingRight": "20px",
-            "_paddingEnabled": true,
-            "color": "rgba(255, 255, 255, 1)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "700",
-            "fontSize": "16px",
-            "textShadow": "none",
-            "--textDisplay": "inline"
-          },
-          "classes": "cl-text-class-button"
+    "adaptiveStyles": cloneStylesToAllEnvs([
+      {
+        "element": "host",
+        "styleAttributes": {
+          "width": "auto",
+          "minWidth": null,
+          "height": "35px",
+          "minHeight": "35px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "_marginEnabled": false,
         }
-      ],
-      "mobile": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "width": "auto",
-            "minWidth": null,
-            "height": "35px",
-            "minHeight": "35px",
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false,
-          }
+      },
+      {
+        "element": "button",
+        "styleAttributes": {
+          "width": "100%",
+          "height": "100%",
+          "display": "flex",
+          "align-items": "center",
+          "justify-content": "center",
+          "flexDirection": "row",
+          "paddingTop": "10px",
+          "paddingBottom": "10px",
+          "paddingLeft": "20px",
+          "paddingRight": "20px",
+          "_paddingEnabled": true,
+          "color": "rgba(255, 255, 255, 1)",
+          "textAlign": "center",
+          "lineHeight": "120%",
+          "fontWeight": "700",
+          "fontSize": "16px",
+          "textShadow": "none",
+          "--textDisplay": "inline"
         },
-        {
-          "element": "button",
-          "styleAttributes": {
-            "width": "100%",
-            "height": "100%",
-            "display": "flex",
-            "align-items": "center",
-            "justify-content": "center",
-            "flexDirection": "row",
-            "paddingTop": "10px",
-            "paddingBottom": "10px",
-            "paddingLeft": "20px",
-            "paddingRight": "20px",
-            "_paddingEnabled": true,
-            "color": "rgba(255, 255, 255, 1)",
-            "textAlign": "center",
-            "lineHeight": "120%",
-            "fontWeight": "700",
-            "fontSize": "16px",
-            "textShadow": "none",
-            "--textDisplay": "inline"
-          },
-          "classes": "cl-text-class-button"
-        }
-      ]
-    },
+        "classes": "cl-text-class-button"
+      }
+    ]),
     "content": {
       "text": "Subscribe",
       "textContrastEnabled": true

@@ -425,19 +425,19 @@ export default {
       {
         "element": "input",
         "markerStyleAttributes": {
-          "selectedColor": "rgba(0, 0, 0, 1)",
+          "selectedColor": "var(--cl-schema-accent, rgb(0, 0, 0))",
           "borderTopStyle": "solid",
           "borderRightStyle": "solid",
           "borderBottomStyle": "solid",
           "borderLeftStyle": "solid",
           "borderTopWidth": "1px",
-          "borderTopColor": "rgba(68, 68, 68, 1)",
+          "borderTopColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderBottomWidth": "1px",
-          "borderBottomColor": "rgba(68, 68, 68, 1)",
+          "borderBottomColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderLeftWidth": "1px",
-          "borderLeftColor": "rgba(68, 68, 68, 1)",
+          "borderLeftColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "borderRightWidth": "1px",
-          "borderRightColor": "rgba(68, 68, 68, 1)",
+          "borderRightColor": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "boxShadow": "none",
           "background": "rgba(255, 255, 255, 1)",
         }
@@ -482,7 +482,7 @@ export default {
           "height": "auto",
           "minHeight": null,
           "background": "rgba(0, 0, 0, 0)",
-          "color": "rgba(68, 68, 68, 1)",
+          "color": "var(--cl-schema-accent, rgb(68, 68, 68))",
           "paddingBottom": "0",
           "paddingLeft": "0",
           "paddingRight": "0",
@@ -504,7 +504,7 @@ export default {
       {
         "element": "label",
         "styleAttributes": {
-          "color": "rgba(68, 68, 68, 1)",
+          "color": "var(--cl-schema-text, rgb(68, 68, 68))",
           "textAlign": "start",
           "lineHeight": "120%",
           "fontWeight": "400",

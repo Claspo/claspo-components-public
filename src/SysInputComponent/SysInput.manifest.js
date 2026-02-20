@@ -1,4 +1,5 @@
 import {cloneControlsToAllEnvs} from '@claspo/renderer/sdk/ManifestUtils';
+import {cloneStylesToAllEnvs} from "@claspo/renderer/sdk/ModelStyleUtils";
 
 export default {
   "name": "SysInputComponent",
@@ -1021,106 +1022,55 @@ export default {
         },
       }
     ],
-    "adaptiveStyles": {
-      "desktop": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false
-          },
-          "classes": ""
+    "adaptiveStyles": cloneStylesToAllEnvs([
+      {
+        "element": "host",
+        "styleAttributes": {
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "_marginEnabled": false
         },
-        {
-          "element": "input",
-          "styleAttributes": {
-            "width": "100%",
-            "minWidth": null,
-            "height": "35px",
-            "minHeight": "35px",
-            "color": "rgb(0, 0, 0)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "16px",
-            "textShadow": "none",
-            "paddingTop": "10px",
-            "paddingBottom": "10px",
-            "paddingLeft": "10px",
-            "paddingRight": "10px",
-            "_paddingEnabled": true,
-          },
-          "placeholderStyleAttributes": {
-            "color": "rgb(81, 81, 81)"
-          },
-          "classes": ""
+        "classes": ""
+      },
+      {
+        "element": "input",
+        "styleAttributes": {
+          "width": "100%",
+          "minWidth": null,
+          "height": "35px",
+          "minHeight": "35px",
+          "color": "var(--cl-schema-text, rgb(0, 0, 0))",
+          "textAlign": "start",
+          "lineHeight": "120%",
+          "fontWeight": "400",
+          "fontSize": "16px",
+          "textShadow": "none",
+          "paddingTop": "10px",
+          "paddingBottom": "10px",
+          "paddingLeft": "10px",
+          "paddingRight": "10px",
+          "_paddingEnabled": true,
         },
-        {
-          "element": "label",
-          "styleAttributes": {
-            "color": "rgb(0, 0, 0)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "16px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        }
-      ],
-      "mobile": [
-        {
-          "element": "host",
-          "styleAttributes": {
-            "marginTop": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px",
-            "marginRight": "0px",
-            "_marginEnabled": false
-          },
-          "classes": ""
+        "placeholderStyleAttributes": {
+          "color": "rgb(81, 81, 81)"
         },
-        {
-          "element": "input",
-          "styleAttributes": {
-            "width": "100%",
-            "minWidth": null,
-            "height": "35px",
-            "minHeight": "35px",
-            "color": "rgb(0, 0, 0)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "16px",
-            "textShadow": "none",
-            "paddingTop": "10px",
-            "paddingBottom": "10px",
-            "paddingLeft": "10px",
-            "paddingRight": "10px",
-            "_paddingEnabled": true,
-          },
-          "placeholderStyleAttributes": {
-            "color": "rgb(81, 81, 81)"
-          },
-          "classes": ""
+        "classes": ""
+      },
+      {
+        "element": "label",
+        "styleAttributes": {
+          "color": "var(--cl-schema-text, rgb(0, 0, 0))",
+          "textAlign": "start",
+          "lineHeight": "120%",
+          "fontWeight": "400",
+          "fontSize": "16px",
+          "textShadow": "none"
         },
-        {
-          "element": "label",
-          "styleAttributes": {
-            "color": "rgb(0, 0, 0)",
-            "textAlign": "start",
-            "lineHeight": "120%",
-            "fontWeight": "400",
-            "fontSize": "16px",
-            "textShadow": "none"
-          },
-          "classes": ""
-        }
-      ]
-    }
+        "classes": ""
+      }
+    ])
   },
   "metaDescription": {
     "icon": "/SysInputComponent/assets/img/text-input-component-icon.svg",
