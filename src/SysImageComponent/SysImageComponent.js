@@ -28,6 +28,7 @@ export default class SysImageComponent extends WcElement {
     manifest: SysImageManifest,
   };
 
+
   constructor() {
     super();
     this.originalApplyAutoAdaptiveStyles = this.applyAutoAdaptiveStyles;
@@ -43,93 +44,9 @@ export default class SysImageComponent extends WcElement {
 
   }
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.resourcesLoadedListener?.off();
-  }
-
-  applyStylesRespectingRelativePositioning() {
-    const adaptiveStyles = this.processPositioningStyles(this.getProps());
-    this.originalApplyAutoAdaptiveStyles(adaptiveStyles);
-    this.fixFloatingImageSize(adaptiveStyles);
-  }
-
-  recalculateStylesAfterImageLoad() {
-    this.resourcesLoadedListener = this.services.eventEmitter.on('VIEW_COMPONENT_RESOURCES_LOADED', () => {
-      requestAnimationFrame(() => {
-        this.applyAdaptiveStyles(this.getProps());
-      });
-    });
-  }
-
-  _getHostNewDimensionsWithStyles(styleAttributes = {}) {
-    const host = this.getHostElement();
-    const dimensionalStyleNames = ['height', 'width', 'minHeight', 'minWidth', 'maxHeight', 'maxWidth', 'display'];
-    dimensionalStyleNames.forEach((style) => {
-      if (styleAttributes[style]) {
-        host.style[style] = styleAttributes[style];
-      } else if (host.style[style]) {
-        host.style[style] = '';
-      }
-    });
-    const { offsetWidth: width, offsetHeight: height } = host;
-    return { width, height };
-  }
-
-  processPositioningStyles(props) {
-    const adaptiveStyles = props.adaptiveStyles;
-    const mode = props.control?.positioningMode || PositioningModes.FIXED;
-
-    if (mode === PositioningModes.FIXED) {
-      return adaptiveStyles
-    }
-
-    const environment = this.getEnvironment();
-    const positioning = props.control?.positioning?.[environment] || {};
-    const diff = positioning?.diff || {};
-    const hasDiff = Boolean('x' in diff && 'y' in diff);
-
-    if (!hasDiff) {
-      return adaptiveStyles;
-    }
-
-    const { styleAttributes } = getAdaptiveStylesForPlatform(adaptiveStyles, environment, 'host');
-    const { width, height } = this._getHostNewDimensionsWithStyles(styleAttributes);
-    const newStyleAttributes = omitKeys(styleAttributes, ['left', 'right', 'top', 'bottom']);
-
-    // process x
-    const xCenter = width / 2;
-    const shiftedX = diff.x - xCenter;
-    if (positioning.horizontalPosition === HorizontalPosition.LEFT) {
-      newStyleAttributes.left = `${shiftedX}px`;
-      newStyleAttributes.right = 'auto';
-    } else if (positioning.horizontalPosition === HorizontalPosition.RIGHT) {
-      newStyleAttributes.right = `${-width - shiftedX}px`;
-      newStyleAttributes.left = 'auto';
-    } else {
-      newStyleAttributes.left = `calc(50% + ${shiftedX}px)`;
-      newStyleAttributes.right = 'auto';
-    }
-
-    // process y
-    const yCenter = height / 2;
-    const shiftedY = diff.y - yCenter;
-    if (positioning.verticalPosition === VerticalPosition.TOP) {
-      newStyleAttributes.top = `${shiftedY}px`;
-      newStyleAttributes.bottom = 'auto';
-    } else if (positioning.verticalPosition === VerticalPosition.BOTTOM) {
-      newStyleAttributes.bottom = `${-height - shiftedY}px`;
-      newStyleAttributes.top = 'auto';
-    } else {
-      newStyleAttributes.top = `calc(50% + ${shiftedY}px)`;
-      newStyleAttributes.bottom = 'auto';
-    }
-
-    return replaceStyleAttributes(adaptiveStyles, environment, 'host', newStyleAttributes);
-  }
-
   connectedCallback() {
     super.connectedCallback();
+    this.skipGameBlur = !this._isFloating();
 
     this.componentResourceManager.getPending().increment();
     this.recalculateStylesAfterImageLoad();
@@ -195,6 +112,77 @@ export default class SysImageComponent extends WcElement {
 
     });
 
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.resourcesLoadedListener?.off();
+  }
+
+  applyStylesRespectingRelativePositioning() {
+    const adaptiveStyles = this.processPositioningStyles(this.getProps());
+    this.originalApplyAutoAdaptiveStyles(adaptiveStyles);
+    this.fixFloatingImageSize(adaptiveStyles);
+  }
+
+  recalculateStylesAfterImageLoad() {
+    this.resourcesLoadedListener = this.services.eventEmitter.on('VIEW_COMPONENT_RESOURCES_LOADED', () => {
+      requestAnimationFrame(() => {
+        this.applyAdaptiveStyles(this.getProps());
+      });
+    });
+  }
+
+  processPositioningStyles(props) {
+    const adaptiveStyles = props.adaptiveStyles;
+    const mode = props.control?.positioningMode || PositioningModes.FIXED;
+
+    if (mode === PositioningModes.FIXED) {
+      return adaptiveStyles
+    }
+
+    const environment = this.getEnvironment();
+    const positioning = props.control?.positioning?.[environment] || {};
+    const diff = positioning?.diff || {};
+    const hasDiff = Boolean('x' in diff && 'y' in diff);
+
+    if (!hasDiff) {
+      return adaptiveStyles;
+    }
+
+    const { styleAttributes } = getAdaptiveStylesForPlatform(adaptiveStyles, environment, 'host');
+    const { width, height } = this._getHostNewDimensionsWithStyles(styleAttributes);
+    const newStyleAttributes = omitKeys(styleAttributes, ['left', 'right', 'top', 'bottom']);
+
+    // process x
+    const xCenter = width / 2;
+    const shiftedX = diff.x - xCenter;
+    if (positioning.horizontalPosition === HorizontalPosition.LEFT) {
+      newStyleAttributes.left = `${shiftedX}px`;
+      newStyleAttributes.right = 'auto';
+    } else if (positioning.horizontalPosition === HorizontalPosition.RIGHT) {
+      newStyleAttributes.right = `${-width - shiftedX}px`;
+      newStyleAttributes.left = 'auto';
+    } else {
+      newStyleAttributes.left = `calc(50% + ${shiftedX}px)`;
+      newStyleAttributes.right = 'auto';
+    }
+
+    // process y
+    const yCenter = height / 2;
+    const shiftedY = diff.y - yCenter;
+    if (positioning.verticalPosition === VerticalPosition.TOP) {
+      newStyleAttributes.top = `${shiftedY}px`;
+      newStyleAttributes.bottom = 'auto';
+    } else if (positioning.verticalPosition === VerticalPosition.BOTTOM) {
+      newStyleAttributes.bottom = `${-height - shiftedY}px`;
+      newStyleAttributes.top = 'auto';
+    } else {
+      newStyleAttributes.top = `calc(50% + ${shiftedY}px)`;
+      newStyleAttributes.bottom = 'auto';
+    }
+
+    return replaceStyleAttributes(adaptiveStyles, environment, 'host', newStyleAttributes);
   }
 
   deleteElementIfPresent(rootElement, cssSelector) {
@@ -334,11 +322,7 @@ export default class SysImageComponent extends WcElement {
       return;
     }
 
-    if (
-      // for backward compatibility
-      !this.getModel().floating &&
-      !this.getProps().floating
-    ) {
+    if (!this._isFloating()) {
       imageElement.style.width = '100%';
       return;
     }
@@ -353,5 +337,25 @@ export default class SysImageComponent extends WcElement {
     } else {
       imageElement.style.width = '100%';
     }
+  }
+
+  _getHostNewDimensionsWithStyles(styleAttributes = {}) {
+    const host = this.getHostElement();
+    const dimensionalStyleNames = ['height', 'width', 'minHeight', 'minWidth', 'maxHeight', 'maxWidth', 'display'];
+    dimensionalStyleNames.forEach((style) => {
+      if (styleAttributes[style]) {
+        host.style[style] = styleAttributes[style];
+      } else if (host.style[style]) {
+        host.style[style] = '';
+      }
+    });
+    const { offsetWidth: width, offsetHeight: height } = host;
+    return { width, height };
+  }
+
+  _isFloating() {
+    return this.getProps().floating
+      // for backward compatibility
+      || this.getModel().floating;
   }
 }

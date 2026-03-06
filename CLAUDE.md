@@ -72,7 +72,6 @@ src/Sys[ComponentName]Component/
 - Components exposed globally as `window.clComponentClass_[ComponentName]`
 - Assets automatically copied during build
 - Shadow DOM used for style encapsulation
-- **Arrow Methods Transformation**: A custom Babel plugin (`babel-plugin-arrow-methods.js`) automatically transforms class methods to arrow functions during build for Firefox compatibility. Excluded: `constructor`, `connectedCallback`, `disconnectedCallback`, static methods, getters/setters.
 
 ### Testing
 - Jest with jsdom for DOM testing

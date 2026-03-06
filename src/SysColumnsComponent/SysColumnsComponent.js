@@ -13,6 +13,7 @@ export default class SysColumnsComponent extends WcElement {
 
   manifest = SysColumnsManifest;
 
+
   constructor() {
     super();
     this.getRootElement().innerHTML = `

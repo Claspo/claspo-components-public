@@ -1,13 +1,16 @@
 {
   "name": "@claspo/components",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "scripts": {
     "prebuild": "rm -rf out",
     "build": "npm run prebuild && webpack",
+    "build:local": "npm run prebuild && USE_LOCAL_SOURCES=1 webpack",
     "dev": "npm run prebuild && npx cross-env dev=1 webpack --watch",
+    "dev:local": "npm run prebuild && npx cross-env dev=1 USE_LOCAL_SOURCES=1 webpack --watch",
     "test": "jest --no-cache --config jest.config.js",
     "bundle": "rm -rf out && npm i && npm run test && npm run build",
+    "bundle:local": "rm -rf out && npm i && npm run test && npm run build:local",
     "package": "npm run bundle && cp package.json LICENSE.md README.md out && cd out && npm publish --access=public && cd .."
   },
   "engines": {
@@ -15,7 +18,7 @@
   },
   "dependencies": {
     "@claspo/common": "7.0.0",
-    "@claspo/renderer": "18.0.0"
+    "@claspo/renderer": "18.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",

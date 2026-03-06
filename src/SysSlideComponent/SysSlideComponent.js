@@ -12,6 +12,7 @@ export default class SysSlideComponent extends WcElement {
 
   manifest = SysSlideManifest;
 
+
   constructor() {
     super();
     this.getRootElement().innerHTML = `

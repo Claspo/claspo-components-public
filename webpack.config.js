@@ -45,6 +45,7 @@ const copyAssets = componentNames.map(componentName => ({
 const isDev = process.env.dev && process.env.dev === '1';
 
 module.exports = {
+    cache: false,
     mode: isDev ? 'development' : 'production',
     experiments: {
         outputModule: true,
@@ -62,7 +63,12 @@ module.exports = {
         },
     },
     resolve: {
+        cache: false,
         extensions: ['.ts', '.js'], // Resolve TypeScript and JavaScript files
+        alias: process.env.USE_LOCAL_SOURCES ? {
+            '@claspo/common': path.resolve(__dirname, '../esputnik-forms-frontend/common/out'),
+            '@claspo/renderer': path.resolve(__dirname, '../esputnik-forms-frontend/renderer/out'),
+        } : {},
     },
     module: {
         rules: [
