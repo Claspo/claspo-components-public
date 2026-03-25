@@ -142,6 +142,20 @@ export default {
           },
           {
             "type": "CONTROL",
+            "name": "DISPLAY",
+            "propPath": [
+              "adaptiveStyles",
+              "mobile"
+            ],
+            "elementProp": "styleAttributes",
+            "elementSubProp": "display",
+            "element": "host",
+            "params": {
+              "label": "DOCUMENT_DISPLAY_ON_MOBILE"
+            }
+          },
+          {
+            "type": "CONTROL",
             "name": "BORDER_RADIUS",
             "elementProp": "styleAttributes",
             "element": "image",
@@ -254,8 +268,7 @@ export default {
             "element": "host",
             "params": {
               "label": "DOCUMENT_DISPLAY_ON_MOBILE"
-            },
-            "displayCondition": "return sdk.appConfig.modelType !== 'RESPONSIVE'"
+            }
           },
           {
             "type": "CONTROL",

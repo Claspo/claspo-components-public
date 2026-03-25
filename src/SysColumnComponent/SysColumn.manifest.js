@@ -87,6 +87,21 @@ export default {
           },
           {
             "type": "CONTROL",
+            "name": "DISPLAY",
+            "propPath": [
+              "adaptiveStyles",
+              "mobile"
+            ],
+            "elementProp": "styleAttributes",
+            "elementSubProp": "display",
+            "element": "host",
+            "params": {
+              "label": "DOCUMENT_DISPLAY_ON_MOBILE",
+              "displayPropertyValue": 'inline-flex'
+            },
+          },
+          {
+            "type": "CONTROL",
             "name": "BACKGROUND",
             "elementProp": "styleAttributes",
             "element": "host",
@@ -163,7 +178,6 @@ export default {
               "label": "DOCUMENT_DISPLAY_ON_MOBILE",
               "displayPropertyValue": 'inline-flex'
             },
-            "displayCondition": "return (sdk.appConfig.columnsOptions?.allowHideColumnOnMobile ?? true) === true",
           },
           {
             "type": "CONTROL",
