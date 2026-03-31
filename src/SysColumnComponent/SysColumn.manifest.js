@@ -125,7 +125,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "hideSyncSelect": true
           },
           {
@@ -136,7 +135,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "hideSyncSelect": true
           },
           {
@@ -204,7 +202,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "hideSyncSelect": true
           },
           {
@@ -215,7 +212,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "hideSyncSelect": true
           },
           {

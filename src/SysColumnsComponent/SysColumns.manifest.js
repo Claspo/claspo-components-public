@@ -132,7 +132,6 @@ export default {
                 minValue: 50,
               }
             },
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -181,7 +180,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -192,7 +190,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -203,7 +200,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -271,7 +267,6 @@ export default {
                 ]
               }
             },
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -320,7 +315,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -331,7 +325,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
@@ -342,7 +335,6 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType !== 'CONTENT_LOCKER' : true",
             "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
           },
           {
