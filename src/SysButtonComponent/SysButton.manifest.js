@@ -192,9 +192,9 @@ export default {
         "params": {
           "syncContentComponentName": "SysNetPromoterScoreComponent",
         },
-        "displayCondition": "return (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent'])?.length === 1) " +
-          "&& (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysFeedbackComponent'])?.length === 0) " +
-          "&& sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type))",
+        "displayCondition": (sdk) => (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent'])?.length === 1)
+          && (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysFeedbackComponent'])?.length === 0)
+          && sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type)),
       },
       {
         "type": "CONTROL",
@@ -205,9 +205,9 @@ export default {
         "params": {
           "syncContentComponentName": "SysFeedbackComponent"
         },
-        "displayCondition": "return (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysFeedbackComponent'])?.length === 1) " +
-          "&& (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent'])?.length === 0) " +
-          "&& sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type))",
+        "displayCondition": (sdk) => (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysFeedbackComponent'])?.length === 1)
+          && (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent'])?.length === 0)
+          && sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type)),
       },
       {
         "type": "CONTROL",
@@ -217,12 +217,12 @@ export default {
         ],
         "params": {
           "origin": true,
-          "hideSubmitActionCondition": "return (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 1) " +
-            "&& sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type))",
-          "hideGoToViewActionCondition": "return (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 1) " +
-            "&& sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type))",
-          "showTitleCondition": "return sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 0",
-          "showRunGameActionCondition": "return sdk.documentUtils.getExternalStartGamingComponents([sdk.componentView], sdk.manifests)?.length !== 0",
+          "hideSubmitActionCondition": (sdk) => (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 1)
+            && sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type)),
+          "hideGoToViewActionCondition": (sdk) => (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 1)
+            && sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type)),
+          "showTitleCondition": (sdk) => sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 0,
+          "showRunGameActionCondition": (sdk) => sdk.documentUtils.getExternalStartGamingComponents([sdk.componentView], sdk.manifests)?.length !== 0,
         },
       },
     ]

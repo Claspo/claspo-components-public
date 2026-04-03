@@ -158,7 +158,7 @@ export default {
       {
         "type": "CONTROL",
         "name": "INTEGRATION_FIELD_MAPPING",
-        "displayCondition": "const controlName = sdk.component.getProps().control.name; return !['email', 'phone', 'first_name', 'last_name'].includes(controlName);",
+        "displayCondition": (sdk) => !['email', 'phone', 'first_name', 'last_name'].includes(sdk.component.getProps().control.name),
         "params": {
           "integrationNamePropPath": ["control", "integrationName"],
           "groupNamePropPath": ["control", "groupName"],

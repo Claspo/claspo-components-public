@@ -72,7 +72,7 @@ export default {
             ]
           }
         },
-        "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+        "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       },
       {
         "type": "CONTROL",
@@ -106,7 +106,7 @@ export default {
         "params": {
           "onlyColorSelection": true
         },
-        "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+        "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       },
       {
         "type": "CONTROL",
@@ -116,7 +116,7 @@ export default {
         "params": {
           "indentationType": "PADDING"
         },
-        "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+        "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       },
       {
         "type": "CONTROL",
@@ -126,7 +126,7 @@ export default {
         "params": {
           "indentationType": "MARGIN"
         },
-        "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+        "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       }
     ])
   },

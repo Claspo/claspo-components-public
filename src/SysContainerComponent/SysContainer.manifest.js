@@ -57,7 +57,7 @@ export default {
             "name": "ALIGNMENT",
             "elementProp": "styleAttributes",
             "element": "host",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -80,14 +80,14 @@ export default {
                 ]
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
             "name": "BACKGROUND",
             "elementProp": "styleAttributes",
             "element": "host",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'",
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER',
             "syncSelectOptions": [
               'SAME_TYPE_CROSS_ENV_WHILE_VALUES_MATCH',
               null,
@@ -102,8 +102,8 @@ export default {
               "styleAttributes"
             ],
             "hideSyncSelect": true,
-            "displayCondition": "return sdk.component.type === 'VIEW' ? (sdk.appConfig.allowBackdropFilterOnView ?? true) : true",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "displayCondition": (sdk) => sdk.component.type === 'VIEW' ? (sdk.editorConfig.allowBackdropFilterOnView ?? true) : true,
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -113,7 +113,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -123,7 +123,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -133,7 +133,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -143,7 +143,7 @@ export default {
             "params": {
               "indentationType": "PADDING"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -153,8 +153,8 @@ export default {
             "params": {
               "indentationType": "MARGIN"
             },
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType === 'BUILT_IN' : true",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "displayCondition": (sdk) => sdk.component.type === 'VIEW' ? sdk.layoutType === 'BUILT_IN' : true,
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -180,7 +180,7 @@ export default {
                 'false': 'visible'
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
         ]
       },
@@ -196,7 +196,7 @@ export default {
             "name": "ALIGNMENT",
             "elementProp": "styleAttributes",
             "element": "host",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -219,14 +219,14 @@ export default {
                 ]
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
             "name": "BACKGROUND",
             "elementProp": "styleAttributes",
             "element": "host",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'",
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER',
             "syncSelectOptions": [
               'SAME_TYPE_CROSS_ENV_WHILE_VALUES_MATCH',
               null,
@@ -241,8 +241,8 @@ export default {
               "styleAttributes"
             ],
             "hideSyncSelect": true,
-            "displayCondition": "return sdk.component.type === 'VIEW' ? (sdk.appConfig.allowBackdropFilterOnView ?? true) : true",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "displayCondition": (sdk) => sdk.component.type === 'VIEW' ? (sdk.editorConfig.allowBackdropFilterOnView ?? true) : true,
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -252,7 +252,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -262,7 +262,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -272,7 +272,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -282,7 +282,7 @@ export default {
             "params": {
               "indentationType": "PADDING"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -292,8 +292,8 @@ export default {
             "params": {
               "indentationType": "MARGIN"
             },
-            "displayCondition": "return sdk.component.type === 'VIEW' ? sdk.layoutType === 'BUILT_IN' : true",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "displayCondition": (sdk) => sdk.component.type === 'VIEW' ? sdk.layoutType === 'BUILT_IN' : true,
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -319,7 +319,7 @@ export default {
                 'false': 'visible'
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
         ]
       }
@@ -334,7 +334,7 @@ export default {
         "params": {
           "origin": true
         },
-        "displayCondition": "return sdk.widgetType !== 'TEASER'"
+        "displayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       }
     ]
   },
@@ -353,7 +353,7 @@ export default {
         "params": {
           "origin": false
         },
-        "displayCondition": "return sdk.widgetType !== 'TEASER'"
+        "displayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       }
     ]
   },

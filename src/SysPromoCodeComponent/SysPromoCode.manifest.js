@@ -171,7 +171,7 @@ export default {
           "text": "DOCUMENT_CLICK_COMPONENT_TO_COPY_TO_CLIPBOARD",
           "type": "SECONDARY"
         },
-        "displayCondition": "return !sdk.documentUtils.findComponentsByTypes(sdk.views ,['PRIZE_BASED_GAMING']).some(c => c.path[0] < sdk.component.path[0])"
+        "displayCondition": (sdk) => !sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING']).some(c => c.path[0] < sdk.component.path[0])
       },
       {
         "type": "CONTROL",
@@ -183,7 +183,7 @@ export default {
         "params": {
           "linkedGamifiedComponentType": "PRIZE_BASED_GAMING",
         },
-        "displayCondition": "return sdk.documentUtils.findComponentsByTypes(sdk.views ,['PRIZE_BASED_GAMING']).some(c => c.path[0] < sdk.component.path[0])"
+        "displayCondition": (sdk) => sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING']).some(c => c.path[0] < sdk.component.path[0])
       },
       {
         "type": "CONTROL",
@@ -197,7 +197,7 @@ export default {
           "boldLabel": true,
           "tooltip": "i18n_DOCUMENT_COUNT_AS_TARGET_ACTION_TOOLTIP",
         },
-        "displayCondition": "return sdk.widgetType === 'INFORMER'"
+        "displayCondition": (sdk) => sdk.widgetType === 'INFORMER'
       },
     ]
   },

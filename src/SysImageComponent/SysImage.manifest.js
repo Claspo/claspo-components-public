@@ -83,7 +83,7 @@ export default {
                 ]
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -108,7 +108,7 @@ export default {
                 }
               ]
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -124,11 +124,11 @@ export default {
             "name": "FLOATING_COMPONENT_POSITION",
             "element": "host",
             "elementProp": "styleAttributes",
-            "displayCondition": "return sdk.component.getProps().floating ? !sdk.component.getProps().control.positioning : false;",
+            "displayCondition": (sdk) => sdk.component.getProps().floating ? !sdk.component.getProps().control.positioning : false,
             "params": {
               "label": "DOCUMENT_POSITION"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -159,29 +159,29 @@ export default {
             "name": "BORDER_RADIUS",
             "elementProp": "styleAttributes",
             "element": "image",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
             "name": "INDENTATION",
             "elementProp": "styleAttributes",
             "element": "host",
-            "displayCondition": "return !sdk.component.getProps().floating;",
+            "displayCondition": (sdk) => !sdk.component.getProps().floating,
             "params": {
               "indentationType": "PADDING"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
             "name": "INDENTATION",
             "elementProp": "styleAttributes",
             "element": "host",
-            "displayCondition": "return !sdk.component.getProps().floating;",
+            "displayCondition": (sdk) => !sdk.component.getProps().floating,
             "params": {
               "indentationType": "MARGIN"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           }
         ]
       },
@@ -213,7 +213,7 @@ export default {
                 ]
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -238,7 +238,7 @@ export default {
                 }
               ]
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -254,11 +254,11 @@ export default {
             "name": "FLOATING_COMPONENT_POSITION",
             "element": "host",
             "elementProp": "styleAttributes",
-            "displayCondition": "return sdk.component.getProps().floating ? !sdk.component.getProps().control.positioning : false;",
+            "displayCondition": (sdk) => sdk.component.getProps().floating ? !sdk.component.getProps().control.positioning : false,
             "params": {
               "label": "DOCUMENT_POSITION"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
@@ -275,29 +275,29 @@ export default {
             "name": "BORDER_RADIUS",
             "elementProp": "styleAttributes",
             "element": "image",
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
             "name": "INDENTATION",
             "elementProp": "styleAttributes",
             "element": "host",
-            "displayCondition": "return !sdk.component.getProps().floating;",
+            "displayCondition": (sdk) => !sdk.component.getProps().floating,
             "params": {
               "indentationType": "PADDING"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
           {
             "type": "CONTROL",
             "name": "INDENTATION",
             "elementProp": "styleAttributes",
             "element": "host",
-            "displayCondition": "return !sdk.component.getProps().floating;",
+            "displayCondition": (sdk) => !sdk.component.getProps().floating,
             "params": {
               "indentationType": "MARGIN"
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           }
         ]
       }
@@ -312,7 +312,7 @@ export default {
         "params": {
           "origin": true
         },
-        "displayCondition": "return sdk.widgetType !== 'TEASER'"
+        "displayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       }
     ]
   },
@@ -327,7 +327,7 @@ export default {
         "params": {
           "origin": false
         },
-        "displayCondition": "return sdk.widgetType !== 'TEASER'"
+        "displayCondition": (sdk) => sdk.widgetType !== 'TEASER'
       }
     ]
   },

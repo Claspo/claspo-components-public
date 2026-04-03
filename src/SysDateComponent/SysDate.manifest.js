@@ -159,7 +159,7 @@ export default {
           "content",
           "askYear"
         ],
-        "displayCondition": "return !sdk.appConfig.useContactFields"
+        "displayCondition": (sdk) => !sdk.editorConfig.useContactFields
       },
       {
         "type": "CONTROL",

@@ -30,7 +30,7 @@ export default {
         {
           "type": "CONTROL",
           "name": "CONTAINER_PADDING",
-          "propPathCondition": "return sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']}",
+          "propPathCondition": (sdk) => sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']},
         },
         {
           "type": "CONTROL",
@@ -78,7 +78,7 @@ export default {
         {
           "type": "CONTROL",
           "name": "CONTAINER_PADDING",
-          "propPathCondition": "return sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']}",
+          "propPathCondition": (sdk) => sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']},
         },
         {
           "type": "CONTROL",
@@ -132,7 +132,7 @@ export default {
                 minValue: 50,
               }
             },
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -156,7 +156,7 @@ export default {
             "name": "BACKGROUND",
             "elementProp": "styleAttributes",
             "element": "host",
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
             "syncSelectOptions": [
               'SAME_TYPE_CROSS_ENV_WHILE_VALUES_MATCH',
               null,
@@ -170,7 +170,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'"
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW'
           },
           {
             "type": "CONTROL",
@@ -180,7 +180,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -190,7 +190,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -200,16 +200,16 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
             "name": "INDENTATION",
-            "propPathCondition": "return sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']}",
+            "propPathCondition": (sdk) => sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']},
             "params": {
               "indentationType": "PADDING"
             },
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -235,7 +235,7 @@ export default {
                 'false': 'visible'
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
         ]
       },
@@ -267,7 +267,7 @@ export default {
                 ]
               }
             },
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -291,7 +291,7 @@ export default {
             "name": "BACKGROUND",
             "elementProp": "styleAttributes",
             "element": "host",
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
             "syncSelectOptions": [
               'SAME_TYPE_CROSS_ENV_WHILE_VALUES_MATCH',
               null,
@@ -305,7 +305,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -315,7 +315,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -325,7 +325,7 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
@@ -335,12 +335,12 @@ export default {
               "[element=host]",
               "styleAttributes"
             ],
-            "syncSelectDisplayCondition": "return sdk.component.type === 'VIEW'",
+            "syncSelectDisplayCondition": (sdk) => sdk.component.type === 'VIEW',
           },
           {
             "type": "CONTROL",
             "name": "INDENTATION",
-            "propPathCondition": "return sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']}",
+            "propPathCondition": (sdk) => sdk.component.type === 'VIEW' ? {element: 'host', elementProp: 'styleAttributes'} : {propPath: ['styles', '[element=host]', 'styleAttributes']},
             "params": {
               "indentationType": "PADDING"
             }
@@ -369,7 +369,7 @@ export default {
                 'false': 'visible'
               }
             },
-            "syncSelectDisplayCondition": "return sdk.widgetType !== 'TEASER'"
+            "syncSelectDisplayCondition": (sdk) => sdk.widgetType !== 'TEASER'
           },
         ]
       }
