@@ -53,6 +53,7 @@ export default class SysImageComponent extends WcElement {
 
     this.observeProps((prev, next) => {
       this.applyAutoAdaptiveStyles(next.adaptiveStyles);
+      this.applyAltText(next);
 
       const imageElement = this.getElement('image');
 
@@ -80,6 +81,7 @@ export default class SysImageComponent extends WcElement {
 
         this.deleteElementIfPresent(this.getRootElement(), 'img');
         this.upsertSvg(this.getRootElement(), nextInlineSVGUrl).then(() => {
+          this.applyAltText(next);
           this.applyAdaptiveStyles(next);
         });
 
@@ -93,6 +95,7 @@ export default class SysImageComponent extends WcElement {
         this.deleteElementIfPresent(this.getRootElement(), '.svgOverflowContainer');
         this.upsertImage(this.getRootElement(), nextUrl)
           .then(() => {
+            this.applyAltText(next);
             this.applyAdaptiveStyles(next);
             // this.componentResourceManager.getPending().decrement();
 
@@ -104,6 +107,7 @@ export default class SysImageComponent extends WcElement {
         this.deleteElementIfPresent(this.getRootElement(), '.svgOverflowContainer');
         this.upsertImage(this.getRootElement(), this.assets('img/image-placeholder.svg'))
           .then(() => {
+            this.applyAltText(next);
             this.applyAdaptiveStyles(next);
           });
 
@@ -117,6 +121,17 @@ export default class SysImageComponent extends WcElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.resourcesLoadedListener?.off();
+  }
+
+  applyAltText(props) {
+    const imageElement = this.getElement('image');
+    if (!imageElement) return;
+    const altText = props.control?.altText || '';
+    if (imageElement.nodeName === 'IMG') {
+      imageElement.alt = altText;
+    } else {
+      imageElement.setAttribute('aria-label', altText);
+    }
   }
 
   applyStylesRespectingRelativePositioning() {

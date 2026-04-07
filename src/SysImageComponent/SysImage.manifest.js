@@ -313,6 +313,18 @@ export default {
           "origin": true
         },
         "displayCondition": (sdk) => sdk.widgetType !== 'TEASER'
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_INPUT",
+        "propPath": [
+          "control",
+          "altText"
+        ],
+        "params": {
+          "label": "DOCUMENT_IMAGE_ALT_TEXT",
+          "tooltip": "DOCUMENT_IMAGE_ALT_TEXT_TOOLTIP"
+        }
       }
     ]
   },
@@ -328,12 +340,25 @@ export default {
           "origin": false
         },
         "displayCondition": (sdk) => sdk.widgetType !== 'TEASER'
+      },
+      {
+        "type": "CONTROL",
+        "name": "TEXT_INPUT",
+        "propPath": [
+          "control",
+          "altText"
+        ],
+        "params": {
+          "label": "DOCUMENT_IMAGE_ALT_TEXT",
+          "tooltip": "DOCUMENT_IMAGE_ALT_TEXT_TOOLTIP"
+        }
       }
     ]
   },
   "i18nPropPaths": [
     "handlers,[id],actions,[id],params,link",
-    "handlers,[id],actions,[id],params,customData"
+    "handlers,[id],actions,[id],params,customData",
+    "control,altText"
   ],
   "events": {
     "dispatch": [],
@@ -343,7 +368,8 @@ export default {
     "control": {
       "imageSource": {
         "url": ""
-      }
+      },
+      "altText": ""
     },
     "adaptiveStyles": {
       "desktop": [
