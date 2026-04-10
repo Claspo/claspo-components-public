@@ -81,7 +81,7 @@ export default {
             "elementProp": "styleAttributes",
             "element": "host",
             "params": {
-              "mode": "horizontal"
+              hideDirectionControl: true,
             },
             "hideSyncSelect": true
           },
@@ -162,7 +162,7 @@ export default {
             "elementProp": "styleAttributes",
             "element": "host",
             "params": {
-              "mode": "horizontal"
+              hideDirectionControl: true,
             },
             "hideSyncSelect": true
           },
@@ -253,10 +253,7 @@ export default {
       "type": "CONTROL",
       "name": "PARENT_ALIGNMENT",
       "elementProp": "styleAttributes",
-      "element": "host",
-      "params": {
-        "mode": "horizontal"
-      }
+      "element": "host"
     },
     {
       "type": "CONTROL",

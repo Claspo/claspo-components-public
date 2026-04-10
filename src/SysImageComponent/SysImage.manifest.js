@@ -79,7 +79,6 @@ export default {
                 "options": [
                   "fixed",
                   "fill",
-                  "hug"
                 ]
               }
             },
@@ -209,7 +208,6 @@ export default {
                 "options": [
                   "fixed",
                   "fill",
-                  "hug"
                 ]
               }
             },
