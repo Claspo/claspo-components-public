@@ -94,7 +94,6 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
   registerControl(rootElement) {
     this.registeredControl = this.createControlWithValidation();
-    this.registeredControl.setValue(null, { silent: true, skipValidation: true });
   }
 
   getOptions(search = '') {

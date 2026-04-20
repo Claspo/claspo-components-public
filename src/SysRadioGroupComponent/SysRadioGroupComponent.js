@@ -314,7 +314,6 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     this.registeredControl = this.createControlWithValidation([], {
       tooltipElement
     });
-    this.registeredControl.setValue(null, {silent: true, skipValidation: true});
   }
 
   handleSafariHeightIssue() {

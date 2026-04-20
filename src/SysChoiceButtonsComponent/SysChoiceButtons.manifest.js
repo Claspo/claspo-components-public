@@ -229,16 +229,6 @@ export default {
       },*/
       {
         "type": "CONTROL",
-        "name": "ACTIONS",
-        "propPath": [
-          "handlers"
-        ],
-        "params": {
-          "origin": true,
-        },
-      },
-      {
-        "type": "CONTROL",
         "name": "INTEGRATION_FIELD_MAPPING",
         "params": {
           "integrationNamePropPath": ["control", "integrationName"],
@@ -262,7 +252,12 @@ export default {
           "origin": true,
           "optionsPropPath": ["control", "options"],
           "optionsAlphabeticSortPropPath": ["control", "optionsAlphabeticSort"],
-          "integrationNamePropPath": ["control", "integrationName"]
+          "integrationNamePropPath": ["control", "integrationName"],
+          actionParams: {
+            getRelativeSelector: (optionId) => `[option-id="${optionId}"]`,
+            getOptionIdFromRelativeSelector: (selector) => selector.match(/option-id="([^"]+)"/)?.[1] ?? null,
+            availableActions: ['GO_TO_VIEW']
+          }
         }
       },
       {
@@ -278,16 +273,6 @@ export default {
   },
   "i18nPropertyPaneModel": {
     "content": [
-      {
-        "type": "CONTROL",
-        "name": "ACTIONS",
-        "propPath": [
-          "handlers"
-        ],
-        "params": {
-          "origin": false,
-        },
-      },
       {
         "type": "CONTROL",
         "name": "COMPONENT_OPTIONS",
@@ -635,7 +620,7 @@ export default {
           "classes": "cl-text-class-button"
         }
       ]
-    }
+    },
   },
   "metaDescription": {
     "icon": "/SysChoiceButtonsComponent/assets/img/component-icon.svg",

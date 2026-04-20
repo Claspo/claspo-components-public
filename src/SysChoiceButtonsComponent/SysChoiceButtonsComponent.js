@@ -29,8 +29,9 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
 
     this.observeProps((prev, next) => {
       this.setLabelStylesAndContent(next);
-      this.createButtons(next);
+      this.createButtons();
       this.applyAutoAdaptiveStyles(next.adaptiveStyles, next.styles);
+      this.applySelectedStylesToCurrentValue(next);
     });
   }
 
@@ -45,12 +46,11 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
     });
   }
 
-  createButtons(props) {
+  createButtons() {
     const buttonsContainerElement = this.getElement('buttonsContainer');
     const optionsMap = this.getOptionsMap();
 
     buttonsContainerElement.innerHTML = '';
-    const optionsValue = this.getCurrentValue();
 
     Object.keys(optionsMap)
       .forEach((id) => {
@@ -58,10 +58,7 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
 
         const buttonElement = document.createElement('div');
         buttonElement.setAttribute('cl-element', 'button');
-
-        if (optionsValue?.[id]) {
-          this.setSelectedOptionStyles(buttonElement, props);
-        }
+        buttonElement.setAttribute('option-id', id);
 
         if (this.isStaticRenderMode()) {
           buttonElement.addEventListener('click', () => {
@@ -107,7 +104,6 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
     this.registeredControl = this.createControlWithValidation([], {
       tooltipElement
     });
-    this.registeredControl.setValue(null, { silent: true, skipValidation: true });
   }
 
   getCurrentValue() {
@@ -127,6 +123,24 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
   removeSelectionFromAllButtons(buttonsContainerElement, props) {
     buttonsContainerElement.querySelectorAll('[cl-element=button]').forEach((buttonElement) => {
       this.removeSelectedOptionStyles(buttonElement, props);
+    });
+  }
+
+  applySelectedStylesToCurrentValue(props) {
+    const optionsValue = this.getCurrentValue();
+
+    if (!optionsValue) {
+      return;
+    }
+
+    const buttonsContainerElement = this.getElement('buttonsContainer');
+
+    buttonsContainerElement.querySelectorAll('[cl-element=button]').forEach((buttonElement) => {
+      const id = buttonElement.getAttribute('option-id');
+
+      if (optionsValue[id]) {
+        this.setSelectedOptionStyles(buttonElement, props);
+      }
     });
   }
 }

@@ -193,11 +193,16 @@ export default class SysPhoneInputComponent extends WcControlledElement {
       ? `${defaultCountryData.position}px` || defaultCountry.position
       : defaultCountry.position;
     flagButtonElement.style.opacity = '1';
-    inputElement.value = phone || countryPrefix;
 
-    if (this.services.form.hasControl(props.control.name)) {
-      const control = this.services.form.getControl(props.control.name);
-      control.setValue(phone || countryPrefix, { silent: true, skipValidation: true })
+    const formControl = this.services.form.hasControl(props.control.name)
+      ? this.services.form.getControl(props.control.name)
+      : null;
+    const valueToUse = phone || formControl?.getValue() || countryPrefix;
+
+    inputElement.value = valueToUse;
+
+    if (formControl) {
+      formControl.setValue(valueToUse, { silent: true, skipValidation: true });
     }
   }
 
