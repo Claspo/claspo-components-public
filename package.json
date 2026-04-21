@@ -1,6 +1,6 @@
 {
   "name": "@claspo/components",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "",
   "scripts": {
     "prebuild": "rm -rf out",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@claspo/common": "7.1.4",
-    "@claspo/renderer": "18.4.0"
+    "@claspo/renderer": "18.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",

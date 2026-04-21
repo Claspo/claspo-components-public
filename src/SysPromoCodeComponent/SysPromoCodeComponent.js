@@ -10,6 +10,7 @@ import tooltipStyles from "./tooltipStyles";
 import {setTooltipPosition} from '@claspo/renderer/sdk/TooltipUtils';
 import {setFocusOutline} from '@claspo/renderer/sdk/HtmlStyleUtils';
 import {ContextEvents} from "@claspo/renderer/sdk/context/ContextEvents";
+import SysEventTypes from "@claspo/renderer/common/SysEventTypes";
 import insertHtmlIntoElement from '@claspo/common/dom/insertHtmlIntoElement';
 
 const LAST_PROMOCODE_RECORD_KEY = 'lastPromoCode';
@@ -117,6 +118,14 @@ export default class SysPromoCodeComponent extends WcElement {
       this.handleSafariHeightIssue();
       this.mapStyleControlValuesToInnerContent();
     });
+
+    const code = this.services.context.getKVMap().promoCode || this.getProps().content.text;
+    if (code) {
+      this.services.eventEmitter.emit(SysEventTypes.PROMO_CODE_SHOWN, {
+        code,
+        autoRedeem: this.getProps()?.content?.autoRedeem !== false,
+      });
+    }
   }
 
   disconnectedCallback() {

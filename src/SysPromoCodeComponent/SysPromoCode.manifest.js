@@ -199,6 +199,25 @@ export default {
         },
         "displayCondition": (sdk) => sdk.widgetType === 'INFORMER'
       },
+      {
+        "type": "CONTROL",
+        "name": "SWITCH",
+        "propPath": [
+          "content",
+          "autoRedeem"
+        ],
+        "params": {
+          "label": "i18n_DOCUMENT_AUTO_REDEEM_LABEL",
+          "boldLabel": true,
+          "tooltip": "i18n_DOCUMENT_AUTO_REDEEM_TOOLTIP",
+          "getValueMapper": {
+            "undefined": true,
+            "true": true,
+            "false": false,
+          },
+        },
+        "displayCondition": (sdk) => sdk.editorConfig?.userContext?.registrationType === 'SHOPIFY'
+      },
     ]
   },
   "autoContrast": [
@@ -314,7 +333,8 @@ export default {
       "text": "SALE_15",
       "iconContent": 0,
       "iconContrastEnabled": true,
-      "textContrastEnabled": true
+      "textContrastEnabled": true,
+      "autoRedeem": true
     }
   },
   "metaDescription": {
