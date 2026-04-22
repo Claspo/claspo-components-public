@@ -52,7 +52,8 @@ export default class SysPhoneInputComponent extends WcControlledElement {
         if (isRequired) {
           this.createPhoneInputFormControl();
         } else {
-          inputElement.addEventListener('input', this.createPhoneInputFormControl);
+          this.createPhoneInputFormControlHandler = () => this.createPhoneInputFormControl();
+          inputElement.addEventListener('input', this.createPhoneInputFormControlHandler);
         }
   
         this.setValue(props, props.control.defaultValue || null);
@@ -93,8 +94,9 @@ export default class SysPhoneInputComponent extends WcControlledElement {
 
         if (countryCodeChanged) {
           const countryCode = nextControl.countryCode || this.defaultCountryCode;
+          const newCountryData = this.countryData.find(c => c.countryCode === countryCode);
           this.services.state.setState({ currentCountryCode: countryCode });
-          this.setValue(next);
+          this.setValue(next, newCountryData?.prefix);
         }
       }
     });
@@ -298,9 +300,11 @@ export default class SysPhoneInputComponent extends WcControlledElement {
       }
     );
     this.phoneInputFormControl.on('valueChanged', (value) => {
-      this.valueChangedCallback(value);
+      this.valueChangedCallback((value || '').trim());
     })
-    inputElement.removeEventListener('input', this.createPhoneInputFormControl);
+    if (this.createPhoneInputFormControlHandler) {
+      inputElement.removeEventListener('input', this.createPhoneInputFormControlHandler);
+    }
   }
 
   menuOptionSelected(country) {
