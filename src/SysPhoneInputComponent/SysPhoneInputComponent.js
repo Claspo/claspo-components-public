@@ -19,6 +19,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
   registeredControl = null;
   countryCodeSelectedAtLeastOnce = false;
   availableOptions = [];
+  defaultCountryCode = 'US';
 
   connectedCallback() {
     super.connectedCallback();
@@ -40,7 +41,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
         this.countryData = data;
         const countryCode = this.services.state.getState().currentCountryCode
           || props.control.countryCode
-          || 'UA';
+          || this.defaultCountryCode;
         const countriesPriority = props.control.countriesPriority || {
           includedList: [countryCode],
           allowToAddOnlyFromIncludedList: false,
@@ -84,6 +85,18 @@ export default class SysPhoneInputComponent extends WcControlledElement {
 
       this.setArrowIconStyles();
       this.updateContext();
+
+      if (this.countryData) {
+        const prevControl = prev?.control || {};
+        const nextControl = next.control || {};
+        const countryCodeChanged = prevControl.countryCode !== nextControl.countryCode;
+
+        if (countryCodeChanged) {
+          const countryCode = nextControl.countryCode || this.defaultCountryCode;
+          this.services.state.setState({ currentCountryCode: countryCode });
+          this.setValue(next);
+        }
+      }
     });
 
     this.observeEnvironment((prev, next) => {
@@ -170,7 +183,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
   setValue(props, phone = null) {
     const defaultCountryCode = this.services.state.getState().currentCountryCode
       || props.control.countryCode
-      || 'UA';
+      || this.defaultCountryCode;
 
     this.services.state.setState({
       currentCountryCode: defaultCountryCode
