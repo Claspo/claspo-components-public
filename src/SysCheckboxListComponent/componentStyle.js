@@ -8,7 +8,7 @@ export default `
       display: flex;
       flex-direction: column;
     }
-    
+
     .label {
       min-height: 10px;
     }
@@ -99,13 +99,22 @@ export default `
       user-select: none;
     }
     
-    /* Hide the browser's default checkbox */
+    /* Visually hide the native checkbox while keeping it in the accessibility
+       tree. width/height: 0 caused Safari + VoiceOver to skip checked-state
+       announcements. */
     .checkmark-container input {
       position: absolute;
       opacity: 0;
       cursor: pointer;
-      height: 0;
-      width: 0;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
     }
     
     .checkmark-container .checkbox-label {

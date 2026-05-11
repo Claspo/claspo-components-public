@@ -158,19 +158,25 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     button.classList.add('option-wrapper');
     button.setAttribute('cl-element', 'optionWrapper');
 
+    const inputId = `cl-checkbox-${option.id}`;
     const checkMarkContainer = document.createElement('label');
     checkMarkContainer.classList.add('checkmark-container');
+    checkMarkContainer.setAttribute('for', inputId);
 
     const checkMarkShadow = document.createElement('div');
     checkMarkShadow.classList.add('checkmark-shadow');
+    checkMarkShadow.setAttribute('aria-hidden', 'true');
     checkMarkContainer.appendChild(checkMarkShadow);
 
     const checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
+    checkbox.id = inputId;
+    this.syncCheckboxState(checkbox, selected);
     checkMarkContainer.appendChild(checkbox);
 
     const checkMark = document.createElement('span');
     checkMark.classList.add('checkmark');
+    checkMark.setAttribute('aria-hidden', 'true');
     checkMarkContainer.appendChild(checkMark);
 
     const label = document.createElement('span');
@@ -198,6 +204,22 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     button.appendChild(checkMarkContainer);
 
     return button;
+  }
+
+  syncCheckboxState(checkboxInput, selected) {
+    if (!checkboxInput) {
+      return;
+    }
+
+    const isSelected = selected !== null && selected !== undefined && selected !== false;
+    checkboxInput.checked = isSelected;
+    checkboxInput.setAttribute('aria-checked', String(isSelected));
+
+    if (isSelected) {
+      checkboxInput.setAttribute('checked', '');
+    } else {
+      checkboxInput.removeAttribute('checked');
+    }
   }
 
   getCurrentValue() {

@@ -3,6 +3,7 @@ import WcControlledElement from "@claspo/renderer/sdk/WcControlledElement";
 import getStyleElement from "./getStyleElement";
 import getTemplate from "./getTemplate";
 import PhoneInputMenu from "./PhoneInputMenu";
+import selectCountryCodeTranslations from "./selectCountryCodeTranslations";
 import waitForKeyboardHide from '@claspo/renderer/common/WaitForKeyboardHide';
 import { phone } from "./validators/phone";
 import {applyInputLabelStyles, setFocusOutline, setInputHostSize, setStylesToElement} from '@claspo/renderer/sdk/HtmlStyleUtils';
@@ -24,9 +25,10 @@ export default class SysPhoneInputComponent extends WcControlledElement {
   connectedCallback() {
     super.connectedCallback();
 
+    const selectCountryLabel = this.getTranslationsMap(selectCountryCodeTranslations).translations;
     this.getRootElement().innerHTML += `
       ${getStyleElement()}
-      ${getTemplate()}
+      ${getTemplate({selectCountryLabel})}
     `;
 
     const rootElement = this.getRootElement();
@@ -82,6 +84,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
       applyInputLabelStyles(next, env, rootElement, '.label-with-input-container');
       setInputHostSize(next, env, this.getHostElement(), this.getElement('input'), this.getElement('label'));
       setFocusOutline(this.getElement('input'));
+      this.getElement('input').setAttribute('aria-required', String(!!next.control?.validation?.required));
       this.applyParams(next, env);
 
       this.setArrowIconStyles();
@@ -114,15 +117,26 @@ export default class SysPhoneInputComponent extends WcControlledElement {
       this.setArrowIconStyles();
     });
 
-    rootElement.querySelector('.phone-input-select-button').addEventListener('click', () => {
+    const selectButtonElement = rootElement.querySelector('.phone-input-select-button');
+    const openSelectMenu = () => {
       if (!this.countryData || this.isUpdatingRenderMode()) {
         return;
       }
 
-      waitForKeyboardHide(() => this.phoneInputMenu.createOverlay(this.availableOptions));
+      selectButtonElement.setAttribute('aria-expanded', 'true');
+      waitForKeyboardHide(() => this.phoneInputMenu.createOverlay(this.availableOptions, () => {
+        selectButtonElement.setAttribute('aria-expanded', 'false');
+      }));
       setTimeout(() => {
         this.phoneInputMenu.focusSearchInput();
       }, 500);
+    };
+    selectButtonElement.addEventListener('click', openSelectMenu);
+    selectButtonElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+        event.preventDefault();
+        openSelectMenu();
+      }
     });
   }
 

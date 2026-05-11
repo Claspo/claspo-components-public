@@ -30,6 +30,25 @@ export default `
       display: flex;
       flex-direction: column;
     }
+
+    .buttons-container [cl-element="button"] {
+      appearance: none;
+      -webkit-appearance: none;
+      font: inherit;
+      color: inherit;
+      text-align: inherit;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .buttons-container [cl-element="button"]:disabled {
+      opacity: 1;
+      cursor: default;
+    }
     
     .invalid {
       border: 1px solid #ff0000 !important;

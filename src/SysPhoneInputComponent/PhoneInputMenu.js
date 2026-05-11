@@ -29,7 +29,7 @@ export default class PhoneInputMenu {
     this.htmlDocumentObject = htmlDocumentObject;
   }
 
-  createOverlay(availableOptions) {
+  createOverlay(availableOptions, onDestroy) {
     const rootElement = this.getRootElement();
     createMenuOverlay({
       triggerElement: rootElement.querySelector('.phone-input-with-tooltip'),
@@ -38,12 +38,14 @@ export default class PhoneInputMenu {
         this.configService.getConfig('staticResourcesUrl').replace(/\/$/, '') + '/SysPhoneInputComponent/assets/',
       ),
       createOverlayContent: (backdrop, overlayContentContainer) => {
+        overlayContentContainer.setAttribute('role', 'listbox');
         this.createOverlayContent(rootElement, backdrop, overlayContentContainer, availableOptions);
         this.overlayElement = overlayContentContainer;
       },
       overlayWidth: 270,
       overlayHeight: 380,
       htmlDocumentObject: this.htmlDocumentObject,
+      onDestroy,
     });
   }
 
@@ -118,8 +120,11 @@ export default class PhoneInputMenu {
   createMenuButtonComponent(country, selected) {
     const button = document.createElement('div');
     button.classList.add('option-wrapper');
+    button.setAttribute('role', 'option');
+    button.setAttribute('aria-selected', selected ? 'true' : 'false');
     const countryFlag = document.createElement('span');
     countryFlag.classList.add('phone-input-flag-icon');
+    countryFlag.setAttribute('aria-hidden', 'true');
     const countryPrefix = document.createElement('span');
     countryPrefix.classList.add('phone-input-prefix');
 

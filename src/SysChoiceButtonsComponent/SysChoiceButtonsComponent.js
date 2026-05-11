@@ -49,6 +49,8 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
   createButtons() {
     const buttonsContainerElement = this.getElement('buttonsContainer');
     const optionsMap = this.getOptionsMap();
+    const currentProps = this.getProps();
+    const isInteractive = this.isStaticRenderMode();
 
     buttonsContainerElement.innerHTML = '';
 
@@ -56,28 +58,32 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
       .forEach((id) => {
         const option = optionsMap[id];
 
-        const buttonElement = document.createElement('div');
+        const buttonElement = document.createElement('button');
+        buttonElement.type = 'button';
         buttonElement.setAttribute('cl-element', 'button');
         buttonElement.setAttribute('option-id', id);
+        buttonElement.setAttribute('aria-pressed', 'false');
+        buttonElement.setAttribute('aria-disabled', String(!isInteractive));
+        buttonElement.disabled = !isInteractive;
 
-        if (this.isStaticRenderMode()) {
+        if (isInteractive) {
           buttonElement.addEventListener('click', () => {
             const currentOptionsValue = this.getCurrentValue();
-            const currentProps = this.getProps()
+            const latestProps = this.getProps();
 
             if (currentOptionsValue?.[id]) {
-              this.removeSelectedOptionStyles(buttonElement, currentProps);
+              this.removeSelectedOptionStyles(buttonElement, latestProps);
               delete currentOptionsValue[id];
 
               const updatedValue = Object.keys(currentOptionsValue).length ? currentOptionsValue : null;
               this.registeredControl.setValue(updatedValue);
             } else {
-              if (!currentProps.control.multipleChoice) {
-                this.removeSelectionFromAllButtons(buttonsContainerElement, currentProps);
+              if (!latestProps.control.multipleChoice) {
+                this.removeSelectionFromAllButtons(buttonsContainerElement, latestProps);
               }
 
-              this.setSelectedOptionStyles(buttonElement, currentProps);
-              const updatedValue = currentProps.control.multipleChoice
+              this.setSelectedOptionStyles(buttonElement, latestProps);
+              const updatedValue = latestProps.control.multipleChoice
                 ? {...currentOptionsValue, [id]: optionsMap[id].exportId}
                 : {[id]: optionsMap[id].exportId};
               this.registeredControl.setValue(updatedValue);
@@ -113,11 +119,13 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
   setSelectedOptionStyles(buttonElement, props) {
     const selectedStyles = props.styles.find(elementParams => elementParams.element === 'button').selectedStyleAttributes;
     setStylesToElement(buttonElement, selectedStyles);
+    buttonElement.setAttribute('aria-pressed', 'true');
   }
 
   removeSelectedOptionStyles(buttonElement, props) {
     const defaultStyles = props.styles.find(elementParams => elementParams.element === 'button').styleAttributes;
     setStylesToElement(buttonElement, defaultStyles);
+    buttonElement.setAttribute('aria-pressed', 'false');
   }
 
   removeSelectionFromAllButtons(buttonsContainerElement, props) {
@@ -130,6 +138,7 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
     const optionsValue = this.getCurrentValue();
 
     if (!optionsValue) {
+      this.removeSelectionFromAllButtons(this.getElement('buttonsContainer'), props);
       return;
     }
 
@@ -140,6 +149,8 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
 
       if (optionsValue[id]) {
         this.setSelectedOptionStyles(buttonElement, props);
+      } else {
+        this.removeSelectedOptionStyles(buttonElement, props);
       }
     });
   }

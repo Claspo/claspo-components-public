@@ -9,6 +9,7 @@ import ComponentTemplate from "./componentTemplate";
 import { sort } from "@claspo/common/utils/objectSort";
 import waitForKeyboardHide from '@claspo/renderer/common/WaitForKeyboardHide';
 import noMatchesOption from "./noMatchesOptionTranslations";
+import selectOptionTranslations from "./selectOptionTranslations";
 import {
   applyInputLabelStyles,
   getStylesFromElement, setFocusOutline, setInputHostSize,
@@ -32,6 +33,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
   static DEFAULT_PLACEHOLDER_VALUE = DefaultPlaceholderValue;
   static NO_MATCHES_OPTION = noMatchesOption;
+  static SELECT_OPTION = selectOptionTranslations;
   static overlayContentStyles = OverlayContentStyles;
   static dropdownMenuOptionLabelStyles = DropdownMenuOptionLabelStyles;
   static componentStyle = ComponentStyle;
@@ -59,6 +61,8 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     this.setPlaceholder(props, this.getEnvironment());
     this.setDropdownInputText(this.getOptions());
 
+    this.applyTriggerAriaLabel();
+
     this.observeProps((prev, next) => {
       const env = this.getEnvironment();
       this.applyAutoAdaptiveStyles(next.adaptiveStyles, next.styles);
@@ -70,6 +74,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
       this.setArrowIconStyles(next, env);
       setFocusOutline(this.getElement('input'));
+      this.getElement('input').setAttribute('aria-required', String(!!next.control?.validation?.required));
     });
 
     this.observeShared(() => {
@@ -138,6 +143,11 @@ export default class SysDropdownInputComponent extends WcControlledElement {
   createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayBackgroundColor) {
     const containerElement = document.createElement('div');
     containerElement.classList.add('option-wrapper');
+    containerElement.setAttribute('role', 'option');
+    containerElement.setAttribute('aria-selected', selected ? 'true' : 'false');
+    if (option.id != null) {
+      containerElement.id = `cl-dropdown-option-${option.id}`;
+    }
 
     const labelElement = document.createElement('span');
 
@@ -183,21 +193,34 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
     const buttonsList = document.createElement('div');
 
+    let selectedOptionId = null;
     Object.entries(filteredOptions)
       .forEach(([id]) => {
         const option = filteredOptions[id];
         const selected = value?.id === id;
+        if (selected) {
+          selectedOptionId = id;
+        }
         const menuButtonEl = this.createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayStyles.background);
         menuButtonEl.addEventListener('click', () => {
           const value = { id, exportId: filteredOptions[id].exportId };
 
           this.registeredControl.setValue(value);
           inputElement.value = option.label;
+          inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+          inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 
           backdrop.click();
+          inputElement.focus();
         });
         buttonsList.appendChild(menuButtonEl);
       });
+
+    if (selectedOptionId != null) {
+      inputElement.setAttribute('aria-activedescendant', `cl-dropdown-option-${selectedOptionId}`);
+    } else {
+      inputElement.removeAttribute('aria-activedescendant');
+    }
 
     const optionsLength = Object.keys(filteredOptions).length;
     if (!optionsLength) {
@@ -288,15 +311,20 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     if (this.overlayBackdrop) {
       this.overlayBackdrop.click();
     }
+    const triggerElement = this.getElement('input');
+    triggerElement.setAttribute('aria-expanded', 'true');
     const result = createMenuOverlay({
-      triggerElement: this.getElement('input'),
+      triggerElement,
       overlayStyles: this.getOverlayStyles(),
       createOverlayContent: (backdrop, overlayContentContainer) => {
+        overlayContentContainer.setAttribute('role', 'listbox');
         this.createOverlayContent(backdrop, overlayContentContainer, options, this.getProps().control.options);
       },
-      overlayWidth: this.getElement('input').getBoundingClientRect().width,
+      overlayWidth: triggerElement.getBoundingClientRect().width,
       onDestroy: () => {
         this.overlayBackdrop = null;
+        triggerElement.setAttribute('aria-expanded', 'false');
+        triggerElement.removeAttribute('aria-activedescendant');
       },
       positionByDefault: 'bottom',
       htmlDocumentObject: this.htmlDocumentObject,
@@ -307,6 +335,17 @@ export default class SysDropdownInputComponent extends WcControlledElement {
         this.setDropdownInputText(options);
       }
     });
+  }
+
+  applyTriggerAriaLabel() {
+    const inputElement = this.getElement('input');
+    if (!inputElement) {
+      return;
+    }
+    if (!inputElement.hasAttribute('aria-label')) {
+      const ariaLabel = this.getTranslationsMap(SysDropdownInputComponent.SELECT_OPTION).translations;
+      inputElement.setAttribute('aria-label', ariaLabel);
+    }
   }
 
   setPlaceholder(props, env) {

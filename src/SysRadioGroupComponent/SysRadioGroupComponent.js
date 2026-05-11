@@ -58,6 +58,12 @@ export default class SysRadioGroupComponent extends WcControlledElement {
       this.applyStylesToMarkersShadows();
       this.applyStylesToOptionWrapper();
       this.updateGap();
+
+      const groupContainer = rootElement.querySelector('.label-with-radio-group-container');
+      if (groupContainer) {
+        const isRequired = !!next.control?.validation?.required;
+        groupContainer.setAttribute('aria-required', String(isRequired));
+      }
     });
 
     this.observeShared((prev, next) => {
@@ -126,7 +132,7 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     });
 
     const orderProperty = this.getProps().control.optionsAlphabeticSort?.enabled ? 'label' : 'sort';
-    return sort(this.getProps().control.options, orderProperty);
+    return sort(optionsWithIds, orderProperty);
   }
 
   applyStylesToOptionWrapper() {
@@ -155,20 +161,30 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     button.classList.add('option-wrapper');
     button.setAttribute('cl-element', 'optionWrapper');
 
+    const inputId = `cl-radio-${this.controlExportId}-${option.id}`;
     const radioMarkContainer = document.createElement('label');
     radioMarkContainer.classList.add('radio-mark-container');
+    radioMarkContainer.setAttribute('for', inputId);
 
     const radioMarkShadow = document.createElement('div');
     radioMarkShadow.classList.add('radio-mark-shadow');
+    radioMarkShadow.setAttribute('aria-hidden', 'true');
     radioMarkContainer.appendChild(radioMarkShadow);
 
     const radio = document.createElement('input');
     radio.setAttribute('type', 'radio');
-    radio.setAttribute('name', this.controlExportId)
+    // Unique `name` per radio bypasses the native HTML radio-group rule that
+    // keeps only the checked radio in the tab order. Group semantics for AT
+    // are provided by role="radiogroup" on the container; selection state is
+    // exposed to AT via each radio's own `checked` property.
+    radio.setAttribute('name', `${this.controlExportId}-${option.id}`);
+    radio.id = inputId;
+    this.syncRadioState(radio, selected);
     radioMarkContainer.appendChild(radio);
 
     const radioMark = document.createElement('span');
     radioMark.classList.add('radio-mark');
+    radioMark.setAttribute('aria-hidden', 'true');
     radioMarkContainer.appendChild(radioMark);
 
     const label = document.createElement('span');
@@ -195,6 +211,22 @@ export default class SysRadioGroupComponent extends WcControlledElement {
     button.appendChild(radioMarkContainer);
 
     return button;
+  }
+
+  syncRadioState(radioInput, selected) {
+    if (!radioInput) {
+      return;
+    }
+
+    const isSelected = selected !== null && selected !== undefined && selected !== false;
+    radioInput.checked = isSelected;
+    radioInput.setAttribute('aria-checked', String(isSelected));
+
+    if (isSelected) {
+      radioInput.setAttribute('checked', '');
+    } else {
+      radioInput.removeAttribute('checked');
+    }
   }
 
   updateGap() {
@@ -255,6 +287,8 @@ export default class SysRadioGroupComponent extends WcControlledElement {
       radioMark.classList.remove('radio-mark-checked');
       radioMark.style.borderColor = null;
       radioMark.style.outlineColor = null;
+      const radioInput = radioGroupItem.querySelector('input[type="radio"]');
+      this.syncRadioState(radioInput, false);
     })
   }
 
