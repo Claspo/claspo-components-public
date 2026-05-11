@@ -101,22 +101,13 @@ export default `
       user-select: none;
     }
     
-    /* Visually hide the native radio while keeping it in the accessibility
-       tree (1x1 with clip). width/height: 0 caused Safari + VoiceOver to
-       skip checked-state announcements. */
+    /* Hide the browser's default checkbox */
     .radio-mark-container input {
       position: absolute;
       opacity: 0;
       cursor: pointer;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      white-space: nowrap;
-      border: 0;
+      width: 0px;
+      height: 0px;
     }
     
     .radio-mark-container .radio-box-label {
