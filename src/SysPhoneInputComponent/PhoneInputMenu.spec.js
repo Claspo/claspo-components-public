@@ -86,6 +86,8 @@ describe('PhoneInputMenu keyboard accessibility', () => {
 
     expect(triggerElement.getAttribute('aria-activedescendant')).toBe(menu.getOptionId('US'));
     expect(overlayContentContainer.querySelectorAll('[role="option"]').length).toBe(2);
+    expect(overlayContentContainer.querySelector('[aria-selected="true"]').classList.contains('option-selected')).toBe(true);
+    expect(overlayContentContainer.querySelector('[aria-selected="true"]').classList.contains('option-active')).toBe(true);
   });
 
   it('closes on Escape from the search input and arms a keyup guard', () => {

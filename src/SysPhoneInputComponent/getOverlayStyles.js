@@ -39,9 +39,16 @@ export default function getOverlayStyles(overlayContentClassName, staticResource
   cursor: pointer;
   text-align: left;
   flex-direction: row;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
-.option-wrapper:hover {
+.option-wrapper:hover,
+.option-wrapper.option-active,
+.option-wrapper.option-selected {
   background-color: #fafafa;
+}
+
+.option-wrapper.option-active {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 .phone-input-flag-icon {
   background: url(${staticResourcesUrl}img/flags.png) no-repeat 0 0;

@@ -21,6 +21,7 @@ describe('SysDateComponent month dropdown accessibility', () => {
     expect(option.getAttribute('role')).toBe('option');
     expect(option.getAttribute('tabindex')).toBe('0');
     expect(option.getAttribute('aria-selected')).toBe('true');
+    expect(option.classList.contains('option-selected')).toBe(true);
   });
 
   it('moves focus between month options with arrow keys', () => {
@@ -31,7 +32,10 @@ describe('SysDateComponent month dropdown accessibility', () => {
     const firstOption = document.createElement('div');
     const secondOption = document.createElement('div');
 
+    firstOption.classList.add('option-selected');
+    firstOption.setAttribute('aria-selected', 'true');
     firstOption.setAttribute('tabindex', '0');
+    secondOption.setAttribute('aria-selected', 'false');
     secondOption.setAttribute('tabindex', '-1');
     buttonsList.append(firstOption, secondOption);
     document.body.appendChild(buttonsList);
@@ -50,6 +54,9 @@ describe('SysDateComponent month dropdown accessibility', () => {
     expect(document.activeElement).toBe(secondOption);
     expect(firstOption.getAttribute('tabindex')).toBe('-1');
     expect(secondOption.getAttribute('tabindex')).toBe('0');
+    expect(firstOption.classList.contains('option-active')).toBe(false);
+    expect(firstOption.classList.contains('option-selected')).toBe(false);
+    expect(secondOption.classList.contains('option-active')).toBe(true);
   });
 
   it('selects the focused month on Enter', () => {

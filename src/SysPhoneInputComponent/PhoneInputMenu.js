@@ -157,6 +157,9 @@ export default class PhoneInputMenu {
   createMenuButtonComponent(country, selected) {
     const button = document.createElement('div');
     button.classList.add('option-wrapper');
+    if (selected) {
+      button.classList.add('option-selected');
+    }
     button.setAttribute('role', 'option');
     button.setAttribute('aria-selected', selected ? 'true' : 'false');
     button.id = this.getOptionId(country.countryCode);
@@ -171,10 +174,6 @@ export default class PhoneInputMenu {
     labelElement.style.color = '#000';
     countryFlag.style.backgroundPositionY = `${country.position}px`;
     countryPrefix.textContent = country.prefix;
-
-    if (selected) {
-      button.style.backgroundColor = '#fafafa';
-    }
 
     button.appendChild(countryFlag);
     button.appendChild(labelElement);

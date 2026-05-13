@@ -48,12 +48,24 @@ export default function getOverlayStyles(rootElement, overlayContentStyles, drop
         outline: 0;
         cursor: pointer;
         text-align: left;
+        transition: background-color 0.15s ease, box-shadow 0.15s ease;
       }
       
       .option-wrapper span {
         word-break: keep-all;
       }
   
+      .option-wrapper:hover,
+      .option-wrapper:focus,
+      .option-wrapper.option-active,
+      .option-wrapper.option-selected {
+        background-color: var(--option-selected-background, ${getMenuItemHoverColor(backgroundColor)});
+      }
+
+      .option-wrapper.option-active {
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+      }
+
       .option-wrapper:hover {
         background-color: ${getMenuItemHoverColor(backgroundColor)};
       }

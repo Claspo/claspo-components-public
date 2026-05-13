@@ -314,6 +314,9 @@ export default class SysDateComponent extends WcControlledElement {
   createDropdownButtonMenuComponent(option, selected, optionLabelStyles, overlayBackgroundColor) {
     const containerElement = document.createElement('div');
     containerElement.classList.add('option-wrapper');
+    if (selected) {
+      containerElement.classList.add('option-selected');
+    }
     containerElement.setAttribute('role', 'option');
     containerElement.setAttribute('tabindex', selected ? '0' : '-1');
     containerElement.setAttribute('aria-selected', selected ? 'true' : 'false');
@@ -323,9 +326,7 @@ export default class SysDateComponent extends WcControlledElement {
     labelElement.textContent = option.label;
     setStylesToElement(labelElement, optionLabelStyles);
 
-    if (selected) {
-      containerElement.style.backgroundColor = getMenuItemHoverColor(overlayBackgroundColor);
-    }
+    containerElement.style.setProperty('--option-selected-background', getMenuItemHoverColor(overlayBackgroundColor));
 
     containerElement.appendChild(labelElement);
 
@@ -339,6 +340,11 @@ export default class SysDateComponent extends WcControlledElement {
 
     [...buttonsList.children].forEach((option) => {
       option.setAttribute('tabindex', option === targetOption ? '0' : '-1');
+      option.classList.toggle('option-active', option === targetOption);
+      option.classList.toggle(
+        'option-selected',
+        option === targetOption && option.getAttribute('aria-selected') === 'true',
+      );
     });
 
     targetOption.focus();
