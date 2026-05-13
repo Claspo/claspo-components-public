@@ -19,6 +19,7 @@ export default `
              class="dropdown-label"
              role="combobox"
              aria-haspopup="listbox"
+             aria-autocomplete="none"
              aria-expanded="false"
              aria-labelledby="cl-dropdown-label"
              name="cl-dropdown-no-autofill"

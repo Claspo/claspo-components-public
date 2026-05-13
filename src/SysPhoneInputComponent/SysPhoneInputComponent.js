@@ -21,6 +21,8 @@ export default class SysPhoneInputComponent extends WcControlledElement {
   countryCodeSelectedAtLeastOnce = false;
   availableOptions = [];
   defaultCountryCode = 'US';
+  openSelectMenu = null;
+  handleSelectButtonKeydown = null;
 
   connectedCallback() {
     super.connectedCallback();
@@ -118,7 +120,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     });
 
     const selectButtonElement = rootElement.querySelector('.phone-input-select-button');
-    const openSelectMenu = () => {
+    this.openSelectMenu = (navigationHint = 'selected') => {
       if (!this.countryData || this.isUpdatingRenderMode()) {
         return;
       }
@@ -126,23 +128,82 @@ export default class SysPhoneInputComponent extends WcControlledElement {
       selectButtonElement.setAttribute('aria-expanded', 'true');
       waitForKeyboardHide(() => this.phoneInputMenu.createOverlay(this.availableOptions, () => {
         selectButtonElement.setAttribute('aria-expanded', 'false');
-      }));
+      }, { navigationHint }));
       setTimeout(() => {
         this.phoneInputMenu.focusSearchInput();
-      }, 500);
+      }, 0);
     };
-    selectButtonElement.addEventListener('click', openSelectMenu);
-    selectButtonElement.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
-        event.preventDefault();
-        openSelectMenu();
+
+    this.handleSelectButtonKeydown = (event) => {
+      const isMenuOpen = this.phoneInputMenu?.isOpen();
+
+      switch (event.key) {
+        case 'Enter':
+          event.preventDefault();
+          if (isMenuOpen) {
+            this.phoneInputMenu.selectActiveOption();
+          } else {
+            this.openSelectMenu();
+          }
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          if (isMenuOpen) {
+            this.phoneInputMenu.moveActiveOption(1);
+          } else {
+            this.openSelectMenu('first');
+          }
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          if (isMenuOpen) {
+            this.phoneInputMenu.moveActiveOption(-1);
+          } else {
+            this.openSelectMenu('last');
+          }
+          break;
+        case ' ':
+        case 'Spacebar':
+          event.preventDefault();
+          if (isMenuOpen) {
+            this.phoneInputMenu.selectActiveOption();
+          } else {
+            this.openSelectMenu();
+          }
+          break;
+        case 'Home':
+          if (isMenuOpen) {
+            event.preventDefault();
+            this.phoneInputMenu.setActiveOption(0);
+          }
+          break;
+        case 'End':
+          if (isMenuOpen) {
+            event.preventDefault();
+            this.phoneInputMenu.setActiveOption(this.availableOptions.length - 1);
+          }
+          break;
+        case 'Escape':
+          if (isMenuOpen) {
+            event.preventDefault();
+            event.stopPropagation?.();
+            this.phoneInputMenu.armEscapeKeyupGuard();
+            this.phoneInputMenu.closeOverlay();
+          }
+          break;
       }
-    });
+    };
+
+    selectButtonElement.addEventListener('click', () => this.openSelectMenu());
+    selectButtonElement.addEventListener('keydown', this.handleSelectButtonKeydown);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.services.context.deleteRecord(this.getModel().id);
+    this.phoneInputMenu?.removeEscapeKeyupGuard?.();
+    const selectButtonElement = this.getRootElement().querySelector('.phone-input-select-button');
+    selectButtonElement?.removeEventListener('keydown', this.handleSelectButtonKeydown);
   }
 
   getValidators() {

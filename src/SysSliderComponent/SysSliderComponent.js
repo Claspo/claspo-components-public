@@ -306,9 +306,21 @@ export default class SysSliderComponent extends WcElement {
       return;
     }
 
-    [...dotsCoinainer.children].forEach(dot => dot.classList.remove('active'));
+    [...dotsCoinainer.children].forEach((dot, dotIndex) => {
+      dot.classList.remove('active');
+      dot.setAttribute('aria-current', dotIndex === index ? 'true' : 'false');
+    });
 
     dotsCoinainer.querySelector(`.navigationDot:nth-child(${index + 1})`)?.classList.add('active');
+  }
+
+  handleKeyboardActivation(event, callback) {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+
+    event.preventDefault();
+    callback(event);
   }
 
   createPrevSlideControl(arrowIcon) {
@@ -318,11 +330,14 @@ export default class SysSliderComponent extends WcElement {
       prevControlElement.classList.add('highligh-on-hover-with-pseudo-element');
     }
     prevControlElement.setAttribute('cl-element', 'arrows');
+    prevControlElement.setAttribute('role', 'button');
+    prevControlElement.setAttribute('tabindex', '0');
+    prevControlElement.setAttribute('aria-label', 'Previous slide');
     insertHtmlIntoElement({
       element: prevControlElement,
       html: arrowIcon,
     });
-    prevControlElement.onclick = (event) => {
+    const navigateToPrevSlide = (event) => {
       event.stopPropagation();
 
       if (this.isUpdatingRenderMode()) {
@@ -341,6 +356,8 @@ export default class SysSliderComponent extends WcElement {
 
       this.slideTo(newIndex, null, true);
     };
+    prevControlElement.onclick = navigateToPrevSlide;
+    prevControlElement.onkeydown = (event) => this.handleKeyboardActivation(event, navigateToPrevSlide);
 
     return prevControlElement;
   }
@@ -352,11 +369,14 @@ export default class SysSliderComponent extends WcElement {
       nextControlElement.classList.add('highligh-on-hover-with-pseudo-element');
     }
     nextControlElement.setAttribute('cl-element', 'arrows');
+    nextControlElement.setAttribute('role', 'button');
+    nextControlElement.setAttribute('tabindex', '0');
+    nextControlElement.setAttribute('aria-label', 'Next slide');
     insertHtmlIntoElement({
       element: nextControlElement,
       html: arrowIcon,
     });
-    nextControlElement.onclick = (event) => {
+    const navigateToNextSlide = (event) => {
       event.stopPropagation();
 
       if (this.isUpdatingRenderMode()) {
@@ -375,6 +395,8 @@ export default class SysSliderComponent extends WcElement {
 
       this.slideTo(newIndex, null, true);
     };
+    nextControlElement.onclick = navigateToNextSlide;
+    nextControlElement.onkeydown = (event) => this.handleKeyboardActivation(event, navigateToNextSlide);
 
     return nextControlElement;
   }
@@ -389,12 +411,16 @@ export default class SysSliderComponent extends WcElement {
     for (let i = 0; i < this.getSlideElements().length; i++) {
       const sliderNavigationDot = document.createElement('div');
       sliderNavigationDot.classList.add('navigationDot');
+      sliderNavigationDot.setAttribute('role', 'button');
+      sliderNavigationDot.setAttribute('tabindex', '0');
+      sliderNavigationDot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      sliderNavigationDot.setAttribute('aria-current', i === activeDotIndex ? 'true' : 'false');
 
       if (i === activeDotIndex) {
         sliderNavigationDot.classList.add('active');
       }
 
-      sliderNavigationDot.onclick = (event) => {
+      const navigateToSlide = (event) => {
         event.stopPropagation();
 
         if (this.isUpdatingRenderMode()) {
@@ -403,6 +429,8 @@ export default class SysSliderComponent extends WcElement {
 
         this.slideTo(i, null, true);
       };
+      sliderNavigationDot.onclick = navigateToSlide;
+      sliderNavigationDot.onkeydown = (event) => this.handleKeyboardActivation(event, navigateToSlide);
 
       navigationDotsContainer.appendChild(sliderNavigationDot);
     }

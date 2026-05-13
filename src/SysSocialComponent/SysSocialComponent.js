@@ -113,6 +113,7 @@ export default class SysSocialComponent extends WcElement {
 
   addItemsContent(container, props) {
     container.classList.add('social-list');
+    container.setAttribute('role', 'list');
     props.options.forEach(platform => {
       container.append(this.createPlatformComponent(platform, props));
     });
@@ -129,8 +130,12 @@ export default class SysSocialComponent extends WcElement {
       el = document.createElement('a');
       el.setAttribute('href', url || '#');
       el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
+      el.setAttribute('aria-label', this.getPlatformAccessibleLabel(platform));
     } else {
       el = document.createElement('div');
+      el.setAttribute('role', 'img');
+      el.setAttribute('aria-label', this.getPlatformAccessibleLabel(platform));
     }
 
     el.classList.add('social-list-item');
@@ -144,6 +149,8 @@ export default class SysSocialComponent extends WcElement {
     img.src = imageSrc;
     img.height = sizeByEnv;
     img.width = sizeByEnv;
+    img.alt = '';
+    img.setAttribute('aria-hidden', 'true');
     insertHtmlIntoElement({
       element: el,
       html: '',
@@ -158,5 +165,20 @@ export default class SysSocialComponent extends WcElement {
 
   _setPlatformStyles(container, platform) {
     container.setAttribute('style', `order:${platform.order}`);
+  }
+
+  getPlatformAccessibleLabel(platform) {
+    const platformLabels = {
+      FACEBOOK: 'Facebook',
+      INSTAGRAM: 'Instagram',
+      LINKEDIN: 'LinkedIn',
+      TWITTER: 'Twitter',
+      CUSTOM: 'Custom social link',
+      EMAIL: 'Email',
+      PINTEREST: 'Pinterest',
+      WHATSAPP: 'WhatsApp',
+    };
+
+    return platformLabels[platform.type] || platformLabels.CUSTOM;
   }
 }

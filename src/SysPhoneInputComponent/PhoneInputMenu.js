@@ -9,9 +9,17 @@ export default class PhoneInputMenu {
 
   getRootElement = null;
   overlayElement = null;
+  overlayBackdrop = null;
   configService = null;
   stateService = null;
   valueChangedCallback = null;
+  overlayOptions = [];
+  activeOptionIndex = -1;
+  searchInputElement = null;
+  triggerElement = null;
+  listboxId = `cl-phone-input-listbox-${Math.random().toString(36).slice(2, 11)}`;
+  navigationHint = 'selected';
+  boundEscapeKeyupGuard = null;
 
   constructor(
     getRootElement,
@@ -29,9 +37,16 @@ export default class PhoneInputMenu {
     this.htmlDocumentObject = htmlDocumentObject;
   }
 
-  createOverlay(availableOptions, onDestroy) {
+  createOverlay(availableOptions, onDestroy, { navigationHint = 'selected' } = {}) {
     const rootElement = this.getRootElement();
-    createMenuOverlay({
+    this.triggerElement = rootElement.querySelector('.phone-input-select-button');
+    this.navigationHint = navigationHint;
+
+    if (this.overlayBackdrop) {
+      this.closeOverlay(false);
+    }
+
+    const result = createMenuOverlay({
       triggerElement: rootElement.querySelector('.phone-input-with-tooltip'),
       overlayStyles: getOverlayStyles(
         getMenuOverlayContentClassName(),
@@ -39,14 +54,27 @@ export default class PhoneInputMenu {
       ),
       createOverlayContent: (backdrop, overlayContentContainer) => {
         overlayContentContainer.setAttribute('role', 'listbox');
+        overlayContentContainer.id = this.listboxId;
         this.createOverlayContent(rootElement, backdrop, overlayContentContainer, availableOptions);
         this.overlayElement = overlayContentContainer;
       },
       overlayWidth: 270,
       overlayHeight: 380,
       htmlDocumentObject: this.htmlDocumentObject,
-      onDestroy,
+      onDestroy: () => {
+        this.overlayElement = null;
+        this.overlayBackdrop = null;
+        this.overlayOptions = [];
+        this.activeOptionIndex = -1;
+        this.searchInputElement = null;
+        this.triggerElement?.removeAttribute('aria-controls');
+        this.triggerElement?.removeAttribute('aria-activedescendant');
+        onDestroy?.();
+      },
     });
+
+    this.overlayBackdrop = result.backdrop;
+    this.triggerElement?.setAttribute('aria-controls', this.listboxId);
   }
 
   createOverlayContent(rootElement, backdrop, overlayContentContainer, availableOptions) {
@@ -60,10 +88,20 @@ export default class PhoneInputMenu {
       searchInputContainer.classList.add('search-country-input-container');
       const searchInput = document.createElement('input');
       searchInput.classList.add('search-country-input');
+      searchInput.setAttribute('role', 'combobox');
+      searchInput.setAttribute('aria-autocomplete', 'list');
+      searchInput.setAttribute('aria-expanded', 'true');
+      searchInput.setAttribute('aria-controls', this.listboxId);
+      searchInput.setAttribute('aria-label', 'Search country code');
       searchInput.addEventListener('input', (event) => onChangeValue(event.currentTarget.value));
+      searchInput.addEventListener('keydown', (event) => this.handleSearchInputKeydown(event));
+      this.searchInputElement = searchInput;
       searchInputContainer.appendChild(this.getSearchIcon());
       searchInputContainer.appendChild(searchInput);
       overlayContentContainer.appendChild(searchInputContainer);
+      setTimeout(() => {
+        searchInput.focus();
+      }, 0);
     }
 
     const inputElement = this.getElement('input');
@@ -82,36 +120,35 @@ export default class PhoneInputMenu {
       'border-bottom-right-radius': `${overlayBorderRadius}px`,
     });
 
-    let buttonsList;
+    const buttonsList = document.createElement('div');
+    setStylesToElement(buttonsList, { display: 'flex', flexDirection: 'column' });
+    overlayContentContainer.appendChild(buttonsList);
 
     const onChangeValue = debounce((value) => {
-      if (buttonsList) {
-        buttonsList.remove();
-      }
-
       const filteredOptions = this.filterOptions(value, availableOptions);
-
-      buttonsList = document.createElement('div');
-      setStylesToElement(buttonsList, { display: 'flex', flexDirection: 'column' });
+      buttonsList.replaceChildren();
+      this.overlayOptions = [];
 
       if (filteredOptions.length) {
-        filteredOptions.forEach((country) => {
+        filteredOptions.forEach((country, index) => {
           const selected = currentCountryCode === country.countryCode;
           const menuButtonEl = this.createMenuButtonComponent(country, selected);
 
           menuButtonEl.addEventListener('click', () => {
-            this.valueChangedCallback(country);
-            buttonIcon.style.backgroundPositionY = `${country.position}px`;
-            backdrop.click();
+            this.selectCountry(country, buttonIcon, backdrop);
+          });
+          menuButtonEl.addEventListener('mouseenter', () => {
+            this.setActiveOption(index, false);
           });
           buttonsList.appendChild(menuButtonEl);
+          this.overlayOptions.push({ country, element: menuButtonEl });
         });
+        this.setInitialActiveOption();
 
       } else {
+        this.clearActiveDescendant();
         buttonsList.appendChild(this.getNothingFoundComponent());
       }
-
-      overlayContentContainer.appendChild(buttonsList);
     }, 100);
 
     onChangeValue('');
@@ -122,6 +159,7 @@ export default class PhoneInputMenu {
     button.classList.add('option-wrapper');
     button.setAttribute('role', 'option');
     button.setAttribute('aria-selected', selected ? 'true' : 'false');
+    button.id = this.getOptionId(country.countryCode);
     const countryFlag = document.createElement('span');
     countryFlag.classList.add('phone-input-flag-icon');
     countryFlag.setAttribute('aria-hidden', 'true');
@@ -195,5 +233,162 @@ export default class PhoneInputMenu {
 
   focusSearchInput() {
     this.overlayElement?.querySelector('.search-country-input')?.focus();
+  }
+
+  isOpen() {
+    return !!this.overlayBackdrop;
+  }
+
+  handleSearchInputKeydown(event) {
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        this.moveActiveOption(1);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this.moveActiveOption(-1);
+        break;
+      case 'Home':
+        event.preventDefault();
+        this.setActiveOption(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        this.setActiveOption(this.overlayOptions.length - 1);
+        break;
+      case 'Enter':
+        event.preventDefault();
+        this.selectActiveOption();
+        break;
+      case 'Escape':
+        event.preventDefault();
+        event.stopPropagation?.();
+        this.armEscapeKeyupGuard();
+        this.closeOverlay();
+        break;
+      case 'Tab':
+        this.closeOverlay(false);
+        break;
+    }
+  }
+
+  moveActiveOption(direction) {
+    if (!this.overlayOptions.length) {
+      return;
+    }
+
+    const nextIndex = this.activeOptionIndex < 0
+      ? (direction > 0 ? 0 : this.overlayOptions.length - 1)
+      : Math.max(0, Math.min(this.activeOptionIndex + direction, this.overlayOptions.length - 1));
+
+    this.setActiveOption(nextIndex);
+  }
+
+  setInitialActiveOption() {
+    if (!this.overlayOptions.length) {
+      this.clearActiveDescendant();
+      return;
+    }
+
+    if (this.navigationHint === 'first') {
+      this.setActiveOption(0, false);
+      return;
+    }
+
+    if (this.navigationHint === 'last') {
+      this.setActiveOption(this.overlayOptions.length - 1, false);
+      return;
+    }
+
+    const selectedCountryCode = this.stateService.getState().currentCountryCode;
+    const selectedOptionIndex = this.overlayOptions.findIndex((option) => option.country.countryCode === selectedCountryCode);
+
+    this.setActiveOption(selectedOptionIndex >= 0 ? selectedOptionIndex : 0, false);
+  }
+
+  setActiveOption(index, shouldScroll = true) {
+    if (!this.overlayOptions.length || index < 0) {
+      return;
+    }
+
+    this.activeOptionIndex = Math.max(0, Math.min(index, this.overlayOptions.length - 1));
+
+    this.overlayOptions.forEach(({ element }, optionIndex) => {
+      element.classList.toggle('option-active', optionIndex === this.activeOptionIndex);
+    });
+
+    const activeOption = this.overlayOptions[this.activeOptionIndex];
+    this.setActiveDescendant(activeOption.element.id);
+
+    if (shouldScroll) {
+      activeOption.element.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  selectActiveOption() {
+    if (this.activeOptionIndex < 0) {
+      return;
+    }
+
+    const activeOption = this.overlayOptions[this.activeOptionIndex];
+    const buttonIcon = this.getRootElement().querySelector('.phone-input-select-button-flag');
+    this.selectCountry(activeOption.country, buttonIcon, this.overlayBackdrop);
+  }
+
+  selectCountry(country, buttonIcon, backdrop) {
+    this.valueChangedCallback(country);
+    buttonIcon.style.backgroundPositionY = `${country.position}px`;
+    backdrop.click();
+    this.triggerElement?.focus();
+  }
+
+  closeOverlay(restoreFocus = true) {
+    this.overlayBackdrop?.click();
+    if (restoreFocus) {
+      this.triggerElement?.focus();
+    }
+  }
+
+  armEscapeKeyupGuard() {
+    this.removeEscapeKeyupGuard();
+
+    this.boundEscapeKeyupGuard = (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      event.preventDefault?.();
+      event.stopImmediatePropagation?.();
+      this.removeEscapeKeyupGuard();
+    };
+
+    window.addEventListener('keyup', this.boundEscapeKeyupGuard, true);
+  }
+
+  removeEscapeKeyupGuard() {
+    if (!this.boundEscapeKeyupGuard) {
+      return;
+    }
+
+    window.removeEventListener('keyup', this.boundEscapeKeyupGuard, true);
+    this.boundEscapeKeyupGuard = null;
+  }
+
+  getActiveDescendantOwner() {
+    return this.searchInputElement || this.triggerElement;
+  }
+
+  setActiveDescendant(optionId) {
+    this.getActiveDescendantOwner()?.setAttribute('aria-activedescendant', optionId);
+  }
+
+  clearActiveDescendant() {
+    this.searchInputElement?.removeAttribute('aria-activedescendant');
+    this.triggerElement?.removeAttribute('aria-activedescendant');
+  }
+
+  getOptionId(countryCode) {
+    return `cl-phone-input-option-${String(countryCode).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
   }
 }

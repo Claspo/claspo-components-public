@@ -40,10 +40,21 @@ export default class SysDropdownInputComponent extends WcControlledElement {
   static componentTemplate = ComponentTemplate;
   registeredControl;
   overlayBackdrop;
+  overlayContentElement = null;
+  overlayOptions = [];
+  activeOptionIndex = -1;
   enableSearchOptionsCount = 5;
+  overlayListboxId = `cl-dropdown-listbox-${Math.random().toString(36).slice(2, 11)}`;
+  navigationHint = 'selected';
+  boundEscapeKeyupGuard = null;
 
   constructor() {
     super();
+
+    this.handleTriggerClick = this.handleTriggerClick.bind(this);
+    this.handleInputKeydown = this.handleInputKeydown.bind(this);
+    this.handleSearchInput = this.handleSearchInput.bind(this);
+    this.handleOverlayKeydown = this.handleOverlayKeydown.bind(this);
 
     this.getRootElement().innerHTML = `
       <style id="cl-dropdown-styles">${SysDropdownInputComponent.componentStyle()}</style>
@@ -60,8 +71,8 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
     this.setPlaceholder(props, this.getEnvironment());
     this.setDropdownInputText(this.getOptions());
-
     this.applyTriggerAriaLabel();
+    this.updateInputMode();
 
     this.observeProps((prev, next) => {
       const env = this.getEnvironment();
@@ -75,11 +86,13 @@ export default class SysDropdownInputComponent extends WcControlledElement {
       this.setArrowIconStyles(next, env);
       setFocusOutline(this.getElement('input'));
       this.getElement('input').setAttribute('aria-required', String(!!next.control?.validation?.required));
+      this.updateInputMode();
     });
 
     this.observeShared(() => {
       this.setPlaceholder(this.getProps(), this.getEnvironment());
       this.setArrowIconStyles(this.getProps(), this.getEnvironment());
+      this.updateInputMode();
     });
 
     this.observeEnvironment((prev, next) => {
@@ -90,12 +103,23 @@ export default class SysDropdownInputComponent extends WcControlledElement {
       this.setArrowIconStyles(props, next);
     });
 
-    rootElement.querySelector('.dropdown-input-with-tooltip').addEventListener('click', () => {
-      waitForKeyboardHide(() => this.createOverlay(this.getOptions()));
-    });
+    rootElement.querySelector('.dropdown-input-with-tooltip').addEventListener('click', this.handleTriggerClick);
 
     this.configInputEventListeners();
   };
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEscapeKeyupGuard();
+
+    const inputElement = this.getElement('input');
+    inputElement?.removeEventListener('keydown', this.handleInputKeydown);
+    inputElement?.removeEventListener('input', this.handleSearchInput);
+
+    this.getRootElement()
+      .querySelector('.dropdown-input-with-tooltip')
+      ?.removeEventListener('click', this.handleTriggerClick);
+  }
 
   registerControl(rootElement) {
     this.registeredControl = this.createControlWithValidation();
@@ -140,13 +164,17 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     return Object.fromEntries(filteredOptions);
   }
 
-  createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayBackgroundColor) {
+  createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayBackgroundColor, selectable = true) {
     const containerElement = document.createElement('div');
     containerElement.classList.add('option-wrapper');
-    containerElement.setAttribute('role', 'option');
-    containerElement.setAttribute('aria-selected', selected ? 'true' : 'false');
-    if (option.id != null) {
-      containerElement.id = `cl-dropdown-option-${option.id}`;
+    containerElement.dataset.selectable = String(selectable);
+
+    if (selectable) {
+      containerElement.setAttribute('role', 'option');
+      containerElement.setAttribute('aria-selected', selected ? 'true' : 'false');
+      if (option.id != null) {
+        containerElement.id = this.getOptionId(option.id);
+      }
     }
 
     const labelElement = document.createElement('span');
@@ -190,37 +218,26 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     });
 
     const value = this.registeredControl?.getValue() || null;
-
     const buttonsList = document.createElement('div');
 
-    let selectedOptionId = null;
+    this.overlayOptions = [];
+
     Object.entries(filteredOptions)
-      .forEach(([id]) => {
+      .forEach(([id], index) => {
         const option = filteredOptions[id];
         const selected = value?.id === id;
-        if (selected) {
-          selectedOptionId = id;
-        }
         const menuButtonEl = this.createDropdownButtonMenuButtonComponent(option, selected, optionLabelStyles, overlayStyles.background);
+
         menuButtonEl.addEventListener('click', () => {
-          const value = { id, exportId: filteredOptions[id].exportId };
-
-          this.registeredControl.setValue(value);
-          inputElement.value = option.label;
-          inputElement.dispatchEvent(new Event('input', { bubbles: true }));
-          inputElement.dispatchEvent(new Event('change', { bubbles: true }));
-
-          backdrop.click();
-          inputElement.focus();
+          this.selectOption(id, option, backdrop);
         });
-        buttonsList.appendChild(menuButtonEl);
-      });
+        menuButtonEl.addEventListener('mouseenter', () => {
+          this.setActiveOption(index, false);
+        });
 
-    if (selectedOptionId != null) {
-      inputElement.setAttribute('aria-activedescendant', `cl-dropdown-option-${selectedOptionId}`);
-    } else {
-      inputElement.removeAttribute('aria-activedescendant');
-    }
+        buttonsList.appendChild(menuButtonEl);
+        this.overlayOptions.push({ id, option, element: menuButtonEl });
+      });
 
     const optionsLength = Object.keys(filteredOptions).length;
     if (!optionsLength) {
@@ -230,11 +247,12 @@ export default class SysDropdownInputComponent extends WcControlledElement {
         sort: 0,
         label: this.getTranslationsMap(SysDropdownInputComponent.NO_MATCHES_OPTION).translations,
       };
-      const noMatchesElement = this.createDropdownButtonMenuButtonComponent(noMatchesOption, false, optionLabelStyles, overlayStyles.background);
+      const noMatchesElement = this.createDropdownButtonMenuButtonComponent(noMatchesOption, false, optionLabelStyles, overlayStyles.background, false);
       buttonsList.appendChild(noMatchesElement);
     }
 
     overlayContentContainer.appendChild(buttonsList);
+    this.setInitialActiveOption();
 
     const allOptionsLength = Object.keys(allOptions).length;
     if (allOptionsLength > optionsLength) {
@@ -300,39 +318,52 @@ export default class SysDropdownInputComponent extends WcControlledElement {
               cursor: pointer;
               text-align: left;
             }
-            
+
+            .option-wrapper.option-active,
             .option-wrapper:hover {
               background-color: ${getMenuItemHoverColor(backgroundColor)};
             }
         `;
   }
 
-  createOverlay(options) {
+  createOverlay(options, navigationHint = 'selected') {
     if (this.overlayBackdrop) {
       this.overlayBackdrop.click();
     }
+
     const triggerElement = this.getElement('input');
     triggerElement.setAttribute('aria-expanded', 'true');
+    triggerElement.setAttribute('aria-controls', this.overlayListboxId);
+    this.navigationHint = navigationHint;
+
     const result = createMenuOverlay({
       triggerElement,
       overlayStyles: this.getOverlayStyles(),
       createOverlayContent: (backdrop, overlayContentContainer) => {
         overlayContentContainer.setAttribute('role', 'listbox');
+        overlayContentContainer.id = this.overlayListboxId;
+        overlayContentContainer.addEventListener('keydown', this.handleOverlayKeydown);
+        this.overlayContentElement = overlayContentContainer;
         this.createOverlayContent(backdrop, overlayContentContainer, options, this.getProps().control.options);
       },
       overlayWidth: triggerElement.getBoundingClientRect().width,
       onDestroy: () => {
         this.overlayBackdrop = null;
+        this.overlayContentElement = null;
+        this.overlayOptions = [];
+        this.activeOptionIndex = -1;
         triggerElement.setAttribute('aria-expanded', 'false');
+        triggerElement.removeAttribute('aria-controls');
         triggerElement.removeAttribute('aria-activedescendant');
       },
       positionByDefault: 'bottom',
       htmlDocumentObject: this.htmlDocumentObject,
     });
+
     this.overlayBackdrop = result.backdrop;
-    this.overlayBackdrop.addEventListener('click', (e) => {
-      if (e.isTrusted) {
-        this.setDropdownInputText(options);
+    this.overlayBackdrop.addEventListener('click', (event) => {
+      if (event.isTrusted) {
+        this.setDropdownInputText(this.getProps().control.options);
       }
     });
   }
@@ -372,14 +403,228 @@ export default class SysDropdownInputComponent extends WcControlledElement {
   }
 
   configInputEventListeners() {
+    this.getElement('input').addEventListener('keydown', this.handleInputKeydown);
+  }
+
+  updateInputMode() {
     const inputElement = this.getElement('input');
+
+    if (!inputElement) {
+      return;
+    }
+
+    inputElement.removeEventListener('input', this.handleSearchInput);
+
     if (Object.values(this.getOptions()).length < this.enableSearchOptionsCount) {
       inputElement.setAttribute('readonly', 'readonly');
-
-    } else {
-      inputElement.addEventListener('input', ({ target }) => {
-        waitForKeyboardHide(() => this.createOverlay(this.getOptions(target.value)));
-      });
+      inputElement.setAttribute('aria-autocomplete', 'none');
+      inputElement.setAttribute('aria-readonly', 'true');
+      return;
     }
+
+    inputElement.removeAttribute('readonly');
+    inputElement.setAttribute('aria-autocomplete', 'list');
+    inputElement.setAttribute('aria-readonly', 'false');
+    inputElement.addEventListener('input', this.handleSearchInput);
+  }
+
+  handleTriggerClick() {
+    waitForKeyboardHide(() => this.createOverlay(this.getOptions()));
+  }
+
+  handleSearchInput({ target }) {
+    waitForKeyboardHide(() => this.createOverlay(this.getOptions(target.value), 'first'));
+  }
+
+  handleInputKeydown(event) {
+    const inputElement = this.getElement('input');
+    const isReadOnly = inputElement.hasAttribute('readonly');
+    const isOverlayOpen = !!this.overlayBackdrop;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        if (isOverlayOpen) {
+          this.moveActiveOption(1);
+        } else {
+          this.createOverlay(this.getOptions(), 'first');
+        }
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        if (isOverlayOpen) {
+          this.moveActiveOption(-1);
+        } else {
+          this.createOverlay(this.getOptions(), 'last');
+        }
+        break;
+      case 'Enter':
+        if (isOverlayOpen) {
+          event.preventDefault();
+          this.selectActiveOption();
+        } else {
+          event.preventDefault();
+          this.createOverlay(this.getOptions());
+        }
+        break;
+      case ' ':
+      case 'Spacebar':
+        if (isReadOnly) {
+          event.preventDefault();
+          if (isOverlayOpen) {
+            this.selectActiveOption();
+          } else {
+            this.createOverlay(this.getOptions());
+          }
+        }
+        break;
+      case 'Home':
+        if (isOverlayOpen && isReadOnly) {
+          event.preventDefault();
+          this.setActiveOption(0);
+        }
+        break;
+      case 'End':
+        if (isOverlayOpen && isReadOnly) {
+          event.preventDefault();
+          this.setActiveOption(this.overlayOptions.length - 1);
+        }
+        break;
+      case 'Escape':
+        if (isOverlayOpen) {
+          event.preventDefault();
+          event.stopPropagation?.();
+          this.armEscapeKeyupGuard();
+          this.closeOverlay(true);
+        }
+        break;
+      case 'Tab':
+        if (isOverlayOpen) {
+          this.closeOverlay(true);
+        }
+        break;
+    }
+  }
+
+  handleOverlayKeydown(event) {
+    if (event.key !== 'Escape' || !this.overlayBackdrop) {
+      return;
+    }
+
+    event.stopPropagation?.();
+    this.armEscapeKeyupGuard();
+    this.closeOverlay(true);
+  }
+
+  armEscapeKeyupGuard() {
+    this.removeEscapeKeyupGuard();
+
+    this.boundEscapeKeyupGuard = (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      event.preventDefault?.();
+      event.stopImmediatePropagation?.();
+      this.removeEscapeKeyupGuard();
+    };
+
+    window.addEventListener('keyup', this.boundEscapeKeyupGuard, true);
+  }
+
+  removeEscapeKeyupGuard() {
+    if (!this.boundEscapeKeyupGuard) {
+      return;
+    }
+
+    window.removeEventListener('keyup', this.boundEscapeKeyupGuard, true);
+    this.boundEscapeKeyupGuard = null;
+  }
+
+  closeOverlay(restoreInputText = false) {
+    if (restoreInputText) {
+      this.setDropdownInputText(this.getProps().control.options);
+    }
+
+    this.overlayBackdrop?.click();
+  }
+
+  moveActiveOption(direction) {
+    if (!this.overlayOptions.length) {
+      return;
+    }
+
+    const nextIndex = this.activeOptionIndex < 0
+      ? (direction > 0 ? 0 : this.overlayOptions.length - 1)
+      : Math.max(0, Math.min(this.activeOptionIndex + direction, this.overlayOptions.length - 1));
+
+    this.setActiveOption(nextIndex);
+  }
+
+  setInitialActiveOption() {
+    if (!this.overlayOptions.length) {
+      this.getElement('input').removeAttribute('aria-activedescendant');
+      return;
+    }
+
+    if (this.navigationHint === 'first') {
+      this.setActiveOption(0, false);
+      return;
+    }
+
+    if (this.navigationHint === 'last') {
+      this.setActiveOption(this.overlayOptions.length - 1, false);
+      return;
+    }
+
+    const selectedOptionId = this.registeredControl?.getValue()?.id;
+    const selectedOptionIndex = this.overlayOptions.findIndex((option) => option.id === selectedOptionId);
+
+    this.setActiveOption(selectedOptionIndex >= 0 ? selectedOptionIndex : 0, false);
+  }
+
+  setActiveOption(index, shouldScroll = true) {
+    if (!this.overlayOptions.length) {
+      return;
+    }
+
+    this.activeOptionIndex = Math.max(0, Math.min(index, this.overlayOptions.length - 1));
+
+    this.overlayOptions.forEach(({ element }, optionIndex) => {
+      element.classList.toggle('option-active', optionIndex === this.activeOptionIndex);
+    });
+
+    const activeOption = this.overlayOptions[this.activeOptionIndex];
+    this.getElement('input').setAttribute('aria-activedescendant', activeOption.element.id);
+
+    if (shouldScroll) {
+      activeOption.element.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  selectActiveOption() {
+    if (this.activeOptionIndex < 0) {
+      return;
+    }
+
+    const activeOption = this.overlayOptions[this.activeOptionIndex];
+    this.selectOption(activeOption.id, activeOption.option, this.overlayBackdrop);
+  }
+
+  selectOption(id, option, backdrop) {
+    const value = { id, exportId: option.exportId };
+    const inputElement = this.getElement('input');
+
+    this.registeredControl.setValue(value);
+    inputElement.value = option.label;
+    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+    inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+
+    backdrop.click();
+    inputElement.focus();
+  }
+
+  getOptionId(optionId) {
+    return `cl-dropdown-option-${String(optionId).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
   }
 }

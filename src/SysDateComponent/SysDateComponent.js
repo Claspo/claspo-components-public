@@ -35,6 +35,7 @@ export default class SysDateComponent extends WcControlledElement {
 
   registeredControl;
   overlayBackdrop;
+  boundEscapeKeyupGuard = null;
 
   DAY_PLACEHOLDER = SysDateTranslationUtils.DAY_PLACEHOLDER;
   MONTH_DROPDOWN_PLACEHOLDER = SysDateTranslationUtils.MONTH_DROPDOWN_PLACEHOLDER;
@@ -123,10 +124,31 @@ export default class SysDateComponent extends WcControlledElement {
       this.setArrowIconStyles();
     });
 
-    rootElement.querySelector('.month-dropdown-input').addEventListener('click', () => {
-      waitForKeyboardHide(() => this.createOverlay());
-    });
+    const monthDropdownButton = rootElement.querySelector('#cl-month-dropdown');
+    monthDropdownButton.addEventListener('click', this.openMonthDropdown);
+    monthDropdownButton.addEventListener('keydown', this.handleMonthDropdownKeydown);
   }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEscapeKeyupGuard();
+    const monthDropdownButton = this.getRootElement().querySelector('#cl-month-dropdown');
+    monthDropdownButton?.removeEventListener('click', this.openMonthDropdown);
+    monthDropdownButton?.removeEventListener('keydown', this.handleMonthDropdownKeydown);
+  }
+
+  openMonthDropdown = () => {
+    waitForKeyboardHide(() => this.createOverlay());
+  };
+
+  handleMonthDropdownKeydown = (event) => {
+    if (!['Enter', ' ', 'ArrowDown'].includes(event.key)) {
+      return;
+    }
+
+    event.preventDefault();
+    this.openMonthDropdown();
+  };
 
   setControlsOrder(rootElement) {
     const widgetLanguage = this.getPreferredWidgetLanguage();
@@ -292,6 +314,9 @@ export default class SysDateComponent extends WcControlledElement {
   createDropdownButtonMenuComponent(option, selected, optionLabelStyles, overlayBackgroundColor) {
     const containerElement = document.createElement('div');
     containerElement.classList.add('option-wrapper');
+    containerElement.setAttribute('role', 'option');
+    containerElement.setAttribute('tabindex', selected ? '0' : '-1');
+    containerElement.setAttribute('aria-selected', selected ? 'true' : 'false');
 
     const labelElement = document.createElement('span');
 
@@ -305,6 +330,95 @@ export default class SysDateComponent extends WcControlledElement {
     containerElement.appendChild(labelElement);
 
     return containerElement;
+  }
+
+  focusMonthOption(targetOption, buttonsList) {
+    if (!targetOption || !buttonsList) {
+      return;
+    }
+
+    [...buttonsList.children].forEach((option) => {
+      option.setAttribute('tabindex', option === targetOption ? '0' : '-1');
+    });
+
+    targetOption.focus();
+  }
+
+  focusSelectedMonthAfterOverlayOpen() {
+    const overlayContentElement = this.overlayBackdrop?.querySelector('[role="listbox"]');
+    const optionElements = overlayContentElement ? [...overlayContentElement.querySelectorAll('.option-wrapper')] : [];
+
+    if (!optionElements.length) {
+      return;
+    }
+
+    const selectedMonthOption = optionElements.find((option) => option.getAttribute('aria-selected') === 'true');
+    this.focusMonthOption(selectedMonthOption || optionElements[0], overlayContentElement);
+  }
+
+  restoreFocusToMonthTrigger(triggerButton) {
+    if (!triggerButton) {
+      return;
+    }
+
+    setTimeout(() => {
+      triggerButton.focus();
+    }, 0);
+  }
+
+  armEscapeKeyupGuard() {
+    this.removeEscapeKeyupGuard();
+
+    this.boundEscapeKeyupGuard = (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      event.preventDefault?.();
+      event.stopImmediatePropagation?.();
+      this.removeEscapeKeyupGuard();
+    };
+
+    window.addEventListener('keyup', this.boundEscapeKeyupGuard, true);
+  }
+
+  removeEscapeKeyupGuard() {
+    if (!this.boundEscapeKeyupGuard) {
+      return;
+    }
+
+    window.removeEventListener('keyup', this.boundEscapeKeyupGuard, true);
+    this.boundEscapeKeyupGuard = null;
+  }
+
+  handleMonthOptionKeydown(event, menuButtonEl, buttonsList, onSelect, onClose) {
+    const optionElements = [...buttonsList.children];
+    const optionIndex = optionElements.indexOf(menuButtonEl);
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onSelect();
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation?.();
+      this.armEscapeKeyupGuard();
+      onClose?.();
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.focusMonthOption(optionElements[optionIndex + 1] || optionElements[0], buttonsList);
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.focusMonthOption(optionElements[optionIndex - 1] || optionElements[optionElements.length - 1], buttonsList);
+    }
   }
 
   getCurrentSelectedMonthValue() {
@@ -340,6 +454,16 @@ export default class SysDateComponent extends WcControlledElement {
 
     const options = this.getOptions();
     const buttonsList = document.createElement('div');
+    buttonsList.setAttribute('role', 'listbox');
+
+    let selectedMonthOption;
+
+    const selectMonthOption = (option) => {
+      inputButton.textContent = option.label;
+      backdrop.click();
+      this.setControlValueProxy();
+      control.emit('RUN_SINGLE_ELEMENT_VALIDATION', inputButton);
+    };
 
     Object.entries(options)
       .forEach(([id]) => {
@@ -347,17 +471,29 @@ export default class SysDateComponent extends WcControlledElement {
         const selected = `month-${currentMonthNumber}` === id;
         const menuButtonEl = this.createDropdownButtonMenuComponent(option, selected, optionLabelStyles, overlayStyles.background);
 
-        menuButtonEl.addEventListener('click', () => {
-          inputButton.textContent = option.label;
-          backdrop.click();
-          this.setControlValueProxy();
-          control.emit('RUN_SINGLE_ELEMENT_VALIDATION', inputButton);
+        if (selected) {
+          selectedMonthOption = menuButtonEl;
+        }
+
+        menuButtonEl.addEventListener('click', () => selectMonthOption(option));
+        menuButtonEl.addEventListener('keydown', (event) => {
+          this.handleMonthOptionKeydown(
+            event,
+            menuButtonEl,
+            buttonsList,
+            () => selectMonthOption(option),
+            () => backdrop.click(),
+          );
         });
 
         buttonsList.appendChild(menuButtonEl);
       });
 
     overlayContentContainer.appendChild(buttonsList);
+
+    setTimeout(() => {
+      this.focusMonthOption(selectedMonthOption || buttonsList.firstElementChild, buttonsList);
+    }, 0);
   }
 
   createOverlay() {
@@ -365,8 +501,11 @@ export default class SysDateComponent extends WcControlledElement {
       this.overlayBackdrop.click();
     }
 
+    const triggerButton = this.getRootElement().querySelector('#cl-month-dropdown');
+    triggerButton.setAttribute('aria-expanded', 'true');
+
     const result = createMenuOverlay({
-      triggerElement: this.getRootElement().querySelector('#cl-month-dropdown'),
+      triggerElement: triggerButton,
       overlayStyles: getOverlayStyles(
         this.getRootElement(),
         this.overlayContentStyles,
@@ -376,11 +515,22 @@ export default class SysDateComponent extends WcControlledElement {
         this.createOverlayContent(backdrop, overlayContentContainer);
       },
       overlayWidth: this.getRootElement().querySelector('#cl-month-dropdown').getBoundingClientRect().width,
-      onDestroy: () => { this.overlayBackdrop = null },
+      onDestroy: () => {
+        this.overlayBackdrop = null;
+        triggerButton.setAttribute('aria-expanded', 'false');
+        this.restoreFocusToMonthTrigger(triggerButton);
+      },
       htmlDocumentObject: this.htmlDocumentObject,
     });
 
     this.overlayBackdrop = result.backdrop;
+    const focusAfterOpen = () => this.focusSelectedMonthAfterOverlayOpen();
+
+    if (window.requestAnimationFrame) {
+      window.requestAnimationFrame(() => setTimeout(focusAfterOpen, 0));
+    } else {
+      setTimeout(focusAfterOpen, 0);
+    }
   }
 
   applyControlsDisplayRules(props) {

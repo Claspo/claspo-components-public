@@ -12,6 +12,7 @@ describe('SysDropdownInputComponent template', () => {
     const input = host.querySelector('[cl-element="input"]');
     expect(input.getAttribute('role')).toBe('combobox');
     expect(input.getAttribute('aria-haspopup')).toBe('listbox');
+    expect(input.getAttribute('aria-autocomplete')).toBe('none');
     expect(input.getAttribute('aria-expanded')).toBe('false');
   });
 

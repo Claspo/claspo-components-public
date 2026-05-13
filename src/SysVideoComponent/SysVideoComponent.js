@@ -32,6 +32,15 @@ export default class SysVideoComponent extends WcElement {
     `;
   }
 
+  handleOverlayKeydown = (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+
+    event.preventDefault();
+    event.currentTarget.click();
+  };
+
   connectedCallback() {
     super.connectedCallback();
     const rootElement = this.getRootElement();
@@ -179,6 +188,9 @@ export default class SysVideoComponent extends WcElement {
     const previewEl = rootElement.querySelector('.video-overlay');
     const player = rootElement.querySelector('#youtube-player');
     previewEl.style.setProperty('--cl-video-component-overlay-visibility', 'visible');
+    previewEl.setAttribute('role', 'button');
+    previewEl.setAttribute('tabindex', '0');
+    previewEl.setAttribute('aria-label', 'Play video');
 
     if (!customCover) {
       setTimeout(() => previewEl.style.backgroundImage = `url(${imgUrl})`);
@@ -192,6 +204,7 @@ export default class SysVideoComponent extends WcElement {
       player.src = player.src + '&autoplay=1';
       player.onload = () => this.hidePreviewImage(rootElement);
     };
+    previewEl.onkeydown = this.handleOverlayKeydown;
   }
 
   hidePreviewImage(rootElement) {
@@ -199,6 +212,10 @@ export default class SysVideoComponent extends WcElement {
     previewEl.style.setProperty('--cl-video-component-overlay-visibility', 'hidden');
     previewEl.style.setProperty('--cl-video-component-play-btn-visibility', 'hidden');
     previewEl.style.backgroundImage = `none`;
+    previewEl.removeAttribute('tabindex');
+    previewEl.removeAttribute('role');
+    previewEl.removeAttribute('aria-label');
+    previewEl.onkeydown = null;
   }
 
   createUpdatedIFrame(updatedSrc) {

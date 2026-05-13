@@ -99,6 +99,14 @@ describe('SysSliderComponent', () => {
     expect(slider.currentSlideIndex).toBe(1);
   });
 
+  test('should navigate to the next slide on Enter keydown on next arrow', () => {
+    const nextControl = rootElement.querySelector('.nextSlideControl');
+
+    fireEvent.keyDown(nextControl, { key: 'Enter' });
+
+    expect(slider.currentSlideIndex).toBe(1);
+  });
+
   test('LTR: should navigate to the previous slide on prev arrow click', () => {
     // GIVEN
     const prevControl = rootElement.querySelector('.prevSlideControl');
@@ -109,6 +117,21 @@ describe('SysSliderComponent', () => {
 
     // THEN
     expect(slider.currentSlideIndex).toBe(0);
+  });
+
+  test('should expose slider controls as keyboard-focusable buttons', () => {
+    const prevControl = rootElement.querySelector('.prevSlideControl');
+    const nextControl = rootElement.querySelector('.nextSlideControl');
+    slider.getSlideElements = () => [document.createElement('div'), document.createElement('div')];
+    const dotsContainer = slider.createNavigationDotsSlideControl(0);
+    const firstDot = dotsContainer.querySelector('.navigationDot');
+
+    expect(prevControl.getAttribute('role')).toBe('button');
+    expect(prevControl.getAttribute('tabindex')).toBe('0');
+    expect(nextControl.getAttribute('role')).toBe('button');
+    expect(nextControl.getAttribute('tabindex')).toBe('0');
+    expect(firstDot.getAttribute('role')).toBe('button');
+    expect(firstDot.getAttribute('tabindex')).toBe('0');
   });
 
   test('should auto-slide between slides at specified interval', async () => {
