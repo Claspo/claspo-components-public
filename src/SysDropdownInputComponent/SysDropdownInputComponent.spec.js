@@ -99,6 +99,20 @@ describe('SysDropdownInputComponent accessibility', () => {
     expect(component.createOverlay).toHaveBeenCalledWith(component.getOptions('Beta'), 'first');
   });
 
+  it('updates the control directly on option selection without synthetic input events', () => {
+    inputElement.focus = jest.fn();
+    inputElement.dispatchEvent = jest.fn();
+    const backdrop = { click: jest.fn() };
+
+    component.selectOption('beta', { id: 'beta', label: 'Beta', exportId: 'beta' }, backdrop);
+
+    expect(component.registeredControl.setValue).toHaveBeenCalledWith({ id: 'beta', exportId: 'beta' });
+    expect(inputElement.value).toBe('Beta');
+    expect(inputElement.dispatchEvent).not.toHaveBeenCalled();
+    expect(backdrop.click).toHaveBeenCalled();
+    expect(inputElement.focus).toHaveBeenCalled();
+  });
+
   it('selects the active option with Enter when the list is open', () => {
     component.overlayBackdrop = document.createElement('div');
 
@@ -162,5 +176,21 @@ describe('SysDropdownInputComponent accessibility', () => {
 
     expect(inputElement.getAttribute('aria-activedescendant')).toBe(component.getOptionId('beta'));
     expect(overlayContentContainer.querySelectorAll('[role="option"]').length).toBe(5);
+  });
+
+  it('does not add compensating bottom margin when only the no-matches option is shown', () => {
+    const overlayContentContainer = document.createElement('div');
+
+    SysDropdownInputComponent.prototype.createOverlayContent.call(
+      component,
+      document.createElement('div'),
+      overlayContentContainer,
+      {},
+      component.getProps().control.options,
+    );
+
+    expect(overlayContentContainer.style.marginBottom).toBe('');
+    expect(overlayContentContainer.querySelectorAll('[role="option"]').length).toBe(0);
+    expect(overlayContentContainer.textContent).toContain('No matches');
   });
 });

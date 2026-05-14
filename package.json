@@ -1,11 +1,11 @@
 {
   "name": "@claspo/components",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "",
   "scripts": {
     "prebuild": "rm -rf out",
     "build": "npm run prebuild && webpack && npm run build:script",
-    "build:local": "npm run prebuild && USE_LOCAL_SOURCES=1 webpack",
+    "build:local": "npm run prebuild && USE_LOCAL_SOURCES=1 webpack && npm run build:script",
     "build:script": "rollup -c rollup.script.config.js",
     "dev": "npm run prebuild && npx cross-env dev=1 webpack --watch",
     "dev:local": "npm run prebuild && npx cross-env dev=1 USE_LOCAL_SOURCES=1 webpack --watch",

@@ -255,7 +255,7 @@ export default class SysDropdownInputComponent extends WcControlledElement {
     this.setInitialActiveOption();
 
     const allOptionsLength = Object.keys(allOptions).length;
-    if (allOptionsLength > optionsLength) {
+    if (optionsLength > 0 && allOptionsLength > optionsLength) {
       const missingOptionsHeight = Object.keys(allOptions)
         .filter(optionId => !filteredOptions.hasOwnProperty(optionId))
         .reduce((height, optionId) => {
@@ -617,8 +617,6 @@ export default class SysDropdownInputComponent extends WcControlledElement {
 
     this.registeredControl.setValue(value);
     inputElement.value = option.label;
-    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
-    inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 
     backdrop.click();
     inputElement.focus();
