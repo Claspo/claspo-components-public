@@ -64,7 +64,6 @@ export default class SysChoiceButtonsComponent extends WcControlledElement {
         buttonElement.setAttribute('option-id', id);
         buttonElement.setAttribute('aria-pressed', 'false');
         buttonElement.setAttribute('aria-disabled', String(!isInteractive));
-        buttonElement.disabled = !isInteractive;
 
         if (isInteractive) {
           buttonElement.addEventListener('click', () => {
