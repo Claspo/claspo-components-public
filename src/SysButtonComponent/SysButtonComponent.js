@@ -19,6 +19,9 @@ export default class SysButtonComponent extends WcElement {
 
   invalidListener;
   validListener;
+  submitStartedListener;
+  submitFinishedListener;
+  submitErrorWithoutViewListener;
   stylesUpdateObserver;
 
 
@@ -30,6 +33,19 @@ export default class SysButtonComponent extends WcElement {
   <button cl-element="button">
     <div class="editable-text" cl-inline-edit="content, text"></div>
   </button>
+
+  <span class="button-asyncLoader" aria-hidden="true">
+    <svg class="spinner--icon" viewBox="0 0 18 18" aria-hidden="true">
+      <circle class="path" cx="9" cy="9" r="5" fill="none" stroke-width="2"></circle>
+    </svg>
+  </span>
+
+  <span class="button-success-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <path d="M7 12.5L10.5 16L17 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </span>
 
   <div class="input-tooltip">
     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,8 +87,28 @@ export default class SysButtonComponent extends WcElement {
         }
 
         if (subscribeContactAction || requestAction) {
-          this.services.eventEmitter.on('CONTACT_DATA_SUBMIT', () => {
+          this.submitStartedListener = this.services.eventEmitter.on('SUBMIT_REQUEST_STARTED', () => {
             buttonElement.disabled = true;
+            this.hideErrorTooltip();
+            this.hideSuccessIcon();
+            this.showPendingLoader();
+          });
+
+          this.submitFinishedListener = this.services.eventEmitter.on('SUBMIT_REQUEST_FINISHED', (payload) => {
+            this.hidePendingLoader();
+
+            if (payload?.success) {
+              // Show a success checkmark on the button. It stays disabled so the indicator
+              // remains until the widget navigates away or closes.
+              this.showSuccessIcon();
+            } else {
+              // Re-enable the button on failure so the user can retry.
+              buttonElement.disabled = false;
+            }
+          });
+
+          this.submitErrorWithoutViewListener = this.services.eventEmitter.on('SUBMIT_REQUEST_ERROR_WITHOUT_VIEW', () => {
+            this.showErrorTooltip('SUBMIT_REQUEST_FAILED');
           });
         }
       }
@@ -99,7 +135,58 @@ export default class SysButtonComponent extends WcElement {
       this.validListener.off();
     }
 
+    if (this.submitStartedListener) {
+      this.submitStartedListener.off();
+    }
+
+    if (this.submitFinishedListener) {
+      this.submitFinishedListener.off();
+    }
+
+    if (this.submitErrorWithoutViewListener) {
+      this.submitErrorWithoutViewListener.off();
+    }
+
     this.stylesUpdateObserver?.disconnect();
+  }
+
+  showPendingLoader() {
+    const mainContainerElement = this.getRootElement().querySelector('.main-container');
+    const loaderElement = mainContainerElement?.querySelector('.button-asyncLoader');
+
+    if (!mainContainerElement || !loaderElement) {
+      return;
+    }
+
+    // Match the spinner color to the button text so it stays visible on the button background.
+    loaderElement.style.color = this.getRootElement().querySelector('button').style.color;
+    mainContainerElement.classList.remove('cl-button-success');
+    mainContainerElement.classList.add('cl-button-loading');
+  }
+
+  hidePendingLoader() {
+    this.getRootElement()
+      .querySelector('.main-container')
+      ?.classList.remove('cl-button-loading');
+  }
+
+  showSuccessIcon() {
+    const mainContainerElement = this.getRootElement().querySelector('.main-container');
+    const successIconElement = mainContainerElement?.querySelector('.button-success-icon');
+
+    if (!mainContainerElement || !successIconElement) {
+      return;
+    }
+
+    // Match the checkmark color to the button text so it stays visible on the button background.
+    successIconElement.style.color = this.getRootElement().querySelector('button').style.color;
+    mainContainerElement.classList.add('cl-button-success');
+  }
+
+  hideSuccessIcon() {
+    this.getRootElement()
+      .querySelector('.main-container')
+      ?.classList.remove('cl-button-success');
   }
 
   hideErrorTooltip() {

@@ -59,5 +59,68 @@ button {
 button.focus-outline-defined:focus {
   outline: var(--clFocusOutline);
 }
+
+.button-asyncLoader {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.main-container.cl-button-loading .button-asyncLoader {
+  display: block;
+}
+
+.button-success-icon {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.button-success-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.main-container.cl-button-success .button-success-icon {
+  display: block;
+}
+
+.main-container.cl-button-loading .editable-text,
+.main-container.cl-button-loading .icon,
+.main-container.cl-button-success .editable-text,
+.main-container.cl-button-success .icon {
+  visibility: hidden;
+}
+
+.button-asyncLoader .spinner--icon {
+  width: 20px;
+  height: 20px;
+  transform-origin: center;
+  animation: cl-button-spinner-rotate 0.8s linear infinite;
+}
+
+.button-asyncLoader .spinner--icon .path {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-dasharray: 24 32;
+}
+
+@keyframes cl-button-spinner-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
 `;
 export default SysButtonStyles;

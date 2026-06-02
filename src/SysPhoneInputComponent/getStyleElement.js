@@ -98,7 +98,8 @@ input {
 }
 
 .phone-input-asyncLoader .spinner--icon {
-  animation: rotates 2s linear infinite;
+  animation: rotates 0.8s linear infinite;
+  transform-origin: center;
   z-index: 2;
   position: absolute;
   top: 50%;
@@ -111,33 +112,12 @@ input {
 .phone-input-asyncLoader .spinner--icon .path {
   stroke: #9B9B9B;
   stroke-linecap: round;
-  animation: dash 1.5s ease-in-out infinite;
+  stroke-dasharray: 24 32;
 }
 
-.phone-input-asyncLoader .spinner--icon .path1 {
-  stroke: #9B9B9B;
-  stroke-linecap: round;
-  animation: dash 1.25s ease-in-out infinite;
-}
-
-.phone-input-asyncLoader .spinner--icon @keyframes rotates {
+@keyframes rotates {
   100% {
     transform: rotate(360deg);
-  }
-}
-
-.phone-input-asyncLoader .spinner--icon @keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
   }
 }
 

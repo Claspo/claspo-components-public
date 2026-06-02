@@ -41,7 +41,6 @@ export default function getTemplate({selectCountryLabel = 'Select country code'}
       <span class="phone-input-asyncLoader" aria-hidden="true">
         <svg class="spinner--icon" viewBox="0 0 18 18" aria-hidden="true">
           <circle class="path" cx="9" cy="9" r="5" fill="none" stroke-width="2"></circle>
-          <circle class="path1" cx="9" cy="9" r="2" fill="none" stroke-width="2"></circle>
         </svg>
       </span>
     </div>
