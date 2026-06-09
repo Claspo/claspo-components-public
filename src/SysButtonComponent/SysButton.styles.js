@@ -97,6 +97,14 @@ button.focus-outline-defined:focus {
   display: block;
 }
 
+/* Once the success checkmark is shown the button is disabled and final, so
+   suppress hover feedback. Removing pointer interaction stops the SDK :hover
+   rules and the FILL_UP hover animation from matching, which keeps the button
+   visually static while the checkmark is displayed. */
+.main-container.cl-button-success button {
+  pointer-events: none;
+}
+
 .main-container.cl-button-loading .editable-text,
 .main-container.cl-button-loading .icon,
 .main-container.cl-button-success .editable-text,
