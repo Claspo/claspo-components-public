@@ -120,12 +120,7 @@ export default {
           "borderTopRightRadius": "0px",
           "borderBottomLeftRadius": "0px",
           "borderBottomRightRadius": "0px",
-          "boxShadow": "none",
-          "marginTop": "0px",
-          "marginBottom": "0px",
-          "marginLeft": "0px",
-          "marginRight": "0px",
-          "_marginEnabled": false
+          "boxShadow": "none"
         },
         "classes": ""
       },
@@ -167,6 +162,11 @@ export default {
             "position": "relative",
             "width": "100%",
             "minWidth": null,
+            "marginTop": "0px",
+            "marginBottom": "0px",
+            "marginLeft": "0px",
+            "marginRight": "0px",
+            "_marginEnabled": false
           },
           "classes": ""
         },
