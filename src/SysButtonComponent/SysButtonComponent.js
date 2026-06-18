@@ -87,14 +87,27 @@ export default class SysButtonComponent extends WcElement {
         }
 
         if (subscribeContactAction || requestAction) {
-          this.submitStartedListener = this.services.eventEmitter.on('SUBMIT_REQUEST_STARTED', () => {
+          // SUBMIT_REQUEST_* events are global broadcasts, so every submit-capable button
+          // receives them. The renderer stamps each event with the id of the component that
+          // initiated the request, so a button only reacts to requests it started itself.
+          const initiatedByThisButton = (eventMeta) => eventMeta?.initiatorComponentId === this.getModel()?.id;
+
+          this.submitStartedListener = this.services.eventEmitter.on('SUBMIT_REQUEST_STARTED', (payload, eventName, eventMeta) => {
+            if (!initiatedByThisButton(eventMeta)) {
+              return;
+            }
+
             buttonElement.disabled = true;
             this.hideErrorTooltip();
             this.hideSuccessIcon();
             this.showPendingLoader();
           });
 
-          this.submitFinishedListener = this.services.eventEmitter.on('SUBMIT_REQUEST_FINISHED', (payload) => {
+          this.submitFinishedListener = this.services.eventEmitter.on('SUBMIT_REQUEST_FINISHED', (payload, eventName, eventMeta) => {
+            if (!initiatedByThisButton(eventMeta)) {
+              return;
+            }
+
             this.hidePendingLoader();
 
             if (payload?.success) {
@@ -107,7 +120,11 @@ export default class SysButtonComponent extends WcElement {
             }
           });
 
-          this.submitErrorWithoutViewListener = this.services.eventEmitter.on('SUBMIT_REQUEST_ERROR_WITHOUT_VIEW', () => {
+          this.submitErrorWithoutViewListener = this.services.eventEmitter.on('SUBMIT_REQUEST_ERROR_WITHOUT_VIEW', (payload, eventName, eventMeta) => {
+            if (!initiatedByThisButton(eventMeta)) {
+              return;
+            }
+
             this.showErrorTooltip('SUBMIT_REQUEST_FAILED');
           });
         }
