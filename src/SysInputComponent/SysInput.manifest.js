@@ -218,6 +218,13 @@ export default {
             ]
           }
         }
+      },
+      {
+        "type": "CONTROL",
+        "name": "AUTOFILL",
+        "params": {
+          "autofillPropPath": ["control", "autofill"]
+        }
       }
     ]
   },

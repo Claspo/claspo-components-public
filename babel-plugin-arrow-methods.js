@@ -22,8 +22,12 @@ module.exports = function(babel) {
     name: 'transform-class-methods-to-arrow-functions',
     visitor: {
       ClassDeclaration(path, state) {
-        // Get the filename to check if it's a component file
-        const filename = state.filename || '';
+        // Get the filename to check if it's a component file.
+        // Babel reports state.filename using the OS-native path separator, so
+        // normalize Windows backslashes to forward slashes before matching.
+        // Without this the regex below never matches on Windows and no methods
+        // get transformed to arrow functions (breaking `this` in event listeners).
+        const filename = (state.filename || '').replace(/\\/g, '/');
 
         // Only process component files (files in src directory with matching class name)
         const filenameMatch = filename.match(/src\/([^/]+)\/\1\.js$/);

@@ -52,15 +52,29 @@ export default class SysPhoneInputComponent extends WcControlledElement {
         };
         this.availableOptions = this.getAvailableOptions(this.countryData.slice(), countriesPriority);
 
+        // the control creation below validates an autofilled value immediately, and the
+        // phone validator falls back to state.currentCountryCode when the value carries
+        // no recognizable country prefix — so the code must be in state before that
+        this.services.state.setState({ currentCountryCode: countryCode });
+
+        const autofillValue = this.getAutofillValue();
         const isRequired = this.getProps().control?.validation?.required || false;
-        if (isRequired) {
+        // an autofilled value must be validated and submitted, so it needs an eager
+        // control even when the field is not required
+        if (isRequired || autofillValue !== undefined) {
           this.createPhoneInputFormControl();
         } else {
           this.createPhoneInputFormControlHandler = () => this.createPhoneInputFormControl();
           inputElement.addEventListener('input', this.createPhoneInputFormControlHandler);
         }
-  
-        this.setValue(props, props.control.defaultValue || null);
+
+        this.setValue(props, autofillValue ?? props.control.defaultValue ?? null);
+
+        // after setValue: it paints the flag from the default country and writes the
+        // control value silently, so the value->country parse must run separately
+        if (autofillValue !== undefined) {
+          this.valueChangedCallback(autofillValue);
+        }
 
         this.phoneInputMenu = new PhoneInputMenu(
           this.getRootElement.bind(this),
@@ -218,7 +232,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
       recordKey: componentModel.id,
       id: componentModel.props.control.name,
       label: 'PHONE',
-      value: componentModel.props.control.defaultValue || '',
+      value: this.getValidatedAutofillValue() ?? (componentModel.props.control.defaultValue || ''),
       viewIndex: componentModel.path?.[0],
       sourceId: 'FORM',
       initialData: {

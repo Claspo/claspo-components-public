@@ -176,6 +176,13 @@ export default {
           "fieldTypePropPath": ["control", "fieldType"],
           "required": true
         }
+      },
+      {
+        "type": "CONTROL",
+        "name": "AUTOFILL",
+        "params": {
+          "autofillPropPath": ["control", "autofill"]
+        }
       }
     ]
   },
