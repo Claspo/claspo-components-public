@@ -131,6 +131,73 @@ describe('SysPhoneInputComponent autofill', () => {
     expect(context.addRecord).toHaveBeenCalledWith('phone-1', expect.objectContaining({ value: '' }));
   });
 
+  describe('browser autofill detection', () => {
+    // jsdom does not run CSS animations, so the :-webkit-autofill no-op
+    // animation is simulated by dispatching animationstart manually
+    function dispatchAnimationStart(element, animationName) {
+      const event = new Event('animationstart', { bubbles: true });
+      Object.defineProperty(event, 'animationName', { value: animationName });
+      element.getInputElement().dispatchEvent(event);
+    }
+
+    it('creates the control when the autofill animation fires after boot', async () => {
+      const { element } = createComponent({ autofillValue: undefined, required: false });
+
+      await bootComponent(element);
+      expect(element.createPhoneInputFormControl).not.toHaveBeenCalled();
+
+      dispatchAnimationStart(element, 'cl-phone-autofill-detected');
+
+      expect(element.createPhoneInputFormControl).toHaveBeenCalled();
+    });
+
+    it('ignores unrelated animations', async () => {
+      const { element } = createComponent({ autofillValue: undefined, required: false });
+
+      await bootComponent(element);
+      dispatchAnimationStart(element, 'rotates');
+
+      expect(element.createPhoneInputFormControl).not.toHaveBeenCalled();
+    });
+
+    it('creates the control eagerly when autofill lands before country data resolves', async () => {
+      const { element } = createComponent({ autofillValue: undefined, required: false });
+
+      element.connectedCallback();
+      dispatchAnimationStart(element, 'cl-phone-autofill-detected');
+      // country data is still in flight, so only the flag is set for now
+      expect(element.createPhoneInputFormControl).not.toHaveBeenCalled();
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(element.createPhoneInputFormControl).toHaveBeenCalled();
+    });
+
+    it('does not overwrite a browser-autofilled value with the country prefix', async () => {
+      const { element } = createComponent({ autofillValue: undefined, required: false });
+
+      element.connectedCallback();
+      element.getInputElement().value = AUTOFILLED_GERMAN_NUMBER;
+      dispatchAnimationStart(element, 'cl-phone-autofill-detected');
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(element.getInputElement().value).toBe(AUTOFILLED_GERMAN_NUMBER);
+    });
+
+    it('creates the control only once for repeated triggers', async () => {
+      const { element } = createComponent({ autofillValue: undefined, required: false });
+      element.createPhoneInputFormControl.mockRestore();
+      element.createControlWithValidation = jest.fn(() => ({ on: jest.fn() }));
+
+      await bootComponent(element);
+      dispatchAnimationStart(element, 'cl-phone-autofill-detected');
+      dispatchAnimationStart(element, 'cl-phone-autofill-detected');
+      element.getInputElement().dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(element.createControlWithValidation).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('getCountryOptionByValue', () => {
     const componentLikeThis = { availableOptions: COUNTRY_DATA };
 

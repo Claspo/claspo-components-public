@@ -23,6 +23,8 @@ export default class SysPhoneInputComponent extends WcControlledElement {
   defaultCountryCode = 'US';
   openSelectMenu = null;
   handleSelectButtonKeydown = null;
+  browserAutofillDetected = false;
+  handleAutofillAnimationStart = null;
 
   connectedCallback() {
     super.connectedCallback();
@@ -38,6 +40,22 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     const flagButtonElement = rootElement.querySelector('.phone-input-select-button-flag');
     flagButtonElement.style.opacity = '0';
     flagButtonElement.style.backgroundImage = `url(${this.assets('img/flags.png')})`;
+
+    // browser autofill fires neither input nor paste; the only signal is the
+    // animationstart of the :-webkit-autofill no-op animation. Attached before
+    // the country data request because autofill can land while it is in flight —
+    // then only the flag is set and the boot branch below creates the control
+    this.browserAutofillDetected = false;
+    this.handleAutofillAnimationStart = (event) => {
+      if (event.animationName !== 'cl-phone-autofill-detected') {
+        return;
+      }
+      this.browserAutofillDetected = true;
+      if (this.countryData && !this.phoneInputFormControl) {
+        this.createPhoneInputFormControl();
+      }
+    };
+    inputElement.addEventListener('animationstart', this.handleAutofillAnimationStart);
 
     this.requestCountryData()
       .then(data => {
@@ -61,14 +79,18 @@ export default class SysPhoneInputComponent extends WcControlledElement {
         const isRequired = this.getProps().control?.validation?.required || false;
         // an autofilled value must be validated and submitted, so it needs an eager
         // control even when the field is not required
-        if (isRequired || autofillValue !== undefined) {
+        if (isRequired || autofillValue !== undefined || this.browserAutofillDetected) {
           this.createPhoneInputFormControl();
         } else {
           this.createPhoneInputFormControlHandler = () => this.createPhoneInputFormControl();
           inputElement.addEventListener('input', this.createPhoneInputFormControlHandler);
+          inputElement.addEventListener('paste', this.createPhoneInputFormControlHandler);
         }
 
-        this.setValue(props, autofillValue ?? props.control.defaultValue ?? null);
+        // a browser-autofilled value is already in the input; pass it through so
+        // setValue does not overwrite it with the bare country prefix
+        const browserAutofilledValue = this.browserAutofillDetected ? inputElement.value || null : null;
+        this.setValue(props, autofillValue ?? props.control.defaultValue ?? browserAutofilledValue);
 
         // after setValue: it paints the flag from the default country and writes the
         // control value silently, so the value->country parse must run separately
@@ -218,6 +240,7 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     this.phoneInputMenu?.removeEscapeKeyupGuard?.();
     const selectButtonElement = this.getRootElement().querySelector('.phone-input-select-button');
     selectButtonElement?.removeEventListener('keydown', this.handleSelectButtonKeydown);
+    this.getInputElement()?.removeEventListener('animationstart', this.handleAutofillAnimationStart);
   }
 
   getValidators() {
@@ -377,6 +400,10 @@ export default class SysPhoneInputComponent extends WcControlledElement {
   }
 
   createPhoneInputFormControl() {
+    if (this.phoneInputFormControl) {
+      return;
+    }
+
     const rootElement = this.getRootElement();
     const inputElement = this.getInputElement();
     const asyncLoaderElement = rootElement.querySelector('.phone-input-asyncLoader');
@@ -393,6 +420,10 @@ export default class SysPhoneInputComponent extends WcControlledElement {
     })
     if (this.createPhoneInputFormControlHandler) {
       inputElement.removeEventListener('input', this.createPhoneInputFormControlHandler);
+      inputElement.removeEventListener('paste', this.createPhoneInputFormControlHandler);
+    }
+    if (this.handleAutofillAnimationStart) {
+      inputElement.removeEventListener('animationstart', this.handleAutofillAnimationStart);
     }
   }
 

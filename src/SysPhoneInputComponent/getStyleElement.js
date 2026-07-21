@@ -121,6 +121,23 @@ input {
   }
 }
 
+/* no-op animation: its animationstart event is the only reliable signal
+   of browser autofill, which fires neither input nor paste */
+@keyframes cl-phone-autofill-detected {
+  from {}
+}
+
+.phone-input:-webkit-autofill {
+  animation-name: cl-phone-autofill-detected;
+  animation-duration: 0.001s;
+}
+
+/* separate rule: a browser drops a whole rule if one selector in a list is unknown */
+.phone-input:autofill {
+  animation-name: cl-phone-autofill-detected;
+  animation-duration: 0.001s;
+}
+
 input {
   width: 100%;
 }
