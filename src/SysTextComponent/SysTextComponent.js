@@ -118,20 +118,20 @@ export default class SysTextComponent extends WcElement {
     }
     const isStatic = this.isStaticRenderMode();
 
-    container.childNodes.forEach((node) => {
-      if ((node.nodeType !== Node.TEXT_NODE) && node.getAttribute('cl-type') === 'TEXT_ROLLER') {
-        const id = node.getAttribute('cl-id');
-        const props = textrollersProps[id];
+    // querySelectorAll, not childNodes: a roller may be nested inside inline
+    // formatting wrappers (e.g. a full-content styling <span>, <b>) in content.text
+    container.querySelectorAll('[cl-type="TEXT_ROLLER"]').forEach((node) => {
+      const id = node.getAttribute('cl-id');
+      const props = textrollersProps[id];
 
-        if (!props) {
-          return;
-        }
+      if (!props) {
+        return;
+      }
 
-        if (isStatic) {
-          createStaticTextRoller(node, props);
-        } else {
-          createUpdatingTextRoller(node, props);
-        }
+      if (isStatic) {
+        createStaticTextRoller(node, props);
+      } else {
+        createUpdatingTextRoller(node, props);
       }
     });
   }
