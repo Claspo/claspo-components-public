@@ -43,6 +43,10 @@ export default `
       margin: 0;
       width: 100%;
       cursor: pointer;
+      /* Share out whatever height the component is given. With the default
+         by-content height there is no spare room and the buttons keep their
+         own size, so this only takes effect once a height is actually set. */
+      flex-grow: 1;
     }
 
     .buttons-container [cl-element="button"]:disabled {

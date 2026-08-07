@@ -28,12 +28,11 @@ export default {
       "type": "CONTROL",
       "name": "SIZE",
       "elementProp": "styleAttributes",
+      // Height is offered here, unlike the checkbox and radio components this one
+      // was modelled on: those are rows of controls whose height is purely a
+      // function of their content, while these are buttons, where height is part
+      // of the design. A height set here is shared out across the buttons.
       "element": "host",
-      "params": {
-        "height": {
-          "hide": true
-        }
-      }
     },
     {
       "type": "CONTROL",
@@ -61,6 +60,12 @@ export default {
               "fixed",
               "hug",
               "fill"
+            ]
+          },
+          "height": {
+            "options": [
+              "fixed",
+              "hug"
             ]
           }
         }
@@ -517,6 +522,8 @@ export default {
           "element": "host",
           "styleAttributes": {
             "width": "230px",
+            // by content: the buttons keep their own height until one is set
+            "height": "auto",
             "minHeight": "35px",
             "marginTop": "0px",
             "marginBottom": "0px",
@@ -573,6 +580,8 @@ export default {
           "element": "host",
           "styleAttributes": {
             "width": "auto",
+            // by content: the buttons keep their own height until one is set
+            "height": "auto",
             "minHeight": "35px",
             "marginTop": "0px",
             "marginBottom": "0px",

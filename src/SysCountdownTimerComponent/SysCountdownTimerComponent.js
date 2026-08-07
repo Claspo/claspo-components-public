@@ -164,7 +164,9 @@ ${getStyleElement()}
 
   drawTimer(props, diffInMilliseconds) {
     const mainContainer = this.getRootElement().querySelector('.countdownContainer');
-    const containers = this.createElementContainers(mainContainer);
+    // absent on widgets built before the switch existed, where labels were shown
+    const labelsEnabled = props.content.labelsEnabled !== false;
+    const containers = this.createElementContainers(mainContainer, labelsEnabled);
 
     const { translations: componentLanguageMap, language: usedLanguage } = this.getTranslationsMap(this.manifest.i18n);
 
@@ -201,7 +203,7 @@ ${getStyleElement()}
     this.applyAutoAdaptiveStyles(props.adaptiveStyles, props.styles);
   }
 
-  createElementContainers(mainContainer) {
+  createElementContainers(mainContainer, labelsEnabled = true) {
     insertHtmlIntoElement({
       element: mainContainer,
       html: '',
@@ -213,7 +215,16 @@ ${getStyleElement()}
     const labelsContainerElement = document.createElement('div');
     labelsContainerElement.className = 'labelsContainer';
 
-    mainContainer.append(countersContainerElement, labelsContainerElement);
+    // The labels are still built and filled either way - the counter and
+    // separator code writes into both rows - but with the switch off the row
+    // never reaches the document, so it leaves no gap behind it.
+    mainContainer.classList.toggle('countdownContainer--noLabels', !labelsEnabled);
+    mainContainer.append(countersContainerElement);
+
+    if (labelsEnabled) {
+      mainContainer.append(labelsContainerElement);
+    }
+
     return { countersContainerElement, labelsContainerElement };
   }
 

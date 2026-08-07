@@ -281,6 +281,19 @@ export default {
         "name": "DATEPICKER_COUNTDOWN_TIMER"
       },
       {
+        // Kept directly above the languages note, which describes the very texts
+        // this switch turns on and off.
+        "type": "CONTROL",
+        "name": "SWITCH",
+        "propPath": [
+          "content",
+          "labelsEnabled"
+        ],
+        "params": {
+          "label": "DOCUMENT_SHOW_INPUT_LABELS",
+        }
+      },
+      {
         "type": "CONTROL",
         "name": "SUPPORTED_LANGUAGES",
         "params": {
@@ -891,6 +904,7 @@ export default {
       "showAgainUnit": "DAYS",
       "textContrastEnabled": true,
       "format": "HH:MM:SS",
+      "labelsEnabled": true,
     },
     "control": {
       "icon": ""
