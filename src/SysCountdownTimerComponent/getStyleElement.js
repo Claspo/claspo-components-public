@@ -1,14 +1,26 @@
 export default function getStyleElement() {
   return `
 <style>
+/* The host is the flex container, so the root box below takes the host height
+   through flex sizing rather than a percentage. With a fixed or filled host the
+   box grows to it; with the default by-content host it hugs the counters; and
+   min-height:0 lets it clamp to a host that is smaller than the counters, so the
+   numbers are the same a height:100% used to give in Chrome.
+   height:100% itself is not an option here: in a quirks-mode document (the
+   dashboard preview iframes are about:blank, and some customer pages have no
+   doctype) WebKit resolves a percentage height on a child of an auto-height
+   block against the parent flex column instead, so in Safari the counters grew
+   to the column and spilled out of the timer. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 .countdownContainer {
   display: flex;
   flex-direction: column;
-  /* Carries the host height inwards. Without it this box is content-sized, and
-     the flex-grow below plus the counters' height:100% never get any room to
-     share - which is why setting a height used to do nothing at all. Under the
-     default by-content height this resolves to auto, so nothing changes. */
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .labelsContainer,

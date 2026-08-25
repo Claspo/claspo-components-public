@@ -31,12 +31,33 @@ describe('SysCountdownTimer height', () => {
   // Offering the control is only half of it. The host height stops at
   // .countdownContainer unless that box passes it on, and then the flex-grow on
   // .countersContainer and the height:100% on the counters have nothing to share
-  // - which is why the control used to change nothing at all.
+  // - which is why the control used to change nothing at all. The host is made
+  // the flex container and the root box a growing item, so the height travels
+  // through flex sizing.
   it('is carried inwards by the stylesheet', () => {
+    const hostRule = styleElement.match(/:host \{[^}]*\}/);
     const rootRule = styleElement.match(/\.countdownContainer \{[^}]*\}/);
 
+    expect(hostRule).not.toBeNull();
+    expect(hostRule[0]).toMatch(/display:\s*flex/);
+    expect(hostRule[0]).toMatch(/flex-direction:\s*column/);
+
     expect(rootRule).not.toBeNull();
-    expect(rootRule[0]).toMatch(/height:\s*100%/);
+    expect(rootRule[0]).toMatch(/flex:\s*1 1 auto/);
+    // lets the box clamp to a host smaller than the counters, as height:100% did
+    expect(rootRule[0]).toMatch(/min-height:\s*0/);
+  });
+
+  // A percentage height on the root box is what flex sizing replaces. It is not
+  // just redundant: in a quirks-mode document (the dashboard preview iframes are
+  // about:blank, some customer pages carry no doctype) WebKit resolves a child's
+  // percentage height past an auto-height block against the enclosing flex
+  // column, so with the default by-content host the counters grew to the column
+  // and spilled out of the timer in Safari while Chrome showed nothing wrong.
+  it('does not size the root box with a percentage height', () => {
+    const rootRule = styleElement.match(/\.countdownContainer \{[^}]*\}/);
+
+    expect(rootRule[0]).not.toMatch(/[^-]height:/);
   });
 
   // Both selectors appear twice - once sharing a rule with their label

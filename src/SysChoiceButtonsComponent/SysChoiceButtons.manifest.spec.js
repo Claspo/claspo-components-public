@@ -49,4 +49,38 @@ describe('SysChoiceButtons height', () => {
     expect(buttonRule).not.toBeNull();
     expect(buttonRule[0]).toMatch(/flex-grow:\s*1/);
   });
+
+  // The host height has to travel through the wrapper chain before the buttons
+  // can share it. The host is the flex container and each wrapper a growing
+  // item, so the height moves through flex sizing; min-height:0 lets the chain
+  // clamp to a host smaller than the buttons.
+  it('is carried inwards by the stylesheet', () => {
+    const hostRule = componentStyle.match(/:host \{[^}]*\}/);
+
+    expect(hostRule).not.toBeNull();
+    expect(hostRule[0]).toMatch(/display:\s*flex/);
+    expect(hostRule[0]).toMatch(/flex-direction:\s*column/);
+
+    ['.main-container', '.container-with-label', '.container-with-tooltip'].forEach((selector) => {
+      const rule = componentStyle.match(new RegExp(`\\${selector} \\{[^}]*\\}`));
+
+      expect(rule).not.toBeNull();
+      expect(rule[0]).toMatch(/flex:\s*1 1 auto/);
+      expect(rule[0]).toMatch(/min-height:\s*0/);
+    });
+  });
+
+  // Percentage heights on the wrappers are what flex sizing replaces. Not just
+  // redundant: in a quirks-mode document (the dashboard preview iframes are
+  // about:blank, some customer pages carry no doctype) WebKit resolves a
+  // percentage height past the auto-height host against the enclosing page
+  // column, so the buttons grew to the column and spilled out of the component
+  // in Safari while Chrome showed nothing wrong.
+  it('does not size the wrappers with a percentage height', () => {
+    ['.main-container', '.container-with-label', '.container-with-tooltip'].forEach((selector) => {
+      const rule = componentStyle.match(new RegExp(`\\${selector} \\{[^}]*\\}`));
+
+      expect(rule[0]).not.toMatch(/[^-]height:/);
+    });
+  });
 });
