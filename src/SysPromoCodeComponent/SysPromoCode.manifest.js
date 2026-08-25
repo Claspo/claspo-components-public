@@ -166,14 +166,6 @@ export default {
     ]),
     "general": [
       {
-        "type": "TEXT",
-        "params": {
-          "text": "DOCUMENT_CLICK_COMPONENT_TO_COPY_TO_CLIPBOARD",
-          "type": "SECONDARY"
-        },
-        "displayCondition": (sdk) => !sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING']).some(c => c.path[0] < sdk.component.path[0])
-      },
-      {
         "type": "CONTROL",
         "name": "PRIZE_SETTINGS",
         "propPath": [
@@ -183,7 +175,21 @@ export default {
         "params": {
           "linkedGamifiedComponentType": "PRIZE_BASED_GAMING",
         },
-        "displayCondition": (sdk) => sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING']).some(c => c.path[0] < sdk.component.path[0])
+        // the code the component renders comes from the pool, so the pool is what the
+        // settings edit - show them whenever the widget has one. `sdk.prizePool` only
+        // exists in editors that resolve pools from editor state; older ones fall back to
+        // the previous rule (a gamified component on an earlier page owns the pool), so
+        // this bundle keeps working wherever it lands.
+        "displayCondition": (sdk) => !!sdk.prizePool
+          || sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING'])
+            .some(c => c.path[0] < sdk.component.path[0])
+      },
+      {
+        "type": "TEXT",
+        "params": {
+          "text": "DOCUMENT_CLICK_COMPONENT_TO_COPY_TO_CLIPBOARD",
+          "type": "SECONDARY"
+        }
       },
       {
         "type": "CONTROL",
@@ -330,7 +336,7 @@ export default {
       }
     ]),
     "content": {
-      "text": "SALE_15",
+      "text": "PROMO_10",
       "iconContent": 0,
       "iconContrastEnabled": true,
       "textContrastEnabled": true,
