@@ -142,7 +142,17 @@ export default class SysPromoCodeComponent extends WcElement {
    */
   connectToPrizePool() {
     if (this.isStaticRenderMode()) {
-      this.prizePool = this.services.prizePoolFactory.get(this.getProps().content.prize, this.getModel().id);
+      const prize = this.getProps().content.prize;
+      // TODO: temporal backward compatibility for old PrizePool.ts that can't handle absent "prize" object. Remove code starting from here
+      const hasPoolToResolve = !!prize && (!!prize.id || !!prize.options || prize.model === 'FIXED');
+
+      if (!hasPoolToResolve) {
+        this.applyPrizePoolPrize(null);
+        return Promise.resolve();
+      }
+      // TODO: and up to here
+
+      this.prizePool = this.services.prizePoolFactory.get(prize, this.getModel().id);
       this.componentResourceManager.getPending().increment();
 
       return this.prizePool.load()
