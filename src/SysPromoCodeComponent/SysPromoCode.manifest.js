@@ -50,6 +50,65 @@ export default {
     "content": cloneControlsToAllEnvs([
       {
         "type": "CONTROL",
+        "name": "PRIZE_SETTINGS",
+        "propPath": [
+          "content",
+          "prize"
+        ],
+        "params": {
+          "linkedGamifiedComponentType": "PRIZE_BASED_GAMING",
+        },
+        // the code the component renders comes from the pool, so the pool is what the
+        // settings edit - show them whenever the widget has one. `sdk.prizePool` only
+        // exists in editors that resolve pools from editor state; older ones fall back to
+        // the previous rule (a gamified component on an earlier page owns the pool), so
+        // this bundle keeps working wherever it lands.
+        "displayCondition": (sdk) => !!sdk.prizePool
+          || sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING'])
+            .some(c => c.path[0] < sdk.component.path[0])
+      },
+      {
+        "type": "TEXT",
+        "params": {
+          "text": "DOCUMENT_CLICK_COMPONENT_TO_COPY_TO_CLIPBOARD",
+          "type": "SECONDARY"
+        }
+      },
+      {
+        "type": "CONTROL",
+        "name": "SWITCH",
+        "propPath": [
+          "content",
+          "countAsTargetAction"
+        ],
+        "params": {
+          "label": "i18n_DOCUMENT_COUNT_AS_TARGET_ACTION_LABEL",
+          "boldLabel": true,
+          "tooltip": "i18n_DOCUMENT_COUNT_AS_TARGET_ACTION_TOOLTIP",
+        },
+        "displayCondition": (sdk) => sdk.widgetType === 'INFORMER'
+      },
+      {
+        "type": "CONTROL",
+        "name": "SWITCH",
+        "propPath": [
+          "content",
+          "autoRedeem"
+        ],
+        "params": {
+          "label": "i18n_DOCUMENT_AUTO_REDEEM_LABEL",
+          "boldLabel": true,
+          "tooltip": "i18n_DOCUMENT_AUTO_REDEEM_TOOLTIP",
+          "getValueMapper": {
+            "undefined": true,
+            "true": true,
+            "false": false,
+          },
+        },
+        "displayCondition": (sdk) => sdk.editorConfig?.userContext?.registrationType === 'SHOPIFY'
+      },
+      {
+        "type": "CONTROL",
         "name": "SIZE",
         "element": "host",
         "elementProp": "styleAttributes",
@@ -164,67 +223,6 @@ export default {
         }
       }
     ]),
-    "general": [
-      {
-        "type": "CONTROL",
-        "name": "PRIZE_SETTINGS",
-        "propPath": [
-          "content",
-          "prize"
-        ],
-        "params": {
-          "linkedGamifiedComponentType": "PRIZE_BASED_GAMING",
-        },
-        // the code the component renders comes from the pool, so the pool is what the
-        // settings edit - show them whenever the widget has one. `sdk.prizePool` only
-        // exists in editors that resolve pools from editor state; older ones fall back to
-        // the previous rule (a gamified component on an earlier page owns the pool), so
-        // this bundle keeps working wherever it lands.
-        "displayCondition": (sdk) => !!sdk.prizePool
-          || sdk.documentUtils.findComponentsByTypes(sdk.views, ['PRIZE_BASED_GAMING'])
-            .some(c => c.path[0] < sdk.component.path[0])
-      },
-      {
-        "type": "TEXT",
-        "params": {
-          "text": "DOCUMENT_CLICK_COMPONENT_TO_COPY_TO_CLIPBOARD",
-          "type": "SECONDARY"
-        }
-      },
-      {
-        "type": "CONTROL",
-        "name": "SWITCH",
-        "propPath": [
-          "content",
-          "countAsTargetAction"
-        ],
-        "params": {
-          "label": "i18n_DOCUMENT_COUNT_AS_TARGET_ACTION_LABEL",
-          "boldLabel": true,
-          "tooltip": "i18n_DOCUMENT_COUNT_AS_TARGET_ACTION_TOOLTIP",
-        },
-        "displayCondition": (sdk) => sdk.widgetType === 'INFORMER'
-      },
-      {
-        "type": "CONTROL",
-        "name": "SWITCH",
-        "propPath": [
-          "content",
-          "autoRedeem"
-        ],
-        "params": {
-          "label": "i18n_DOCUMENT_AUTO_REDEEM_LABEL",
-          "boldLabel": true,
-          "tooltip": "i18n_DOCUMENT_AUTO_REDEEM_TOOLTIP",
-          "getValueMapper": {
-            "undefined": true,
-            "true": true,
-            "false": false,
-          },
-        },
-        "displayCondition": (sdk) => sdk.editorConfig?.userContext?.registrationType === 'SHOPIFY'
-      },
-    ]
   },
   "autoContrast": [
     {
