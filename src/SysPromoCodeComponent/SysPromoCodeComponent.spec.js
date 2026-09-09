@@ -14,16 +14,18 @@ describe('SysPromoCodeComponent pool resolution', () => {
   const INLINE_EDIT_ATTRIBUTE = 'cl-inline-edit';
 
   function buildTextDom() {
+    const rootElement = document.createElement('div');
     const textOuterElement = document.createElement('button');
     const textInnerElement = document.createElement('span');
     textInnerElement.classList.add('cl--inline--edit');
     textInnerElement.setAttribute(INLINE_EDIT_ATTRIBUTE, 'content, text');
     textOuterElement.appendChild(textInnerElement);
-    return {textOuterElement, textInnerElement};
+    rootElement.appendChild(textOuterElement);
+    return {rootElement, textOuterElement, textInnerElement};
   }
 
   function componentLike(overrides = {}) {
-    const {textOuterElement, textInnerElement} = buildTextDom();
+    const {rootElement, textOuterElement, textInnerElement} = buildTextDom();
     const pendingResources = {increment: jest.fn(), decrement: jest.fn()};
 
     const component = {
@@ -37,6 +39,8 @@ describe('SysPromoCodeComponent pool resolution', () => {
       getModel: () => ({id: 'promo-1', path: [1, 0]}),
       getProps: () => ({content: {text: 'SALE_15', autoRedeem: true, prize: {id: 'pool-branch-a'}}}),
       getElement: () => textOuterElement,
+      getRootElement: () => rootElement,
+      isByContentWidth: false,
       isStaticRenderMode: () => true,
       services: {
         context: {
@@ -57,6 +61,7 @@ describe('SysPromoCodeComponent pool resolution', () => {
       getResolvedCode: SysPromoCodeComponent.prototype.getResolvedCode,
       renderCode: SysPromoCodeComponent.prototype.renderCode,
       applyInlineEditability: SysPromoCodeComponent.prototype.applyInlineEditability,
+      mapStyleControlValuesToInnerContent: SysPromoCodeComponent.prototype.mapStyleControlValuesToInnerContent,
       connectToPrizePool: SysPromoCodeComponent.prototype.connectToPrizePool,
       applyPrizePoolPrize: SysPromoCodeComponent.prototype.applyPrizePoolPrize,
       emitPromoCodeShownOnce: SysPromoCodeComponent.prototype.emitPromoCodeShownOnce,
@@ -64,7 +69,7 @@ describe('SysPromoCodeComponent pool resolution', () => {
       ...overrides,
     };
 
-    return {component, textInnerElement, pendingResources};
+    return {component, rootElement, textOuterElement, textInnerElement, pendingResources};
   }
 
   function poolMock(prize) {
@@ -297,6 +302,42 @@ describe('SysPromoCodeComponent pool resolution', () => {
       expect(component.prizePoolCode).toBe('POOL_CODE');
       expect(textInnerElement.innerText).toBe('POOL_CODE');
       expect(textInnerElement.hasAttribute(INLINE_EDIT_ATTRIBUTE)).toBe(false);
+    });
+  });
+
+  /**
+   * The text a visitor reads sits in the inner span, and its typography is copied there from the
+   * outer element on every props change - the editor canvas has no other way to repaint a font.
+   * A resolved code strips the inline-edit attribute, so the copying must not be keyed to it.
+   */
+  describe('typography reaches the element that renders the code', () => {
+    it('maps font styles onto the inner text while the placeholder is still editable', () => {
+      const {component, textOuterElement, textInnerElement} = componentLike();
+
+      textOuterElement.style.fontSize = '42px';
+      textOuterElement.style.fontFamily = 'Roboto';
+
+      component.mapStyleControlValuesToInnerContent();
+
+      expect(textInnerElement.style.fontSize).toBe('42px');
+      expect(textInnerElement.style.fontFamily).toBe('Roboto');
+    });
+
+    it('keeps mapping font styles onto the inner text after a code resolved', () => {
+      const {component, textOuterElement, textInnerElement} = componentLike({prizePoolCode: 'POOL_CODE'});
+
+      component.renderCode(component.getProps());
+      expect(textInnerElement.hasAttribute(INLINE_EDIT_ATTRIBUTE)).toBe(false);
+
+      textOuterElement.style.fontSize = '42px';
+      textOuterElement.style.fontFamily = 'Roboto';
+      textOuterElement.style.letterSpacing = '3px';
+
+      component.mapStyleControlValuesToInnerContent();
+
+      expect(textInnerElement.style.fontSize).toBe('42px');
+      expect(textInnerElement.style.fontFamily).toBe('Roboto');
+      expect(textInnerElement.style.letterSpacing).toBe('3px');
     });
   });
 

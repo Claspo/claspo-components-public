@@ -285,30 +285,35 @@ export default class SysPromoCodeComponent extends WcElement {
     document.removeEventListener('scroll', this.boundOnScrollHandler, true);
   }
 
+  /**
+   * The code a visitor reads sits in the inner span, so that is the element typography has to land
+   * on - the outer element only sizes the box around it. The span is found by its class, which it
+   * always carries: the inline-edit attribute is a state flag, dropped the moment a real code
+   * resolves, and keying the lookup to it froze the font on every canvas that had drawn a code.
+   */
   mapStyleControlValuesToInnerContent() {
     const promocodeTextElement = this.getElement('text');
-    const editableText = this.getRootElement().querySelector('[cl-inline-edit="content, text"]');
+    const textInnerElement = promocodeTextElement
+      ? promocodeTextElement.querySelector(`.${this.inlineEditPromocodeClass}`)
+      : null;
 
-    const textOuterElement = this.getElement('text');
-    const textInnerElement = textOuterElement.querySelector(`.${this.inlineEditPromocodeClass}`);
-
-    textInnerElement.style.whiteSpace = this.isByContentWidth ? 'nowrap' : '';
-
-    if (!promocodeTextElement || !editableText) {
+    if (!promocodeTextElement || !textInnerElement) {
       return;
     }
 
-    editableText.style.minWidth = '20px';
-    editableText.style.width = 'max-content';
-    editableText.style.minHeight = promocodeTextElement.style.fontSize;
+    textInnerElement.style.whiteSpace = this.isByContentWidth ? 'nowrap' : '';
 
-    editableText.style.textAlign = promocodeTextElement.style.textAlign;
-    editableText.style.lineHeight = promocodeTextElement.style.lineHeight;
-    editableText.style.fontWeight = promocodeTextElement.style.fontWeight;
-    editableText.style.fontSize = promocodeTextElement.style.fontSize;
-    editableText.style.textShadow = promocodeTextElement.style.textShadow;
-    editableText.style.letterSpacing = promocodeTextElement.style.letterSpacing;
-    editableText.style.fontFamily = promocodeTextElement.style.fontFamily;
+    textInnerElement.style.minWidth = '20px';
+    textInnerElement.style.width = 'max-content';
+    textInnerElement.style.minHeight = promocodeTextElement.style.fontSize;
+
+    textInnerElement.style.textAlign = promocodeTextElement.style.textAlign;
+    textInnerElement.style.lineHeight = promocodeTextElement.style.lineHeight;
+    textInnerElement.style.fontWeight = promocodeTextElement.style.fontWeight;
+    textInnerElement.style.fontSize = promocodeTextElement.style.fontSize;
+    textInnerElement.style.textShadow = promocodeTextElement.style.textShadow;
+    textInnerElement.style.letterSpacing = promocodeTextElement.style.letterSpacing;
+    textInnerElement.style.fontFamily = promocodeTextElement.style.fontFamily;
   }
 
   mapAlignValueToTextElementContent(textElement) {
