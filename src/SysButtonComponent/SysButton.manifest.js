@@ -222,7 +222,6 @@ export default {
           "hideGoToViewActionCondition": (sdk) => (sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 1)
             && sdk.component.getProps().handlers?.find(h => h.type === 'CLICK')?.actions?.some(a => ['REQUEST', 'SUBSCRIBE_CONTACT'].includes(a.type)),
           "showTitleCondition": (sdk) => sdk.documentUtils.findComponentsByNames([sdk.componentView], ['SysNetPromoterScoreComponent', 'SysFeedbackComponent'])?.length === 0,
-          "showRunGameActionCondition": (sdk) => sdk.documentUtils.getExternalStartGamingComponents([sdk.componentView], sdk.manifests)?.length !== 0,
         },
       },
     ]
