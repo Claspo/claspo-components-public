@@ -20,12 +20,16 @@ describe('SysPromoCodeComponent pool resolution', () => {
     textInnerElement.classList.add('cl--inline--edit');
     textInnerElement.setAttribute(INLINE_EDIT_ATTRIBUTE, 'content, text');
     textOuterElement.appendChild(textInnerElement);
+    // the spinner the real template ships beside the code - the loader methods look for it here
+    const loaderElement = document.createElement('span');
+    loaderElement.classList.add('promocode-asyncLoader');
+    textOuterElement.appendChild(loaderElement);
     rootElement.appendChild(textOuterElement);
-    return {rootElement, textOuterElement, textInnerElement};
+    return {rootElement, textOuterElement, textInnerElement, loaderElement};
   }
 
   function componentLike(overrides = {}) {
-    const {rootElement, textOuterElement, textInnerElement} = buildTextDom();
+    const {rootElement, textOuterElement, textInnerElement, loaderElement} = buildTextDom();
     const pendingResources = {increment: jest.fn(), decrement: jest.fn()};
 
     const component = {
@@ -63,21 +67,39 @@ describe('SysPromoCodeComponent pool resolution', () => {
       applyInlineEditability: SysPromoCodeComponent.prototype.applyInlineEditability,
       mapStyleControlValuesToInnerContent: SysPromoCodeComponent.prototype.mapStyleControlValuesToInnerContent,
       connectToPrizePool: SysPromoCodeComponent.prototype.connectToPrizePool,
+      findPoolPublishedByEarlierGame: SysPromoCodeComponent.prototype.findPoolPublishedByEarlierGame,
       applyPrizePoolPrize: SysPromoCodeComponent.prototype.applyPrizePoolPrize,
       emitPromoCodeShownOnce: SysPromoCodeComponent.prototype.emitPromoCodeShownOnce,
       _handleContextRecord: SysPromoCodeComponent.prototype._handleContextRecord,
+      showPendingLoader: SysPromoCodeComponent.prototype.showPendingLoader,
+      hidePendingLoader: SysPromoCodeComponent.prototype.hidePendingLoader,
       ...overrides,
     };
 
-    return {component, rootElement, textOuterElement, textInnerElement, pendingResources};
+    return {component, rootElement, textOuterElement, textInnerElement, loaderElement, pendingResources};
   }
 
   function poolMock(prize) {
     return {
       load: jest.fn(() => Promise.resolve()),
+      claimCode: jest.fn(() => Promise.resolve()),
       getPrize: jest.fn(() => Promise.resolve(prize)),
     };
   }
+
+  /** A context holding what a game published on an earlier view. */
+  function contextWithRecords(records) {
+    return {
+      getKVMap: () => ({}),
+      getRecord: (key) => records[key],
+      getRecordsMap: () => records,
+    };
+  }
+
+  const poolIdRecord = (componentId, poolId, viewIndex) => ({
+    key: `${componentId}.prizePoolId`,
+    value: {id: 'prizePoolId', label: 'PRIZE_POOL_ID', value: poolId, viewIndex, sourceId: componentId},
+  });
 
   describe('getResolvedCode display priority', () => {
     it('pool code wins over the context key-value and record state', () => {
@@ -164,6 +186,9 @@ describe('SysPromoCodeComponent pool resolution', () => {
       expect(component.services.prizePoolFactory.get)
         .toHaveBeenCalledWith({id: 'pool-branch-a'}, 'promo-1');
       expect(pool.load).toHaveBeenCalledTimes(1);
+      // this component exists to put a code on screen, so it is the one consumer that claims as it
+      // renders - and the router builds it only when its view is reached
+      expect(pool.claimCode).toHaveBeenCalledTimes(1);
       expect(component.prizePoolCode).toBe('POOL_CODE');
       expect(textInnerElement.innerText).toBe('POOL_CODE');
       expect(component.services.eventEmitter.emit).toHaveBeenCalledWith(
@@ -193,6 +218,92 @@ describe('SysPromoCodeComponent pool resolution', () => {
       expect(textInnerElement.innerHTML).toBe('SALE_15');
     });
 */
+    /**
+     * A widget built before a Promocode's props named its pool. The game on an earlier view
+     * published the pool it drew from into the widget context, and that id is enough to ask this
+     * visitor's code for - which is the only way a unique code can reach a component that has no
+     * code to inherit.
+     */
+    it('takes the pool a game published on an earlier view when its own props name none', async () => {
+      const {component, textInnerElement} = componentLike({
+        getProps: () => ({content: {text: 'SALE_15', autoRedeem: true}}),
+      });
+      component.services.context = contextWithRecords({
+        'game-1.prizePoolId': poolIdRecord('game-1', 'pool-from-context', 0),
+      });
+      const pool = poolMock({id: 'option-1', label: '10%', value: 'CONTEXT_POOL_CODE'});
+      component.services.prizePoolFactory.get = jest.fn(() => pool);
+
+      await component.connectToPrizePool();
+
+      expect(component.services.prizePoolFactory.get)
+        .toHaveBeenCalledWith({id: 'pool-from-context'}, 'promo-1');
+      expect(pool.claimCode).toHaveBeenCalledTimes(1);
+      expect(textInnerElement.innerText).toBe('CONTEXT_POOL_CODE');
+    });
+
+    /** A pool published on a LATER view describes a game this visitor has not played yet. */
+    it('ignores a pool published on its own view or a later one', async () => {
+      const {component} = componentLike({
+        getProps: () => ({content: {text: 'SALE_15', autoRedeem: true}}),
+      });
+      component.services.context = contextWithRecords({
+        'game-late.prizePoolId': poolIdRecord('game-late', 'pool-later', 3),
+        'game-same.prizePoolId': poolIdRecord('game-same', 'pool-same-view', 1),
+      });
+      component.services.prizePoolFactory.get = jest.fn(() => poolMock(null));
+
+      await component.connectToPrizePool();
+
+      expect(component.services.prizePoolFactory.get).not.toHaveBeenCalled();
+    });
+
+    /** Two games, and the one just played is the nearest published before this view. */
+    it('takes the nearest earlier pool when several games published one', async () => {
+      const {component} = componentLike({
+        getModel: () => ({id: 'promo-1', path: [4, 0]}),
+        getProps: () => ({content: {text: 'SALE_15', autoRedeem: true}}),
+      });
+      component.services.context = contextWithRecords({
+        'game-first.prizePoolId': poolIdRecord('game-first', 'pool-first', 0),
+        'game-second.prizePoolId': poolIdRecord('game-second', 'pool-second', 2),
+      });
+      component.services.prizePoolFactory.get = jest.fn(() => poolMock({id: 'o', label: '10%', value: 'C'}));
+
+      await component.connectToPrizePool();
+
+      expect(component.services.prizePoolFactory.get)
+        .toHaveBeenCalledWith({id: 'pool-second'}, 'promo-1');
+    });
+
+    /** Its own props win: a Promocode that names a pool hands out THAT pool's code, not a game's. */
+    it('never reads the context when its own props name a pool', async () => {
+      const {component} = componentLike();
+      component.services.context = contextWithRecords({
+        'game-1.prizePoolId': poolIdRecord('game-1', 'pool-from-context', 0),
+      });
+      component.services.prizePoolFactory.get = jest.fn(() => poolMock({id: 'o', label: '10%', value: 'C'}));
+
+      await component.connectToPrizePool();
+
+      expect(component.services.prizePoolFactory.get)
+        .toHaveBeenCalledWith({id: 'pool-branch-a'}, 'promo-1');
+    });
+
+    /** No pool anywhere: the component still renders, showing the text its author wrote. */
+    it('renders its own text when neither its props nor the context name a pool', async () => {
+      const {component, textInnerElement, pendingResources} = componentLike({
+        getProps: () => ({content: {text: 'SALE_15', autoRedeem: true}}),
+      });
+      component.services.prizePoolFactory.get = jest.fn();
+
+      await component.connectToPrizePool();
+
+      expect(component.services.prizePoolFactory.get).not.toHaveBeenCalled();
+      expect(pendingResources.increment).not.toHaveBeenCalled();
+      expect(textInnerElement.innerHTML).toBe('SALE_15');
+    });
+
     it('an unresolved pool falls back to the placeholder for display and emit', async () => {
       const {component, textInnerElement} = componentLike();
       component.services.prizePoolFactory.get = jest.fn(() => poolMock(null));
@@ -256,6 +367,94 @@ describe('SysPromoCodeComponent pool resolution', () => {
         {code: 'POOL_CODE', autoRedeem: false},
       );
     });*/
+  });
+
+  /**
+   * Why the promo code spins.
+   *
+   * Until the pool resolves and its reward is claimed there is no code, and `getResolvedCode()`
+   * answering nothing is what makes the render fall back to the PROPS PLACEHOLDER. A visitor
+   * reading `SALE_15` cannot tell it is a stand-in for a code that has not arrived, so the spinner
+   * holds that place instead.
+   *
+   * The spinner is the button's, deliberately - same markup, same 0.8s rotation, same trick of
+   * taking its colour from the text it replaces so it stays legible on whatever the widget is
+   * painted with.
+   */
+  describe('pending loader', () => {
+    it('spins while the pool resolves and stops once the code is in hand', async () => {
+      const {component, textOuterElement} = componentLike();
+      let releasePool;
+      component.services.prizePoolFactory.get = jest.fn(() => ({
+        load: jest.fn(() => new Promise((resolve) => { releasePool = resolve; })),
+        claimCode: jest.fn(() => Promise.resolve()),
+        getPrize: jest.fn(() => Promise.resolve({value: 'CL7K9P2A'})),
+      }));
+
+      const connected = component.connectToPrizePool();
+
+      expect(textOuterElement.classList.contains('cl-promocode-loading')).toBe(true);
+
+      releasePool();
+      await connected;
+
+      expect(textOuterElement.classList.contains('cl-promocode-loading')).toBe(false);
+    });
+
+    it('takes its colour from the promo code text, so it reads on the widget background', () => {
+      const {component, textOuterElement, loaderElement} = componentLike();
+      textOuterElement.style.color = 'rgb(255, 255, 255)';
+
+      component.showPendingLoader();
+
+      expect(loaderElement.style.color).toBe('rgb(255, 255, 255)');
+    });
+
+    it('keeps spinning when the pool fails, rather than falling back to the placeholder', async () => {
+      // the pending resource is deliberately never released here, so this widget was never meant
+      // to be shown at all. Wherever it is shown anyway, a spinner says "no code yet" while the
+      // placeholder underneath would read as a real one
+      const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const {component, textOuterElement} = componentLike();
+      component.services.prizePoolFactory.get = jest.fn(() => ({
+        load: jest.fn(() => Promise.reject(new Error('network'))),
+        getPrize: jest.fn(),
+      }));
+
+      await component.connectToPrizePool();
+
+      expect(textOuterElement.classList.contains('cl-promocode-loading')).toBe(true);
+      consoleError.mockRestore();
+    });
+
+    it('never spins where there is no pool to wait for', async () => {
+      const {component, textOuterElement} = componentLike({
+        getProps: () => ({content: {text: 'SALE_15', autoRedeem: true}}),
+        services: {
+          context: {getKVMap: () => ({}), getRecord: () => undefined, getRecordsMap: () => ({})},
+          eventEmitter: {emit: jest.fn(), on: jest.fn(() => ({off: jest.fn()}))},
+          prizePoolFactory: {get: jest.fn()},
+        },
+      });
+
+      await component.connectToPrizePool();
+
+      expect(textOuterElement.classList.contains('cl-promocode-loading')).toBe(false);
+    });
+
+    it('never spins on the editor canvas, where the placeholder is the point', () => {
+      const {component, textOuterElement} = componentLike({isStaticRenderMode: () => false});
+      jest.useFakeTimers();
+
+      try {
+        component.connectToPrizePool();
+        jest.runAllTimers();
+      } finally {
+        jest.useRealTimers();
+      }
+
+      expect(textOuterElement.classList.contains('cl-promocode-loading')).toBe(false);
+    });
   });
 
   describe('updating render pool lane (editor canvas)', () => {

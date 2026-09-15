@@ -50,6 +50,11 @@ export default class SysPromoCodeComponent extends WcElement {
     <style>${promocodeStyles}</style>
     <button class="text" cl-element="text">
         <span class="${this.inlineEditPromocodeClass}" ${this.inlineEditAttributeName}="${this.inlineEditAttributeValue}"></span>
+        <span class="promocode-asyncLoader" aria-hidden="true">
+          <svg class="spinner--icon" viewBox="0 0 18 18" aria-hidden="true">
+            <circle class="path" cx="9" cy="9" r="5" fill="none" stroke-width="2"></circle>
+          </svg>
+        </span>
     </button>`;
   }
 
@@ -143,29 +148,36 @@ export default class SysPromoCodeComponent extends WcElement {
   connectToPrizePool() {
     if (this.isStaticRenderMode()) {
       const prize = this.getProps().content.prize;
-      // TODO: temporal backward compatibility for old PrizePool.ts that can't handle absent "prize" object. Remove code starting from here
       const hasPoolToResolve = !!prize && (!!prize.id || !!prize.options || prize.model === 'FIXED');
+      // A widget built before a Promocode's props named its pool inherits one from the game that
+      // played before it - see `findPoolPublishedByEarlierGame`
+      const poolReference = hasPoolToResolve ? prize : this.findPoolPublishedByEarlierGame();
 
-      if (!hasPoolToResolve) {
+      if (!poolReference) {
         this.applyPrizePoolPrize(null);
         return Promise.resolve();
       }
-      // TODO: and up to here
 
-      this.prizePool = this.services.prizePoolFactory.get(prize, this.getModel().id);
+      this.prizePool = this.services.prizePoolFactory.get(poolReference, this.getModel().id);
       this.componentResourceManager.getPending().increment();
+      this.showPendingLoader();
 
+      // claiming is what puts a code in hand, and this component is on screen to show one. It is
+      // deliberately not asked for at load: a widget that never reaches this view must not spend a
+      // code minted per winner. The pool claims once however many components share it.
       return this.prizePool.load()
+        .then(() => this.prizePool.claimCode())
         .then(() => this.prizePool.getPrize())
         .then(
           (prize) => {
             this.componentResourceManager.getPending().decrement();
+            this.hidePendingLoader();
             this.applyPrizePoolPrize(prize);
           },
           (error) => {
             // the pending resource is deliberately NOT released: rendering waits on it, so a pool
             // that cannot be handed out - no usable options, or the request failed - leaves the
-            // widget unshown rather than presenting a promo code that redeems nothing
+            // widget unshown rather than presenting a promo code that redeems nothing.
             console.error('SysPromoCodeComponent: prize pool unavailable, the widget stays hidden', error);
           },
         );
@@ -191,6 +203,52 @@ export default class SysPromoCodeComponent extends WcElement {
         this.services.eventEmitter.emit(PrizePoolEvents.REQUEST_PRIZE_POOL, this.getModel().id);
       });
     }
+  }
+
+  /**
+   * The pool a game published before this view, for a Promocode whose own props name none.
+   *
+   * Every gamified component writes `<componentId>.prizePoolId` into the widget context as it
+   * draws. A widget from before pools were named in props therefore still says which pool is in
+   * play - and that id is the only way a code minted per winner can reach this component, since
+   * there is no code to inherit from the game until one is claimed.
+   *
+   * Only a record from an EARLIER view counts, and the nearest one wins: a pool published on this
+   * view or a later one describes a game the visitor has not played yet, and where a flow holds
+   * more than one game the code being shown is the one just won.
+   */
+  findPoolPublishedByEarlierGame() {
+    const viewIndex = this.getModel().path?.[0];
+    const records = Object.values(this.services.context.getRecordsMap?.() || {});
+    const published = records
+      .filter(record => record?.value?.id === 'prizePoolId' && !!record.value.value)
+      .filter(record => Number.isInteger(record.value.viewIndex) && record.value.viewIndex < viewIndex)
+      .sort((a, b) => b.value.viewIndex - a.value.viewIndex);
+
+    return published.length ? {id: published[0].value.value} : null;
+  }
+
+  /**
+   * Spin in the promo code's place while its pool is resolved and its reward claimed.
+   *
+   * The color is copied off the text element rather than declared in the stylesheet: a widget's
+   * promo code color is an inline style the SDK writes from the theme, so it is only knowable
+   * here.
+   */
+  showPendingLoader() {
+    const textElement = this.getElement('text');
+    const loaderElement = textElement?.querySelector('.promocode-asyncLoader');
+
+    if (!textElement || !loaderElement) {
+      return;
+    }
+
+    loaderElement.style.color = textElement.style.color;
+    textElement.classList.add('cl-promocode-loading');
+  }
+
+  hidePendingLoader() {
+    this.getElement('text')?.classList.remove('cl-promocode-loading');
   }
 
   applyPrizePoolPrize(prize) {
