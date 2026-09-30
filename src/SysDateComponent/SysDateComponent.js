@@ -36,6 +36,8 @@ export default class SysDateComponent extends WcControlledElement {
   registeredControl;
   overlayBackdrop;
   boundEscapeKeyupGuard = null;
+  // Note: the month label is display-only - text styles (e.g. "all caps") change how it renders, so never parse it back.
+  selectedMonthNumber = null;
 
   DAY_PLACEHOLDER = SysDateTranslationUtils.DAY_PLACEHOLDER;
   MONTH_DROPDOWN_PLACEHOLDER = SysDateTranslationUtils.MONTH_DROPDOWN_PLACEHOLDER;
@@ -263,12 +265,7 @@ export default class SysDateComponent extends WcControlledElement {
     const root = this.getRootElement();
 
     let day = root.querySelector('#cl-day-input').value;
-    let month = root.querySelector('#cl-month-dropdown').innerText;
     let year = root.querySelector('#cl-year-input').value;
-
-    if (this.isMonthUnselected(month)) {
-      month = null;
-    }
 
     if (+day < 0) {
       day = '';
@@ -278,22 +275,29 @@ export default class SysDateComponent extends WcControlledElement {
       year = '';
     }
 
-    const widgetLanguage = this.getPreferredWidgetLanguage();
-    const formattedMonth = DateUtils.convertToDoubleDigit(DateUtils.convertMonthToNumeric(month, widgetLanguage));
+    const formattedMonth = DateUtils.convertToDoubleDigit(this.selectedMonthNumber);
 
     return `${DateUtils.normalizeYearInput(year)}-${formattedMonth}-${DateUtils.convertToDoubleDigit(`${+day}`)}`;
   }
 
   setStringDateValue(dateValue) {
-    const [year, month, day] = dateValue.split('-');
-    const widgetLanguage = this.getPreferredWidgetLanguage();
+    // Note: a date without a year is stored as "--MM-DD" (see setControlValueProxy)
+    const [year, month, day] = dateValue.startsWith('--')
+      ? ['', ...dateValue.slice(2).split('-')]
+      : dateValue.split('-');
     const root = this.getRootElement();
 
     root.querySelector('#cl-day-input').value = day;
-    root.querySelector('#cl-month-dropdown').innerText = DateUtils.convertNumericToMonth(month, widgetLanguage);
-    root.querySelector('#cl-year-input').value = +year;
+    this.setSelectedMonth(+month);
+    root.querySelector('#cl-year-input').value = year ? +year : '';
 
     this.registeredControl.setValue(dateValue);
+  }
+
+  setSelectedMonth(monthNumber) {
+    this.selectedMonthNumber = monthNumber;
+    this.getRootElement().querySelector('#cl-month-dropdown').textContent =
+      DateUtils.convertNumericToMonth(monthNumber, this.getPreferredWidgetLanguage());
   }
 
   getOptions() {
@@ -427,20 +431,6 @@ export default class SysDateComponent extends WcControlledElement {
     }
   }
 
-  getCurrentSelectedMonthValue() {
-    let month = this.getRootElement().querySelector('#cl-month-dropdown').innerText;
-
-    if (this.isMonthUnselected(month)) {
-      return null;
-    }
-
-    return DateUtils.convertMonthToNumeric(month, this.getPreferredWidgetLanguage());
-  }
-
-  isMonthUnselected(monthValue) {
-    return monthValue === this.getTranslationsMap(this.MONTH_DROPDOWN_PLACEHOLDER).translations;
-  }
-
   createOverlayContent(backdrop, overlayContentContainer) {
     const control = this.services.form.getControl(this.getProps().control.name);
     const inputButton = this.getRootElement().querySelector('#cl-month-dropdown');
@@ -456,7 +446,7 @@ export default class SysDateComponent extends WcControlledElement {
       'border-bottom-left-radius': `${overlayBorderRadius}px`,
       'border-bottom-right-radius': `${overlayBorderRadius}px`,
     });
-    const currentMonthNumber = this.getCurrentSelectedMonthValue();
+    const currentMonthNumber = this.selectedMonthNumber;
 
     const options = this.getOptions();
     const buttonsList = document.createElement('div');
@@ -465,7 +455,7 @@ export default class SysDateComponent extends WcControlledElement {
     let selectedMonthOption;
 
     const selectMonthOption = (option) => {
-      inputButton.textContent = option.label;
+      this.setSelectedMonth(option.id + 1);
       backdrop.click();
       this.setControlValueProxy();
       control.emit('RUN_SINGLE_ELEMENT_VALIDATION', inputButton);
@@ -610,6 +600,7 @@ export default class SysDateComponent extends WcControlledElement {
       return;
     }
 
+    this.selectedMonthNumber = null;
     const placeholderValue = this.getTranslationsMap(this.MONTH_DROPDOWN_PLACEHOLDER).translations;
     const placeholderDiv = document.createElement('div');
     placeholderDiv.classList.add('dropdown-placeholder');
@@ -676,7 +667,7 @@ export default class SysDateComponent extends WcControlledElement {
       }
 
       if (element === monthInputElement) {
-        return this.isMonthUnselected(monthInputElement.textContent);
+        return !this.selectedMonthNumber;
       }
 
       return false;
@@ -771,7 +762,7 @@ export default class SysDateComponent extends WcControlledElement {
           this.setInvalidStyleToElement(error, dayInputElement, dayTooltipElement, element);
         }
 
-        if (this.isMonthUnselected(monthInputElement.textContent) && (element === monthInputElement || isWhileSubmitAttempt)) {
+        if (!this.selectedMonthNumber && (element === monthInputElement || isWhileSubmitAttempt)) {
           this.setInvalidStyleToElement(error, monthInputElement, monthTooltipElement, element);
         }
 

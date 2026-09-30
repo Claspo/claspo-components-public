@@ -7,11 +7,6 @@ export class DateUtils {
         return filteredParts.map(part => part.type);
     }
 
-    static convertMonthToNumeric(month, language) {
-        return DateUtils.getAllMonthsByLanguage('short', language)
-            .findIndex(monthFromList => monthFromList === month) + 1;
-    }
-
     static convertNumericToMonth(month, language) {
         return DateUtils.getAllMonthsByLanguage('short', language)[month - 1];
     }
