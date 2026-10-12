@@ -1,6 +1,6 @@
 {
   "name": "@claspo/components",
-  "version": "1.10.26",
+  "version": "1.10.26-pcwk",
   "description": "",
   "scripts": {
     "prebuild": "rm -rf out",

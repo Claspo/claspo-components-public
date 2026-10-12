@@ -1,10 +1,18 @@
 const promocodeStyles = `
+/* .text takes the host height through flex, not height:100%: in a quirks-mode document (customer
+   pages with no doctype) WebKit resolves that percentage past the auto-height host against the
+   enclosing view, so the code box grew over the content below it. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 .text {
   outline: none;
   min-height: 20px;
   cursor: pointer;
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   position: relative;
