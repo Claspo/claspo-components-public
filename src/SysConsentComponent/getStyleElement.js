@@ -1,21 +1,42 @@
 export default function getStyleElement() {
   return `
 <style>
+/* The host height reaches the checkbox row through flex sizing, not height:100%:
+   in a quirks-mode document (the dashboard preview iframes are about:blank, some
+   customer pages have no doctype) WebKit resolves that percentage past the
+   auto-height host against the enclosing flex column, so in Safari the consent
+   grew to the column and pushed everything below it out of the view.
+   min-height:0 lets the boxes clamp to a host smaller than the label, as
+   height:100% did. The chain only works while the host stays display:flex. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+/* an author :host display beats the user-agent [hidden] rule */
+:host([hidden]) {
+  display: none;
+}
+
 .main-container {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .label-with-input-container {
-  height: 100%;
   display: flex;
   flex-direction: row;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .input-with-tooltip {
   position: relative;
   display: flex;
   align-items: baseline;
-  height: 100%;
+  align-self: stretch;
   width: 100%;
 }
 
