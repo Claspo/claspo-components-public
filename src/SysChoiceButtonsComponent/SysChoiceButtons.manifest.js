@@ -4,7 +4,7 @@ export default {
   "name": "SysChoiceButtonsComponent",
   "componentType": "MULTIPLE_INPUT",
   "version": "1.0.0",
-  "mappingTypes": ["CHECKBOX_LIST"],
+  "mappingTypes": ["CHECKBOX_LIST", "SELECT"],
   "focusableElements": ["label", "button"],
   "contextMenuModel": cloneControlsToAllEnvs([
     {
