@@ -30,6 +30,7 @@ describe('SysPromoCodeComponent pool resolution', () => {
 
   function componentLike(overrides = {}) {
     const {rootElement, textOuterElement, textInnerElement, loaderElement} = buildTextDom();
+    const hostElement = document.createElement('div');
     const pendingResources = {increment: jest.fn(), decrement: jest.fn()};
 
     const component = {
@@ -44,6 +45,7 @@ describe('SysPromoCodeComponent pool resolution', () => {
       getProps: () => ({content: {text: 'SALE_15', autoRedeem: true, prize: {id: 'pool-branch-a'}}}),
       getElement: () => textOuterElement,
       getRootElement: () => rootElement,
+      getHostElement: () => hostElement,
       isByContentWidth: false,
       isStaticRenderMode: () => true,
       services: {
@@ -76,7 +78,7 @@ describe('SysPromoCodeComponent pool resolution', () => {
       ...overrides,
     };
 
-    return {component, rootElement, textOuterElement, textInnerElement, loaderElement, pendingResources};
+    return {component, rootElement, hostElement, textOuterElement, textInnerElement, loaderElement, pendingResources};
   }
 
   function poolMock(prize) {
@@ -367,6 +369,59 @@ describe('SysPromoCodeComponent pool resolution', () => {
         {code: 'POOL_CODE', autoRedeem: false},
       );
     });*/
+  });
+
+  /**
+   * A game prize that is not a code - "Free mug". The visitor won something, and it is not a code,
+   * so there is nothing for this component to show. Its placeholder must not stand in: that is
+   * text an author wrote for the editor, and shown here it reads as a code - one the Shopify
+   * auto-redeem would then try to apply at the checkout.
+   */
+  describe('a won prize that is not a code', () => {
+    const noCodePrize = {id: 'opt-mug', label: 'Free mug', value: null, navigateToViewId: null, codeType: 'NO_CODE'};
+
+    it('hides the component and shows no code', async () => {
+      const {component, hostElement, textInnerElement, pendingResources} = componentLike();
+      component.services.prizePoolFactory.get = jest.fn(() => poolMock(noCodePrize));
+
+      await component.connectToPrizePool();
+
+      expect(hostElement.style.display).toBe('none');
+      expect(textInnerElement.innerHTML).not.toBe('SALE_15');
+      // hidden is not held back: the rest of the widget renders
+      expect(pendingResources.decrement).toHaveBeenCalledTimes(1);
+    });
+
+    it('announces no promo code, so nothing is auto-redeemed', async () => {
+      const {component} = componentLike();
+      component.services.prizePoolFactory.get = jest.fn(() => poolMock(noCodePrize));
+
+      await component.connectToPrizePool();
+
+      expect(component.services.eventEmitter.emit).not.toHaveBeenCalledWith(
+        SysEventTypes.PROMO_CODE_SHOWN,
+        expect.anything(),
+      );
+    });
+
+    it('stays visible on the editor canvas, where it has to remain selectable', async () => {
+      jest.useFakeTimers();
+
+      try {
+        const {component, hostElement, textInnerElement} = componentLike({isStaticRenderMode: () => false});
+        component.services.prizePoolFactory.get = jest.fn(() => poolMock(noCodePrize));
+
+        component.connectToPrizePool();
+        const pushHandler = component.services.eventEmitter.on.mock.calls[0][1];
+        await pushHandler({componentId: 'promo-1', prizePool: {id: 'pool-1', options: []}});
+
+        expect(hostElement.style.display).not.toBe('none');
+        expect(textInnerElement.innerHTML).toBe('SALE_15');
+      } finally {
+        jest.runOnlyPendingTimers();
+        jest.useRealTimers();
+      }
+    });
   });
 
   /**

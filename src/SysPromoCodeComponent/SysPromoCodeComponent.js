@@ -13,6 +13,7 @@ import {ContextEvents} from "@claspo/renderer/sdk/context/ContextEvents";
 import SysEventTypes from "@claspo/renderer/common/SysEventTypes";
 import PrizePoolEvents from "@claspo/renderer/prize-pool/PrizePoolEvents";
 import insertHtmlIntoElement from '@claspo/common/dom/insertHtmlIntoElement';
+import {PrizeCodeType} from '@claspo/common/PrizePool.interface';
 
 const LAST_PROMOCODE_RECORD_KEY = 'lastPromoCode';
 
@@ -172,6 +173,15 @@ export default class SysPromoCodeComponent extends WcElement {
           (prize) => {
             this.componentResourceManager.getPending().decrement();
             this.hidePendingLoader();
+
+            // The visitor won a prize that is not a code - "Free mug". There is nothing for this
+            // component to show, and its placeholder would read as a code: one the Shopify
+            // auto-redeem would then try to apply. It leaves the widget instead, announcing nothing.
+            if (prize?.codeType === PrizeCodeType.NO_CODE) {
+              this.getHostElement().style.display = 'none';
+              return;
+            }
+
             this.applyPrizePoolPrize(prize);
           },
           (error) => {
