@@ -81,25 +81,39 @@ describe('SysCountdownTimer height', () => {
   });
 });
 
-describe('SysCountdownTimer labels switch', () => {
-  const LABELS_SWITCH = manifest.propertyPaneModel.general
-    .find((c) => c.name === 'SWITCH' && c.propPath?.[1] === 'labelsEnabled');
+// The timer's settings - the countdown, the digits, the unit names - are one editor control,
+// first on the timer's only tab in each environment, as a game's rewards are. With nothing on
+// General the editor shows no Style/General switch.
+describe('SysCountdownTimer settings in the pane', () => {
+  const GROUPS = manifest.propertyPaneModel.content.filter((c) => c.type === 'GROUP');
 
-  it('sits directly above the languages note', () => {
-    const general = manifest.propertyPaneModel.general;
-
-    expect(LABELS_SWITCH).toBeDefined();
-    expect(LABELS_SWITCH.propPath).toEqual(['content', 'labelsEnabled']);
-    // that note describes the Days/Hours/Minutes texts this switch controls
-    expect(general.indexOf(LABELS_SWITCH))
-      .toBe(general.findIndex((c) => c.name === 'SUPPORTED_LANGUAGES') - 1);
+  // the editor reads the tab as environment groups only while its first item is one; anything
+  // placed before them would turn the whole tab into plain controls
+  it('sit in the environment groups, with nothing beside them', () => {
+    expect(manifest.propertyPaneModel.content.every((c) => c.type === 'GROUP')).toBe(true);
   });
 
-  it('carries a label the editor can translate', () => {
-    expect(LABELS_SWITCH.params.label).toMatch(/^[A-Z0-9_]+$/);
+  // the control names the props it edits, the timer's content: the editor's SDK describes and
+  // writes a control by its own path, and the group's would be the timer's styles
+  it('come first in both environments, on the timer\'s content', () => {
+    expect(GROUPS.map((group) => group.propPath[1])).toEqual(['desktop', 'mobile']);
+
+    for (const group of GROUPS) {
+      expect(group.children[0]).toEqual({ type: 'CONTROL', name: 'DATEPICKER_COUNTDOWN_TIMER', propPath: ['content'] });
+    }
   });
 
-  it('starts switched on', () => {
+  it('leave the General tab empty, the format and the unit names switch included', () => {
+    expect(manifest.propertyPaneModel.general).toBeUndefined();
+    // with no General tab there is nothing to keep open
+    expect(manifest.keepGeneralTabOpenUntilInteracted).toBeUndefined();
+
+    const controls = GROUPS.flatMap((group) => group.children);
+    expect(controls.some((c) => c.propPath?.includes('format') || c.propPath?.includes('labelsEnabled'))).toBe(false);
+  });
+
+  it('start with hours, minutes and seconds, the unit names switched on', () => {
+    expect(manifest.props.content.format).toBe('HH:MM:SS');
     expect(manifest.props.content.labelsEnabled).toBe(true);
   });
 });

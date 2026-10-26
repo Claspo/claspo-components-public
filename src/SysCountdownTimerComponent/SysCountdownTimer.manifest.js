@@ -51,6 +51,13 @@ export default {
           "desktop"
         ],
         "children": [
+          // The timer's own settings come first on its only tab, as a game's rewards do: the countdown, then
+          // the digits with their unit names. The editor's control draws both and reads `content` itself.
+          {
+            "type": "CONTROL",
+            "name": "DATEPICKER_COUNTDOWN_TIMER",
+            "propPath": ["content"]
+          },
           {
             "type": "CONTROL",
             "name": "SIZE",
@@ -153,6 +160,11 @@ export default {
         "children": [
           {
             "type": "CONTROL",
+            "name": "DATEPICKER_COUNTDOWN_TIMER",
+            "propPath": ["content"]
+          },
+          {
+            "type": "CONTROL",
             "name": "SIZE",
             "element": "host",
             "elementProp": "styleAttributes",
@@ -245,61 +257,6 @@ export default {
           }
         ]
       }
-    ],
-    "general": [
-      {
-        "type": "CONTROL",
-        "name": "SELECT",
-        "propPath": [
-          "content",
-          "format"
-        ],
-        "params": {
-          "label": "DOCUMENT_DATE_FORMAT_TITLE",
-          "options": [
-            {
-              "label": "DOCUMENT_COUNTDOWN_TIMER_FORMAT_DD_HH_MM_SS",
-              "value": "DD:HH:MM:SS"
-            },
-            {
-              "label": "DOCUMENT_COUNTDOWN_TIMER_FORMAT_HH_MM_SS",
-              "value": "HH:MM:SS"
-            },
-            {
-              "label": "DOCUMENT_COUNTDOWN_TIMER_FORMAT_MM_SS",
-              "value": "MM:SS"
-            },
-            {
-              "label": "DOCUMENT_COUNTDOWN_TIMER_FORMAT_SS",
-              "value": "SS"
-            },
-          ]
-        }
-      },
-      {
-        "type": "CONTROL",
-        "name": "DATEPICKER_COUNTDOWN_TIMER"
-      },
-      {
-        // Kept directly above the languages note, which describes the very texts
-        // this switch turns on and off.
-        "type": "CONTROL",
-        "name": "SWITCH",
-        "propPath": [
-          "content",
-          "labelsEnabled"
-        ],
-        "params": {
-          "label": "DOCUMENT_SHOW_INPUT_LABELS",
-        }
-      },
-      {
-        "type": "CONTROL",
-        "name": "SUPPORTED_LANGUAGES",
-        "params": {
-          "text": "DOCUMENT_COUNTDOWN_TIMER_LANGUAGES_DESCR"
-        }
-      }
     ]
   },
   "autoContrast": [
@@ -324,7 +281,6 @@ export default {
       ],
     }
   ],
-  'keepGeneralTabOpenUntilInteracted': true,
   "focusableElements": ["counter", "label"],
   "events": {
     "dispatch": [],
