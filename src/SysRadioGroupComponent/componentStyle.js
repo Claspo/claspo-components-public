@@ -21,6 +21,9 @@ export default `
       width: 100%;
       height: auto;
       text-align: inherit;
+      /* Only the list's own styles set the row height: in columns its inline --optionRowHeight: auto wins over
+         this, and otherwise a variable of the same name on the host page must not reach the rows. */
+      --optionRowHeight: initial;
     }
     
     .radio-group-with-tooltip {
@@ -93,7 +96,10 @@ export default `
       display: flex;
       position: relative;
       padding-left: calc(var(--inputSize, 22px) + var(--inputToTextGapSize, 18px) + var(--borderTopWidth, 1));
-      height: var(--inputSize, 22px);
+      /* In columns (the list then sets --optionRowHeight: auto) a narrower label wraps more often, so the row
+         grows with it instead of letting it run into the next row; a one-column list keeps the marker's height. */
+      min-height: var(--inputSize, 22px);
+      height: var(--optionRowHeight, var(--inputSize, 22px));
       width: 100%;
       -webkit-user-select: none;
       -moz-user-select: none;

@@ -94,7 +94,10 @@ export default {
             "type": "CONTROL",
             "name": "LIST_POSITION",
             "elementProp": "styleAttributes",
-            "element": "listContainer"
+            "element": "listContainer",
+            "params": {
+              "columnsEnabled": true
+            }
           },
           {
             "type": "CONTROL",
@@ -228,7 +231,10 @@ export default {
             "type": "CONTROL",
             "name": "LIST_POSITION",
             "elementProp": "styleAttributes",
-            "element": "listContainer"
+            "element": "listContainer",
+            "params": {
+              "columnsEnabled": true
+            }
           },
           {
             "type": "CONTROL",
@@ -343,6 +349,7 @@ export default {
           "header": "DOCUMENT_OPTIONS_HEADER",
           "tooltip": "DOCUMENT_OPTIONS_TOOLTIP_PART1,DOCUMENT_OPTIONS_TOOLTIP_PART2",
           "origin": true,
+          "checkedByDefaultEnabled": true,
           "optionsPropPath": ["control", "options"],
           "optionsAlphabeticSortPropPath": ["control", "optionsAlphabeticSort"],
           "integrationNamePropPath": ["control", "integrationName"]

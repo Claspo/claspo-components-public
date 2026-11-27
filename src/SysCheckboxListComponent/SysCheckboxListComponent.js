@@ -15,6 +15,22 @@ import {
 import { getAdaptiveStylesForPlatform } from '@claspo/renderer/sdk/ModelStyleUtils';
 import insertHtmlIntoElement from '@claspo/common/dom/insertHtmlIntoElement';
 
+/**
+ * The value each list starts from, by control name and the options checked by default. FormControl.setValue tells a
+ * change by reference, and a view walked again gets the value stashed from its last visit back through setValue
+ * (ActivePathTracker). So a list the visitor left as it opened has to start from that very object again: an equal new
+ * one counts as the visitor's change, and closing the widget then commits the options checked by default as a lead.
+ * The list never changes these objects in place (see the click handler in createContent), and
+ * getCheckedByDefaultValue hands out none that something else has changed. A page keeps one map for all its widgets,
+ * and the editor one for its canvas and preview.
+ */
+const checkedByDefaultValues = new Map();
+
+/** Whether the value holds exactly these [optionId, exportId] entries, as it did when it was stored. */
+function hasEntries(value, entries) {
+  return Object.keys(value).length === entries.length
+    && entries.every(([id, exportId]) => Object.prototype.hasOwnProperty.call(value, id) && value[id] === exportId);
+}
 
 export default class SysCheckboxListComponent extends WcControlledElement {
   static define = {
@@ -32,6 +48,16 @@ export default class SysCheckboxListComponent extends WcControlledElement {
 
   constructor() {
     super();
+    // A new field starts with the options checked by default: FormControl takes its first value from defaultValue.
+    // A field the form already holds keeps the visitor's value (FormGroup.updateControl), and a view walked again
+    // gets its stashed value over this one (ActivePathTracker), so an option the visitor unchecked stays unchecked.
+    // Wrapped here, not overridden as a method: the build turns this class's methods into arrow properties, which
+    // would replace the parent's _createControl instead of calling it.
+    const createControl = this._createControl;
+    this._createControl = (config = {}, ...restControlArgs) => {
+      const defaultValue = this.getCheckedByDefaultValue();
+      return createControl(defaultValue ? { ...config, defaultValue } : config, ...restControlArgs);
+    };
     this.getRootElement().innerHTML = `
         <style>${SysCheckboxListComponent.componentStyle}</style>
         ${SysCheckboxListComponent.componentTemplate}
@@ -226,6 +252,33 @@ export default class SysCheckboxListComponent extends WcControlledElement {
     return this.registeredControl?.getValue() || null;
   }
 
+  /**
+   * The options checked when the widget opens, in the control's value shape ({[optionId]: exportId}), or null. The same
+   * object for as long as they stay the same (see checkedByDefaultValues).
+   */
+  getCheckedByDefaultValue() {
+    const { name, options } = this.getProps().control;
+    const entries = Object.entries(options || {})
+      .filter(([, option]) => option.checkedByDefault)
+      .map(([id, option]) => [id, option.exportId]);
+
+    if (!entries.length) {
+      return null;
+    }
+
+    // the JSON of the entries, not of the value: an object's JSON leaves out an option that has no exportId
+    const key = `${name}:${JSON.stringify(entries)}`;
+    const known = checkedByDefaultValues.get(key);
+
+    if (known && hasEntries(known, entries)) {
+      return known;
+    }
+
+    const value = Object.fromEntries(entries);
+    checkedByDefaultValues.set(key, value);
+    return value;
+  }
+
   applyStylesToMarkersShadows() {
     const inputButton = this.getElement('input');
     const checkMarksShadows = inputButton.querySelectorAll('.checkmark-shadow');
@@ -255,7 +308,8 @@ export default class SysCheckboxListComponent extends WcControlledElement {
   createContent() {
     const inputButton = this.getElement('input');
     const optionLabelStyles = getStylesFromElement(inputButton, SysCheckboxListComponent.checkboxListButtonMenuStyles);
-    const optionsValue = this.getCurrentValue();
+    // the editor's canvas shows what the merchant set; the live widget shows what the visitor has checked
+    const optionsValue = this.isStaticRenderMode() ? this.getCurrentValue() : this.getCheckedByDefaultValue();
     const options = this.getOptions();
     const buttonsList = document.createElement('div');
     buttonsList.classList.add('buttons-list');
@@ -275,6 +329,9 @@ export default class SysCheckboxListComponent extends WcControlledElement {
             const checkMark = checkboxListItemEl.querySelector('.checkmark');
             let currentValue = this.getCurrentValue();
             if (currentValue && currentValue[id]) {
+              // a new object, not this one changed: the form sees a change only in a new value, and this one may be
+              // the value the list started from (checkedByDefaultValues)
+              currentValue = { ...currentValue };
               delete currentValue[id];
               checkMark.classList.remove('checkmark-checked');
               checkMark.style.borderColor = null;

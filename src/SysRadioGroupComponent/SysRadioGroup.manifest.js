@@ -87,7 +87,10 @@ export default {
         "type": "CONTROL",
         "name": "LIST_POSITION",
         "elementProp": "styleAttributes",
-        "element": "listContainer"
+        "element": "listContainer",
+        "params": {
+          "columnsEnabled": true
+        }
       },
       {
         "type": "CONTROL",
