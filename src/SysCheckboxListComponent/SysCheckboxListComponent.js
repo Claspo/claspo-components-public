@@ -214,17 +214,17 @@ export default class SysCheckboxListComponent extends WcControlledElement {
 
     checkMarkContainer.appendChild(label);
 
+    // Nothing per answer goes on the host: every answer shares it, so the last answer drawn would set it for all of
+    // them. A tick colour kept there turned every tick grey whenever the last answer was unchecked.
     if (selected) {
       const selectedBorderColor = this.markerStyleAttributes['selectedColor'];
       checkMark.classList.add('checkmark-checked');
       checkMark.style.borderColor = selectedBorderColor;
       checkMark.style.outlineColor = selectedBorderColor;
       hostElement.style.setProperty('--selectedColor', selectedBorderColor);
-      hostElement.style.setProperty('--borderColor', selectedBorderColor);
     } else {
       checkMark.style.borderColor = null;
       checkMark.style.outlineColor = null;
-      hostElement.style.setProperty('--borderColor', 'rgba(0,0,0, 0.7)');
     }
     //.checkmark:after
     button.appendChild(checkMarkContainer);
@@ -336,7 +336,6 @@ export default class SysCheckboxListComponent extends WcControlledElement {
               checkMark.classList.remove('checkmark-checked');
               checkMark.style.borderColor = null;
               checkMark.style.outlineColor = null;
-              this.getHostElement().style.setProperty('--borderColor', 'rgba(0,0,0, 0.7)');
             } else {
               currentValue = {
                 ...currentValue,
@@ -347,7 +346,6 @@ export default class SysCheckboxListComponent extends WcControlledElement {
               checkMark.style.borderColor = `${borderColor}`;
               checkMark.style.outlineColor = `${borderColor}`;
               this.getHostElement().style.setProperty('--selectedColor', `${borderColor}`);
-              this.getHostElement().style.setProperty('--borderColor', `${borderColor}`);
             }
             const updatedValue = Object.keys(currentValue).length ? currentValue : null;
             this.registeredControl.setValue(updatedValue);

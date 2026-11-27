@@ -27,7 +27,7 @@ function withChecked(...ids) {
  * The list as a view renders it: on the real form of the widget, through the renderer's own control registration, so
  * what decides between the options checked by default and what the visitor did is the form, not a stub.
  */
-function mount({ options, form, renderMode = 'STATIC', viewIndex = 1, name = 'interests' }) {
+function mount({ options, form, renderMode = 'STATIC', viewIndex = 1, name = 'interests', markerStyle = {} }) {
   const component = new SysCheckboxListComponent();
   component.model = {
     id: 'interests-component',
@@ -48,7 +48,7 @@ function mount({ options, form, renderMode = 'STATIC', viewIndex = 1, name = 'in
     config: { getConfig: (key) => (key === 'renderMode' ? renderMode : undefined) },
     context: { getRegistry: () => ({}) },
   };
-  component.markerStyleAttributes = { ...SysCheckboxListComponent.defaultMarkerStyleAttributes };
+  component.markerStyleAttributes = { ...SysCheckboxListComponent.defaultMarkerStyleAttributes, ...markerStyle };
   component.registerControl(component.getRootElement());
   component.createContent();
   return component;
@@ -301,5 +301,73 @@ describe('SysCheckboxListComponent: options checked by default', () => {
     component.createContent();
 
     expect(checkedIds(component)).toEqual(['art', 'family']);
+  });
+});
+
+/** The rule of the list's stylesheet with exactly this selector, as the browser parses it. */
+function styleRule(selector) {
+  const style = document.createElement('style');
+  style.textContent = SysCheckboxListComponent.componentStyle;
+  document.head.appendChild(style);
+  const rule = Array.from(style.sheet.cssRules).find((cssRule) => cssRule.selectorText === selector);
+  style.remove();
+  return rule;
+}
+
+/**
+ * The colour the browser gives an answer's tick: the tick rule's colour, its variable looked up the inline styles from
+ * the box to the host, as the cascade resolves a custom property.
+ */
+function tickColorOf(component, id) {
+  const value = styleRule('.checkmark-container .checkmark:after').style.color;
+  const variable = /var\((--[\w-]+)\)/.exec(value);
+  if (!variable) {
+    return value;
+  }
+  const up = (node) => (node.parentNode instanceof ShadowRoot ? node.parentNode.host : node.parentNode);
+  for (let node = component.getRootElement().querySelector(`#cl-checkbox-${id} ~ .checkmark`); node; node = up(node)) {
+    const own = node.style && node.style.getPropertyValue(variable[1]);
+    if (own) {
+      return own.trim();
+    }
+  }
+  return null;
+}
+
+/** The answers drawn as checked: their boxes carry the checked look. */
+const drawnChecked = (component) => Array.from(component.getRootElement().querySelectorAll('.checkmark-checked'))
+  .map((checkMark) => checkMark.parentElement.querySelector('input').id.replace('cl-checkbox-', ''));
+
+describe('SysCheckboxListComponent: the tick colour', () => {
+  const SELECTED = 'rgb(220, 0, 0)';
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
+
+  it.each([
+    { where: 'on the live widget', renderMode: 'STATIC', name: 'tick-colour-live' },
+    { where: 'on the editor\'s canvas', renderMode: 'UPDATING', name: 'tick-colour-canvas' },
+  ])('draws the ticks checked by default in the selected colour $where, though the last answer is unchecked', ({ renderMode, name }) => {
+    // every answer drawn used to set the tick colour on the shared host, so an unchecked last answer turned them grey
+    const component = mount({ options: withChecked('art', 'family'), form: createForm(), renderMode, name, markerStyle: { selectedColor: SELECTED } });
+
+    expect(drawnChecked(component)).toEqual(['art', 'family']);
+    expect(drawnChecked(component).map((id) => tickColorOf(component, id))).toEqual([SELECTED, SELECTED]);
+  });
+
+  it('keeps the selected colour on the ticks left checked when the visitor unchecks an answer', () => {
+    const component = mount({ options: withChecked('art'), form: createForm(), name: 'tick-colour-uncheck', markerStyle: { selectedColor: SELECTED } });
+
+    click(component, 'outdoor');
+    click(component, 'outdoor');
+
+    expect(drawnChecked(component)).toEqual(['art']);
+    expect(tickColorOf(component, 'art')).toBe(SELECTED);
   });
 });

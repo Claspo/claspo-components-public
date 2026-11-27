@@ -23,6 +23,12 @@ describe('SysCheckboxListComponent styles', () => {
     expect(checkboxInput.style.position).toBe(radioInput.style.position);
   });
 
+  it('draws the tick of a checked answer in the selected colour, which the host holds for every answer', () => {
+    // a colour set per answer on the shared host is overwritten by the next answer drawn: with the last answer
+    // unchecked, every tick turned grey while its box kept the selected colour
+    expect(ruleOf(checkboxListStyle, '.checkmark-container .checkmark:after').style.color).toBe('var(--selectedColor)');
+  });
+
   it.each([
     { list: 'a checkbox list', css: checkboxListStyle, container: '.buttons-list' },
     { list: 'a radio group', css: radioGroupStyle, container: '.radio-buttons-list' },

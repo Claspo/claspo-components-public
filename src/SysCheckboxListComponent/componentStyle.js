@@ -179,7 +179,8 @@ export default `
       font-size: var(--inputSize, 22px);
       line-height: var(--inputSize, 22px);
       text-align: center;
-      color: var(--borderColor);
+      /* the tick shows only on a checked answer, so it takes the selected colour, which the host holds for all of them */
+      color: var(--selectedColor);
       margin-left: 10%;
       margin-bottom: 10%;
     }
